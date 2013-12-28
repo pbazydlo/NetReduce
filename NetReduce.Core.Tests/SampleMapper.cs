@@ -6,9 +6,9 @@
     {
         public IEnumerable<KeyValuePair<string, string>> Map(string key, string value)
         {
-            var result = new System.Collections.Generic.SortedList<string, string>();
+            var result = new List<KeyValuePair<string, string>>();
             foreach (var w in value.Split(' '))
-                result.Add(w, "1");
+                result.Add(new KeyValuePair<string, string>(w, "1"));
 
             return result;
         }

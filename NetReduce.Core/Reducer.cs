@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using NetReduce.Core.Extensions;
 
 namespace NetReduce.Core
 {
@@ -13,7 +14,7 @@ namespace NetReduce.Core
         private IEnumerable<string> values;
         private Func<string, IEnumerable<string>, string> reduce;
         private IStorage storage;
-        
+
         public int LoadedFileCount { get; set; }
         public Regex FileFilter { get; private set; }
 
@@ -21,7 +22,7 @@ namespace NetReduce.Core
         {
             this.key = key;
             this.reduce = reduce;
-            this.FileFilter = new Regex(string.Format("^" + Core.Properties.Settings.Default.MapOutputFileName + "$", this.key, "[0-9]+"));
+            this.FileFilter = new Regex(string.Format("^" + Core.Properties.Settings.Default.MapOutputFileName + "$", this.key, "[0-9]+", RegexExtensions.GuidRegexString));
             this.storage = storage;
             this.Load();
         }

@@ -5,6 +5,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using Shouldly;
+    using System;
 
     [TestClass]
     public class ReducerTests
@@ -35,7 +36,7 @@
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    var fileName = string.Format(Core.Properties.Settings.Default.MapOutputFileName, key, i);
+                    var fileName = string.Format(Core.Properties.Settings.Default.MapOutputFileName, key, i, Guid.NewGuid());
                     storage.Store(fileName, "1");
                 }
             }

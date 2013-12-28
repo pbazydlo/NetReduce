@@ -9,6 +9,7 @@ namespace NetReduce.Core.Tests
     internal class InMemoryStorage : IStorage
     {
         private ConcurrentDictionary<string, string> storage = new ConcurrentDictionary<string, string>();
+        private object storeLock = new object();
 
         public IEnumerable<string> ListFiles()
         {
@@ -27,12 +28,22 @@ namespace NetReduce.Core.Tests
 
         public void Store(string fileName, string value)
         {
-            while (!this.storage.TryAdd(fileName, value))
+            lock (this.storeLock)
             {
-                // ?
-                if (this.storage.ContainsKey(fileName))
+                /*if (this.storage.ContainsKey(fileName))
                 {
-                    throw new Exception();
+                    this.storage[fileName] += string.Format("\n{0}", value);
+                }
+                else
+                {
+                    this.storage[fileName] = value;
+                }*/
+                while (!this.storage.TryAdd(fileName, value)) 
+                {
+                    if (this.storage.ContainsKey(fileName))
+                    {
+                        throw new Exception("File already exists in storage!");
+                    }
                 }
             }
         }
