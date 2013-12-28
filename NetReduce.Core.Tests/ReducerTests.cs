@@ -1,7 +1,5 @@
 ﻿namespace NetReduce.Core.Tests
 {
-    using System.IO;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using Shouldly;

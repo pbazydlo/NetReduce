@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using NetReduce.Core.Extensions;
-
-namespace NetReduce.Core
+﻿namespace NetReduce.Core
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+
+    using NetReduce.Core.Extensions;
+
     public class Reducer
     {
         private string key;

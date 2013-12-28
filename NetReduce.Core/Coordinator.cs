@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-
-namespace NetReduce.Core
+﻿namespace NetReduce.Core
 {
-    using NetReduce.Core.Extensions;
-    using System.Collections;
-    using System.IO;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Text.RegularExpressions;
+
+    using NetReduce.Core.Extensions;
 
     public class Coordinator<WorkerType> where WorkerType : IWorker, new()
     {
@@ -79,7 +75,7 @@ namespace NetReduce.Core
         public IEnumerable<string> GetKeys()
         {
             var result = new List<string>();
-            var regex = new Regex(string.Format("^" + Core.Properties.Settings.Default.MapOutputFileName + "$", @"(?<Key>.+)", "[0-9]+", RegexExtensions.GuidRegexString)); //[^<>:""\\/|\?\*]
+            var regex = new Regex(string.Format("^" + Core.Properties.Settings.Default.MapOutputFileName + "$", @"(?<Key>.+)", "[0-9]+", RegexExtensions.GuidRegexString));
             var fileNames = this.storage.ListFiles();
             foreach (var fileName in fileNames)
             {

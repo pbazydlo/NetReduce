@@ -1,9 +1,8 @@
 ﻿namespace NetReduce.Core
 {
-    using System.IO;
+    using System;
 
     using CSScriptLibrary;
-using System;
 
     public class Loader
     {

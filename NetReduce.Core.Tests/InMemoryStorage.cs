@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace NetReduce.Core.Tests
+﻿namespace NetReduce.Core.Tests
 {
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+
     internal class InMemoryStorage : IStorage
     {
         private ConcurrentDictionary<string, string> storage = new ConcurrentDictionary<string, string>();

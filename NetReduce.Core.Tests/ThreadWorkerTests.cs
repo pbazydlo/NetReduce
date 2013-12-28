@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Shouldly;
-
-namespace NetReduce.Core.Tests
+﻿namespace NetReduce.Core.Tests
 {
+    using System.Linq;
     using System.Text.RegularExpressions;
 
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     using NetReduce.Core.Extensions;
+
+    using Shouldly;
 
     [TestClass]
     public class ThreadWorkerTests
@@ -25,11 +25,13 @@ namespace NetReduce.Core.Tests
         {
             var fileName = "file1.txt";
             var fileContent = "whatever am i i";
+            var mapperCodeFileName = "SampleMapper.cs";
+
             storage.Store(fileName, fileContent);
-            TestHelpers.LoadToStorage(@"..\..\SampleMapper.cs", "SampleMapper.cs", this.storage);
+            TestHelpers.LoadToStorage(@"..\..\SampleMapper.cs", mapperCodeFileName, this.storage);
             var worker = new ThreadWorker(this.storage, 1);
 
-            worker.Map(fileName, "SampleMapper.cs");
+            worker.Map(fileName, mapperCodeFileName);
             worker.Join();
 
             var fileNo = this.storage.ListFiles().Count();
@@ -40,15 +42,17 @@ namespace NetReduce.Core.Tests
         [TestMethod]
         public void ThreadWorkerStoresReduceResults()
         {
+            var reducerCodeFileName = "SampleReducer.cs";
+
             var keys = ReducerTests.CreateTwoKeyFileSet(this.storage);
-            TestHelpers.LoadToStorage(@"..\..\SampleReducer.cs", "SampleReducer.cs", this.storage);
+            TestHelpers.LoadToStorage(@"..\..\SampleReducer.cs", reducerCodeFileName, this.storage);
             var worker = new ThreadWorker(this.storage, 1);
 
-            worker.Reduce("k1", "SampleReducer.cs");
+            worker.Reduce("k1", reducerCodeFileName);
             worker.Join();
 
             var result = default (string);
-            var regex = new Regex(string.Format("^" + Core.Properties.Settings.Default.ReduceOutputFileName + "$", @"(?<Key>.+)", "[0-9]+", RegexExtensions.GuidRegexString)); //[^<>:""\\/|\?\*]
+            var regex = new Regex(string.Format("^" + Core.Properties.Settings.Default.ReduceOutputFileName + "$", @"(?<Key>.+)", "[0-9]+", RegexExtensions.GuidRegexString));
             var fileNames = this.storage.ListFiles();
             foreach (var fileName in fileNames)
             {

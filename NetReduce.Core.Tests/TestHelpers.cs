@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-
-namespace NetReduce.Core.Tests
+﻿namespace NetReduce.Core.Tests
 {
+    using System.IO;
+
     internal static class TestHelpers
     {
         public static void LoadToStorage(string realPath, string storageFileName, IStorage storage)
