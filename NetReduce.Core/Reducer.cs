@@ -11,18 +11,18 @@ namespace NetReduce.Core
     {
         private string key;
         private IEnumerable<string> values;
-        private string sourceDirectory;
         private Func<string, IEnumerable<string>, string> reduce;
+        private IStorage storage;
         
         public int LoadedFileCount { get; set; }
         public Regex FileFilter { get; private set; }
 
-        public Reducer(string key, string sourceDirectory, Func<string, IEnumerable<string>, string> reduce)
+        public Reducer(string key, Func<string, IEnumerable<string>, string> reduce, IStorage storage)
         {
             this.key = key;
-            this.sourceDirectory = sourceDirectory;
             this.reduce = reduce;
             this.FileFilter = new Regex(string.Format("^" + Core.Properties.Settings.Default.MapOutputFileName + "$", this.key, "[0-9]+"));
+            this.storage = storage;
             this.Load();
         }
 
@@ -34,12 +34,12 @@ namespace NetReduce.Core
         private void Load()
         {
             this.values = new List<string>();
-            var filePaths = Directory.GetFiles(this.sourceDirectory);
-            foreach (var filePath in filePaths)
+            var fileNames = this.storage.ListFiles();
+            foreach (var fileName in fileNames)
             {
-                if (this.FileFilter.IsMatch(Path.GetFileName(filePath)))
+                if (this.FileFilter.IsMatch(fileName))
                 {
-                    (this.values as List<string>).AddRange(File.ReadAllLines(filePath));
+                    (this.values as List<string>).AddRange(this.storage.ReadLines(fileName));
                     this.LoadedFileCount++;
                 }
             }

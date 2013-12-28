@@ -12,13 +12,15 @@ namespace NetReduce.Core
 
     public class Coordinator
     {
-        private Action _map;
-        private Action _reduce;
+        private Action map;
+        private Action reduce;
+        private IStorage storage;
 
-        public Coordinator(Action map, Action reduce)
+        public Coordinator(Action map, Action reduce, IStorage storage)
         {
-            _map = map;
-            _reduce = reduce;
+            this.map = map;
+            this.reduce = reduce;
+            this.storage = storage;
         }
 
         public void Start(int maxMapperNo, int maxReducerNo)
@@ -26,7 +28,7 @@ namespace NetReduce.Core
             List<Thread> threadsRunning = new List<Thread>();
             for (int i = 0; i < maxMapperNo; i++)
             {
-                var mapper = new Thread(() => this._map.Invoke());
+                var mapper = new Thread(() => this.map.Invoke());
                 mapper.Start();
                 threadsRunning.Add(mapper);
             }
@@ -39,7 +41,7 @@ namespace NetReduce.Core
             threadsRunning.Clear();
             for (int i = 0; i < maxReducerNo; i++)
             {
-                var reducer = new Thread(() => { _reduce.Invoke(); });
+                var reducer = new Thread(() => { reduce.Invoke(); });
                 reducer.Start();
                 threadsRunning.Add(reducer);
             }
@@ -54,10 +56,9 @@ namespace NetReduce.Core
         {
             var result = new List<string>();
             var regex = new Regex(string.Format("^" + Core.Properties.Settings.Default.MapOutputFileName + "$", @"(?<Key>.+)", "[0-9]+")); //[^<>:""\\/|\?\*]
-            var filePaths = Directory.GetFiles(testDirectory);
-            foreach (var filePath in filePaths)
+            var fileNames = this.storage.ListFiles();
+            foreach (var fileName in fileNames)
             {
-                var fileName = Path.GetFileName(filePath);
                 if (regex.IsMatch(fileName))
                 {
                     var key = regex.Match(fileName).Groups["Key"].Value;

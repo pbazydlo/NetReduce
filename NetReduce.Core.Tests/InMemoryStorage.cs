@@ -19,6 +19,11 @@ namespace NetReduce.Core.Tests
             return this.storage[fileName];
         }
 
+        public string[] ReadLines(string fileName)
+        {
+            return this.Read(fileName).Split('\n');
+        }
+
         public void Store(string fileName, string value)
         {
             this.storage.Add(fileName, value);

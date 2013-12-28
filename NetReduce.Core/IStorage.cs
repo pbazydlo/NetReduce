@@ -9,6 +9,7 @@ namespace NetReduce.Core
     {
         IEnumerable<string> ListFiles();
         string Read(string fileName);
+        string[] ReadLines(string fileName);
         void Store(string fileName, string value);
     }
 }

@@ -9,40 +9,34 @@
     [TestClass]
     public class ReducerTests
     {
+        private IStorage storage;
+
         [TestInitialize]
         public void Init()
         {
-            TestHelpers.ClearAndCreateDirectory(Properties.Settings.Default.TestDirectory);
-        }
-
-        [ClassCleanup]
-        public static void Cleanup()
-        {
-            TestHelpers.ClearAndCreateDirectory(Properties.Settings.Default.TestDirectory);
+            this.storage = new InMemoryStorage();
         }
 
         [TestMethod]
         public void ReducerLoadsFilesAssociatedWithItsKey()
         {
-            var keys = CreateTwoKeyFileSet(Properties.Settings.Default.TestDirectory);
+            var keys = CreateTwoKeyFileSet(this.storage);
 
-            var reducer = new Reducer(keys[0], Properties.Settings.Default.TestDirectory, null);
+            var reducer = new Reducer(keys[0], null, this.storage);
             int loadedFileCount = reducer.LoadedFileCount;
 
             loadedFileCount.ShouldBe(3);
         }
 
-        internal static string[] CreateTwoKeyFileSet(string testDirectory)
+        internal static string[] CreateTwoKeyFileSet(IStorage storage)
         {
             var keys = new string[] { "k1", "k2" };
             foreach (var key in keys)
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    using (var writer = File.CreateText(Path.Combine(testDirectory, string.Format(Core.Properties.Settings.Default.MapOutputFileName, key, i))))
-                    {
-                        writer.Write("1");
-                    }
+                    var fileName = string.Format(Core.Properties.Settings.Default.MapOutputFileName, key, i);
+                    storage.Store(fileName, "1");
                 }
             }
 
@@ -52,8 +46,8 @@
         [TestMethod]
         public void ReducerPerformsReduceOnLoadedFiles()
         {
-            var keys = CreateTwoKeyFileSet(Properties.Settings.Default.TestDirectory);
-            var reducer = new Reducer(keys[0], Properties.Settings.Default.TestDirectory, (key, values) =>
+            var keys = CreateTwoKeyFileSet(this.storage);
+            var reducer = new Reducer(keys[0], (key, values) =>
             {
                 int result = 0;
                 foreach (var value in values)
@@ -62,7 +56,7 @@
                 }
 
                 return result.ToString();
-            });
+            }, this.storage);
 
             var res = reducer.PerformReduce();
 
@@ -72,10 +66,10 @@
         [TestMethod]
         public void ReducerPerformsReduceOnLoadedFilesUsingExternalCode()
         {
-            var keys = CreateTwoKeyFileSet(Properties.Settings.Default.TestDirectory);
+            var keys = CreateTwoKeyFileSet(this.storage);
 
             var reduceProvider = Loader.Load<IReduceProvider>(@"..\..\SampleReducer.cs");
-            var reducer = new Reducer(keys[0], Properties.Settings.Default.TestDirectory, reduceProvider.Reduce);
+            var reducer = new Reducer(keys[0], reduceProvider.Reduce, this.storage);
 
             var res = reducer.PerformReduce();
 
