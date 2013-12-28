@@ -8,11 +8,21 @@ namespace NetReduce.Core
 {
     public class Mapper
     {
-        public Mapper(string filePath)
+        private Func<string, string, SortedList<string, string>> map;
+
+        public string Key { get; private set; }
+        public string Value { get; private set; }
+
+        public Mapper(string filePath, Func<string, string, SortedList<string, string>> map)
         {
-            this.Source = File.ReadAllText(filePath);
+            this.Key = filePath;
+            this.Value = File.ReadAllText(filePath);
+            this.map = map;
         }
 
-        public string Source { get; set; }
+        public SortedList<string, string> PerformMap()
+        {
+            return this.map.Invoke(this.Key, this.Value);
+        }
     }
 }
