@@ -1,38 +1,28 @@
 ﻿namespace NetReduce.Core.Tests
 {
-    using System.IO;
     using System.Linq;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using Shouldly;
 
     [TestClass]
     public class MapperTests
     {
+        private IStorage storage;
+
         [TestInitialize]
         public void Init()
         {
-            TestHelpers.ClearAndCreateDirectory(Properties.Settings.Default.TestDirectory);
-        }
-
-        [ClassCleanup]
-        public static void Cleanup()
-        {
-            TestHelpers.ClearAndCreateDirectory(Properties.Settings.Default.TestDirectory);
+            this.storage = new InMemoryStorage();
         }
 
         [TestMethod]
         public void MapperLoadsGivenSource()
         {
-            var filePath = Path.Combine(Properties.Settings.Default.TestDirectory, "file1.txt");
+            var filePath = "file1.txt";
             var fileContent = "whatever";
-            using (var writer = File.CreateText(filePath))
-            {
-                writer.Write(fileContent);
-            }
+            storage.Store(filePath, fileContent);
 
-            var mapper = new Mapper(filePath, null);
+            var mapper = new Mapper(filePath, null, this.storage);
 
             mapper.Value.ShouldBe(fileContent);
         }
@@ -40,12 +30,9 @@
         [TestMethod]
         public void MapperPerformsMapOperation()
         {
-            var filePath = Path.Combine(Properties.Settings.Default.TestDirectory, "file1.txt");
+            var filePath = "file1.txt";
             var fileContent = "whatever am i";
-            using (var writer = File.CreateText(filePath))
-            {
-                writer.Write(fileContent);
-            }
+            storage.Store(filePath, fileContent);
 
             var mapper = new Mapper(filePath, (key, value) => 
             {
@@ -54,7 +41,7 @@
                     result.Add(w, "1");
 
                 return result;
-            });
+            }, this.storage);
 
             var mapResult = mapper.PerformMap();
 
@@ -64,15 +51,12 @@
         [TestMethod]
         public void MapperPerformsMapOperationUsingExternalCode()
         {
-            var filePath = Path.Combine(Properties.Settings.Default.TestDirectory, "file1.txt");
+            var filePath = "file1.txt";
             var fileContent = "whatever am i";
-            using (var writer = File.CreateText(filePath))
-            {
-                writer.Write(fileContent);
-            }
+            storage.Store(filePath, fileContent);
 
             var mapProvider = Loader.Load<IMapProvider>(@"..\..\SampleMapper.cs");
-            var mapper = new Mapper(filePath, mapProvider.Map);
+            var mapper = new Mapper(filePath, mapProvider.Map, this.storage);
 
             var mapResult = mapper.PerformMap();
 
