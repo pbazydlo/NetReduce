@@ -15,12 +15,7 @@ namespace NetReduce.Core.Tests
         [TestInitialize]
         public void Init()
         {
-            if (Directory.Exists(testDirectory))
-            {
-                Directory.Delete(testDirectory, recursive: true);
-            }
-
-            Directory.CreateDirectory(testDirectory);
+            TestHelpers.ClearAndCreateDirectory(testDirectory);
         }
 
         [TestMethod]
@@ -61,6 +56,5 @@ namespace NetReduce.Core.Tests
 
             mapResult.Count.ShouldBe(3);
         }
-
     }
 }
