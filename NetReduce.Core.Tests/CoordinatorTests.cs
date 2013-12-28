@@ -5,6 +5,8 @@ using Shouldly;
 
 namespace NetReduce.Core.Tests
 {
+    using System.Linq;
+
     [TestClass]
     public class CoordinatorTests
     {
@@ -21,6 +23,21 @@ namespace NetReduce.Core.Tests
 
             mapAdds.ShouldBe(5);
             reduceAdds.ShouldBe(10);
+        }
+
+        [TestMethod]
+        public void CoordinatorReadsKeysFromFileNames()
+        {
+            var keys = ReducerTests.CreateTwoKeyFileSet(Properties.Settings.Default.TestDirectory);
+
+            var coordinator = new Coordinator(null, null);
+            var result = coordinator.GetKeys(Properties.Settings.Default.TestDirectory);
+
+            result.Count().ShouldBe(keys.Length);
+            foreach (var key in keys)
+            {
+                result.ShouldContain(key);
+            }
         }
     }
 }

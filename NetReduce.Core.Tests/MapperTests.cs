@@ -1,35 +1,31 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Shouldly;
-using NetReduce.Core;
-using System.IO;
-using System.Collections.Generic;
-
-namespace NetReduce.Core.Tests
+﻿namespace NetReduce.Core.Tests
 {
+    using System.IO;
     using System.Linq;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using Shouldly;
 
     [TestClass]
     public class MapperTests
     {
-        private const string testDirectory = "./tests";
-
         [TestInitialize]
         public void Init()
         {
-            TestHelpers.ClearAndCreateDirectory(testDirectory);
+            TestHelpers.ClearAndCreateDirectory(Properties.Settings.Default.TestDirectory);
         }
 
         [ClassCleanup]
         public static void Cleanup()
         {
-            TestHelpers.ClearAndCreateDirectory(testDirectory);
+            TestHelpers.ClearAndCreateDirectory(Properties.Settings.Default.TestDirectory);
         }
 
         [TestMethod]
         public void MapperLoadsGivenSource()
         {
-            var filePath = Path.Combine(testDirectory, "file1.txt");
+            var filePath = Path.Combine(Properties.Settings.Default.TestDirectory, "file1.txt");
             var fileContent = "whatever";
             using (var writer = File.CreateText(filePath))
             {
@@ -44,7 +40,7 @@ namespace NetReduce.Core.Tests
         [TestMethod]
         public void MapperPerformsMapOperation()
         {
-            var filePath = Path.Combine(testDirectory, "file1.txt");
+            var filePath = Path.Combine(Properties.Settings.Default.TestDirectory, "file1.txt");
             var fileContent = "whatever am i";
             using (var writer = File.CreateText(filePath))
             {
@@ -68,15 +64,15 @@ namespace NetReduce.Core.Tests
         [TestMethod]
         public void MapperPerformsMapOperationUsingExternalCode()
         {
-            var filePath = Path.Combine(testDirectory, "file1.txt");
+            var filePath = Path.Combine(Properties.Settings.Default.TestDirectory, "file1.txt");
             var fileContent = "whatever am i";
             using (var writer = File.CreateText(filePath))
             {
                 writer.Write(fileContent);
             }
 
-            var mapFunc = Loader.Load<IMapProvider>(@"..\..\SampleMapper.cs");
-            var mapper = new Mapper(filePath, mapFunc.Map);
+            var mapProvider = Loader.Load<IMapProvider>(@"..\..\SampleMapper.cs");
+            var mapper = new Mapper(filePath, mapProvider.Map);
 
             var mapResult = mapper.PerformMap();
 

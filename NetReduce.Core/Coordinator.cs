@@ -6,6 +6,10 @@ using System.Threading;
 
 namespace NetReduce.Core
 {
+    using System.Collections;
+    using System.IO;
+    using System.Text.RegularExpressions;
+
     public class Coordinator
     {
         private Action _map;
@@ -44,6 +48,27 @@ namespace NetReduce.Core
             {
                 reducer.Join();
             }
+        }
+
+        public IEnumerable<string> GetKeys(string testDirectory)
+        {
+            var result = new List<string>();
+            var regex = new Regex(string.Format("^" + Core.Properties.Settings.Default.MapOutputFileName + "$", @"(?<Key>.+)", "[0-9]+")); //[^<>:""\\/|\?\*]
+            var filePaths = Directory.GetFiles(testDirectory);
+            foreach (var filePath in filePaths)
+            {
+                var fileName = Path.GetFileName(filePath);
+                if (regex.IsMatch(fileName))
+                {
+                    var key = regex.Match(fileName).Groups["Key"].Value;
+                    if (!result.Contains(key))
+                    {
+                        result.Add(key);
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }

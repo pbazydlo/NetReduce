@@ -22,7 +22,7 @@ namespace NetReduce.Core
             this.key = key;
             this.sourceDirectory = sourceDirectory;
             this.reduce = reduce;
-            this.FileFilter = new Regex(string.Format("^{0}_MAP_NO_[0-9]+$", this.key));
+            this.FileFilter = new Regex(string.Format("^" + Core.Properties.Settings.Default.MapOutputFileName + "$", this.key, "[0-9]+"));
             this.Load();
         }
 
