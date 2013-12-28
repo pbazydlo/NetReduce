@@ -16,6 +16,12 @@ namespace NetReduce.Core.Tests
             TestHelpers.ClearAndCreateDirectory(testDirectory);
         }
 
+        [ClassCleanup]
+        public static void Cleanup()
+        {
+            TestHelpers.ClearAndCreateDirectory(testDirectory);
+        }
+
         [TestMethod]
         public void ReducerLoadsFilesAssociatedWithItsKey()
         {

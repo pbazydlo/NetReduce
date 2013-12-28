@@ -63,6 +63,7 @@
     <Compile Include="CoordinatorTests.cs" />
     <Compile Include="MapperTests.cs" />
     <Compile Include="ReducerTests.cs" />
+    <Compile Include="SampleMapper.cs" />
     <Compile Include="TestHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +73,10 @@
     <ProjectReference Include="..\NetReduce.Core\NetReduce.Core.csproj">
       <Project>{d4a1828a-914b-4afc-b540-9a267927fee1}</Project>
       <Name>NetReduce.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetReduce\NetReduce.csproj">
+      <Project>{C1BDE385-A99F-4F4B-A029-30BFAF58E85C}</Project>
+      <Name>NetReduce</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

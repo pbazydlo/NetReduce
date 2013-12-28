@@ -22,7 +22,7 @@ namespace NetReduce.Core
             List<Thread> threadsRunning = new List<Thread>();
             for (int i = 0; i < maxMapperNo; i++)
             {
-                var mapper = new Thread(() => { _map.Invoke(); });
+                var mapper = new Thread(() => this._map.Invoke());
                 mapper.Start();
                 threadsRunning.Add(mapper);
             }

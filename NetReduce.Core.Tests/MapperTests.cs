@@ -7,6 +7,8 @@ using System.Collections.Generic;
 
 namespace NetReduce.Core.Tests
 {
+    using System.Linq;
+
     [TestClass]
     public class MapperTests
     {
@@ -14,6 +16,12 @@ namespace NetReduce.Core.Tests
 
         [TestInitialize]
         public void Init()
+        {
+            TestHelpers.ClearAndCreateDirectory(testDirectory);
+        }
+
+        [ClassCleanup]
+        public static void Cleanup()
         {
             TestHelpers.ClearAndCreateDirectory(testDirectory);
         }
@@ -54,7 +62,25 @@ namespace NetReduce.Core.Tests
 
             var mapResult = mapper.PerformMap();
 
-            mapResult.Count.ShouldBe(3);
+            mapResult.Count().ShouldBe(3);
+        }
+
+        [TestMethod]
+        public void MapperPerformsMapOperationUsingExternalCode()
+        {
+            var filePath = Path.Combine(testDirectory, "file1.txt");
+            var fileContent = "whatever am i";
+            using (var writer = File.CreateText(filePath))
+            {
+                writer.Write(fileContent);
+            }
+
+            var mapFunc = Loader.Load<IMapProvider>(@"..\..\SampleMapper.cs");
+            var mapper = new Mapper(filePath, mapFunc.Map);
+
+            var mapResult = mapper.PerformMap();
+
+            mapResult.Count().ShouldBe(3);
         }
     }
 }
