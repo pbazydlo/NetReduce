@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-
-namespace NetReduce.Core.Extensions
+﻿namespace NetReduce.Core.Extensions
 {
-    internal static class RegexExtensions
+    public static class RegexExtensions
     {
         public static string GuidRegexString
         {

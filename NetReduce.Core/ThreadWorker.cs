@@ -1,12 +1,10 @@
-﻿using NetReduce.Core.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-
-namespace NetReduce.Core
+﻿namespace NetReduce.Core
 {
+    using System;
+    using System.Threading;
+
+    using NetReduce.Core.Exceptions;
+
     public class ThreadWorker : IWorker
     {
         private IStorage storage;
@@ -21,8 +19,7 @@ namespace NetReduce.Core
 
         public void Map(string inputFileName, string mapCodeFileName)
         {
-            if (this.workerThread != null && this.workerThread.IsAlive)
-                throw new WorkerBusyException();
+            this.EnsureWorkerThreadIsFree();
 
             this.workerThread = new Thread(() =>
             {
@@ -41,12 +38,31 @@ namespace NetReduce.Core
 
         public void Reduce(string key, string reduceCodeFileName)
         {
-            throw new NotImplementedException();
+            this.EnsureWorkerThreadIsFree();
+
+            this.workerThread = new Thread(() =>
+            {
+                var reduceProvider = Loader.Load<IReduceProvider>(reduceCodeFileName, this.storage);
+                var reducer = new Reducer(key, reduceProvider.Reduce, this.storage);
+                var reduceResult = reducer.PerformReduce();
+                    this.storage.Store(
+                           string.Format(Properties.Settings.Default.ReduceOutputFileName, key, this.id, Guid.NewGuid()), reduceResult);
+            });
+
+            this.workerThread.Start();
         }
 
         public void Join()
         {
             this.workerThread.Join();
+        }
+
+        private void EnsureWorkerThreadIsFree()
+        {
+            if (this.workerThread != null && this.workerThread.IsAlive)
+            {
+                throw new WorkerBusyException();
+            }
         }
     }
 }

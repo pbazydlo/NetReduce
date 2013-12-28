@@ -5,5 +5,8 @@
     <Setting Name="MapOutputFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">{0}_MAP_NO_{1}_{2}</Value>
     </Setting>
+    <Setting Name="ReduceOutputFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">{0}_REDUCE_NO_{1}_{2}</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
