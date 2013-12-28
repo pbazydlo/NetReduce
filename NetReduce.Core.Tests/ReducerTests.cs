@@ -25,6 +25,16 @@ namespace NetReduce.Core.Tests
         [TestMethod]
         public void ReducerLoadsFilesAssociatedWithItsKey()
         {
+            var keys = CreateTwoKeyFileSet();
+
+            var reducer = new Reducer(keys[0], testDirectory, null);
+            int loadedFileCount = reducer.LoadedFileCount;
+
+            loadedFileCount.ShouldBe(3);
+        }
+
+        private static string[] CreateTwoKeyFileSet()
+        {
             var keys = new string[] { "k1", "k2" };
             foreach (var key in keys)
             {
@@ -32,15 +42,31 @@ namespace NetReduce.Core.Tests
                 {
                     using (var writer = File.CreateText(Path.Combine(testDirectory, string.Format("{0}_MAP_NO_{1}", key, i))))
                     {
-                        writer.Write(key);
+                        writer.Write("1");
                     }
                 }
             }
+            return keys;
+        }
 
-            var reducer = new Reducer(keys[0], testDirectory);
-            int loadedFileCount = reducer.LoadedFileCount;
+        [TestMethod]
+        public void ReducerPerformsReduceOnLoadedFiles()
+        {
+            var keys = CreateTwoKeyFileSet();
+            var reducer = new Reducer(keys[0], testDirectory, (key, values) =>
+            {
+                int result = 0;
+                foreach (var value in values)
+                {
+                    result += int.Parse(value);
+                }
 
-            loadedFileCount.ShouldBe(3);
+                return result.ToString();
+            });
+
+            var res = reducer.PerformReduce();
+
+            res.ShouldBe("3");
         }
     }
 }
