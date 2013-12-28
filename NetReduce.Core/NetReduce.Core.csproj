@@ -46,8 +46,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Coordinator.cs" />
+    <Compile Include="Exceptions\IllegalCharactersInFileNameException.cs" />
     <Compile Include="Exceptions\WorkerBusyException.cs" />
     <Compile Include="Extensions\RegexExtensions.cs" />
+    <Compile Include="FileSystemStorage.cs" />
     <Compile Include="IStorage.cs" />
     <Compile Include="IWorker.cs" />
     <Compile Include="Loader.cs" />
