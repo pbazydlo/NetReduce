@@ -40,7 +40,7 @@ namespace NetReduce.Core.Tests
             var keys = ReducerTests.CreateTwoKeyFileSet(this.storage);
 
             var coordinator = new Coordinator(null, null, this.storage);
-            var result = coordinator.GetKeys(Properties.Settings.Default.TestDirectory);
+            var result = coordinator.GetKeys();
 
             result.Count().ShouldBe(keys.Length);
             foreach (var key in keys)

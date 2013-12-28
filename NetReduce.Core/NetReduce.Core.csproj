@@ -57,6 +57,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Reducer.cs" />
+    <Compile Include="ThreadWorker.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetReduce\NetReduce.csproj">

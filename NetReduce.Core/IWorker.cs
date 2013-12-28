@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace NetReduce.Core
+﻿namespace NetReduce.Core
 {
     public interface IWorker
     {
-        void BeMapper(string inputFileName);
-        void BeReducer(string key);
+        void Map(string inputFileName, string mapCodeFileName);
+        void Reduce(string key, string reduceCodeFileName);
         void Join();
     }
 }

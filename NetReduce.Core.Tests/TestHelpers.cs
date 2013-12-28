@@ -8,14 +8,12 @@ namespace NetReduce.Core.Tests
 {
     internal static class TestHelpers
     {
-        public static void ClearAndCreateDirectory(string path)
+        public static void LoadToStorage(string realPath, string storageFileName, IStorage storage)
         {
-            if (Directory.Exists(path))
+            using (var sr = new StreamReader(realPath))
             {
-                Directory.Delete(path, recursive: true);
+                storage.Store(storageFileName, sr.ReadToEnd());
             }
-
-            Directory.CreateDirectory(path);
         }
     }
 }

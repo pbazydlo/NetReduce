@@ -52,7 +52,7 @@ namespace NetReduce.Core
             }
         }
 
-        public IEnumerable<string> GetKeys(string testDirectory)
+        public IEnumerable<string> GetKeys()
         {
             var result = new List<string>();
             var regex = new Regex(string.Format("^" + Core.Properties.Settings.Default.MapOutputFileName + "$", @"(?<Key>.+)", "[0-9]+")); //[^<>:""\\/|\?\*]

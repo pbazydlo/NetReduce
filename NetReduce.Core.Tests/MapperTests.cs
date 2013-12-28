@@ -55,7 +55,8 @@
             var fileContent = "whatever am i";
             storage.Store(filePath, fileContent);
 
-            var mapProvider = Loader.Load<IMapProvider>(@"..\..\SampleMapper.cs");
+            TestHelpers.LoadToStorage(@"..\..\SampleMapper.cs", "SampleMapper.cs", this.storage);
+            var mapProvider = Loader.Load<IMapProvider>("SampleMapper.cs",this.storage);
             var mapper = new Mapper(filePath, mapProvider.Map, this.storage);
 
             var mapResult = mapper.PerformMap();

@@ -68,7 +68,8 @@
         {
             var keys = CreateTwoKeyFileSet(this.storage);
 
-            var reduceProvider = Loader.Load<IReduceProvider>(@"..\..\SampleReducer.cs");
+            TestHelpers.LoadToStorage(@"..\..\SampleReducer.cs", "SampleReducer.cs", this.storage);
+            var reduceProvider = Loader.Load<IReduceProvider>("SampleReducer.cs", this.storage);
             var reducer = new Reducer(keys[0], reduceProvider.Reduce, this.storage);
 
             var res = reducer.PerformReduce();

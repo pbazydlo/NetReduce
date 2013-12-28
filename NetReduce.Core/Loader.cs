@@ -6,13 +6,10 @@
 
     public class Loader
     {
-        public static T Load<T>(string filePath) 
+        public static T Load<T>(string fileName, IStorage storage) 
             where T : class
         {
-            using (var sr = new StreamReader(filePath))
-            {
-                return CSScript.Evaluator.LoadCode<T>(sr.ReadToEnd());
-            }
+                return CSScript.Evaluator.LoadCode<T>(storage.Read(fileName));
         }
     }
 }
