@@ -12,7 +12,7 @@
         private IStorage storage;
         private List<WorkerType> workers;
 
-        public Coordinator(IStorage storage) 
+        public Coordinator(IStorage storage)
         {
             this.storage = storage;
         }
@@ -32,41 +32,23 @@
             int index = 0;
             foreach (var file in filesToProcess)
             {
-                this.workers[index++].Map(file, mapFuncFileName);
-                if (index >= maxMapperNo)
-                {
-                    for (int j = 0; j < maxMapperNo; j++)
-                    {
-                        this.workers[j].Join();
-                    }
-
-                    index = 0;
-                }
+                this.workers[(index++) % maxMapperNo].Map(file, mapFuncFileName);
             }
 
-            for (int i = 0; i < noOfWorkers; i++)
+            for (var i = 0; i < noOfWorkers; i++)
             {
                 this.workers[i].Join();
             }
-            
+
             var keys = this.GetKeys().ToList();
 
             index = 0;
             foreach (var key in keys)
             {
-                this.workers[index++].Reduce(key, reduceFuncFileName);
-                if (index >= maxReducerNo)
-                {
-                    for (int j = 0; j < maxReducerNo; j++)
-                    {
-                        this.workers[j].Join();
-                    }
-
-                    index = 0;
-                }
+                this.workers[(index++) % maxReducerNo].Reduce(key, reduceFuncFileName);
             }
 
-            for (int i = 0; i < noOfWorkers; i++)
+            for (var i = 0; i < noOfWorkers; i++)
             {
                 this.workers[i].Join();
             }
