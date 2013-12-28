@@ -18,7 +18,10 @@ namespace NetReduce.Core.Tests
 
         public string Read(string fileName)
         {
-            return this.storage[fileName];
+            lock (storeLock)
+            {
+                return this.storage[fileName];
+            }
         }
 
         public string[] ReadLines(string fileName)

@@ -6,13 +6,20 @@
     {
         public string Reduce(string key, IEnumerable<string> values)
         {
-            int result = 0;
-            foreach (var value in values)
+            try
             {
-                result += int.Parse(value);
-            }
+                int result = 0;
+                foreach (var value in values)
+                {
+                    result += int.Parse(value);
+                }
 
-            return result.ToString();
+                return result.ToString();
+            }
+            catch (System.Exception ex)
+            {
+                return ex.Message;
+            }
         }
     }
 }

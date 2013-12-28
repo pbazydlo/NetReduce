@@ -11,45 +11,68 @@ namespace NetReduce.Core
     using System.IO;
     using System.Text.RegularExpressions;
 
-    public class Coordinator
+    public class Coordinator<WorkerType> where WorkerType : IWorker, new()
     {
-        private Action map;
-        private Action reduce;
         private IStorage storage;
+        private List<WorkerType> workers;
 
-        public Coordinator(Action map, Action reduce, IStorage storage)
+        public Coordinator(IStorage storage) 
         {
-            this.map = map;
-            this.reduce = reduce;
             this.storage = storage;
         }
 
-        public void Start(int maxMapperNo, int maxReducerNo)
+        public void Start(int maxMapperNo, int maxReducerNo, string mapFuncFileName, string reduceFuncFileName, IEnumerable<string> filesToProcess)
         {
-            List<Thread> threadsRunning = new List<Thread>();
-            for (int i = 0; i < maxMapperNo; i++)
+            this.workers = new List<WorkerType>();
+            var noOfWorkers = Math.Max(maxMapperNo, maxReducerNo);
+            for (int i = 0; i < noOfWorkers; i++)
             {
-                var mapper = new Thread(() => this.map.Invoke());
-                mapper.Start();
-                threadsRunning.Add(mapper);
+                var worker = new WorkerType();
+                worker.Storage = this.storage;
+                worker.Id = i;
+                this.workers.Add(worker);
             }
 
-            foreach (var mapper in threadsRunning)
+            int index = 0;
+            foreach (var file in filesToProcess)
             {
-                mapper.Join();
+                this.workers[index++].Map(file, mapFuncFileName);
+                if (index >= maxMapperNo)
+                {
+                    for (int j = 0; j < maxMapperNo; j++)
+                    {
+                        this.workers[j].Join();
+                    }
+
+                    index = 0;
+                }
             }
 
-            threadsRunning.Clear();
-            for (int i = 0; i < maxReducerNo; i++)
+            for (int i = 0; i < noOfWorkers; i++)
             {
-                var reducer = new Thread(() => { reduce.Invoke(); });
-                reducer.Start();
-                threadsRunning.Add(reducer);
+                this.workers[i].Join();
+            }
+            
+            var keys = this.GetKeys().ToList();
+
+            index = 0;
+            foreach (var key in keys)
+            {
+                this.workers[index++].Reduce(key, reduceFuncFileName);
+                if (index >= maxReducerNo)
+                {
+                    for (int j = 0; j < maxReducerNo; j++)
+                    {
+                        this.workers[j].Join();
+                    }
+
+                    index = 0;
+                }
             }
 
-            foreach (var reducer in threadsRunning)
+            for (int i = 0; i < noOfWorkers; i++)
             {
-                reducer.Join();
+                this.workers[i].Join();
             }
         }
 

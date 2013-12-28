@@ -7,15 +7,22 @@
 
     public class ThreadWorker : IWorker
     {
-        private IStorage storage;
         private Thread workerThread;
-        private int id;
+
+        public ThreadWorker()
+        {
+            this.workerThread = new Thread(() => { });
+        }
 
         public ThreadWorker(IStorage storage, int id)
+            : this()
         {
-            this.storage = storage;
-            this.id = id;
+            this.Storage = storage;
+            this.Id = id;
         }
+
+        public IStorage Storage { get; set; }
+        public int Id { get; set; }
 
         public void Map(string inputFileName, string mapCodeFileName)
         {
@@ -23,13 +30,13 @@
 
             this.workerThread = new Thread(() =>
             {
-                var mapProvider = Loader.Load<IMapProvider>(mapCodeFileName, this.storage);
-                var mapper = new Mapper(inputFileName, mapProvider.Map, this.storage);
+                var mapProvider = Loader.Load<IMapProvider>(mapCodeFileName, this.Storage);
+                var mapper = new Mapper(inputFileName, mapProvider.Map, this.Storage);
                 var mapResult = mapper.PerformMap();
                 foreach (var res in mapResult)
                 {
-                    this.storage.Store(
-                           string.Format(Properties.Settings.Default.MapOutputFileName, res.Key, this.id, Guid.NewGuid()), res.Value);
+                    this.Storage.Store(
+                           string.Format(Properties.Settings.Default.MapOutputFileName, res.Key, this.Id, Guid.NewGuid()), res.Value);
                 }
             });
 
@@ -42,11 +49,11 @@
 
             this.workerThread = new Thread(() =>
             {
-                var reduceProvider = Loader.Load<IReduceProvider>(reduceCodeFileName, this.storage);
-                var reducer = new Reducer(key, reduceProvider.Reduce, this.storage);
+                var reduceProvider = Loader.Load<IReduceProvider>(reduceCodeFileName, this.Storage);
+                var reducer = new Reducer(key, reduceProvider.Reduce, this.Storage);
                 var reduceResult = reducer.PerformReduce();
-                    this.storage.Store(
-                           string.Format(Properties.Settings.Default.ReduceOutputFileName, key, this.id, Guid.NewGuid()), reduceResult);
+                this.Storage.Store(
+                       string.Format(Properties.Settings.Default.ReduceOutputFileName, key, this.Id, Guid.NewGuid()), reduceResult);
             });
 
             this.workerThread.Start();
@@ -59,7 +66,7 @@
 
         private void EnsureWorkerThreadIsFree()
         {
-            if (this.workerThread != null && this.workerThread.IsAlive)
+            if (this.workerThread.IsAlive)
             {
                 throw new WorkerBusyException();
             }
