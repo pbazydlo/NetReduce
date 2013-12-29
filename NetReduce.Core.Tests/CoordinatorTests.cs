@@ -60,24 +60,24 @@
         [TestMethod]
         public void CoordinatorWorksOnFileSystemStorage()
         {
-            this.storage = new FileSystemStorage(@"c:\temp\netreduce", eraseContents: true);
+            var storage = new FileSystemStorage(@"c:\temp\netreduce", eraseContents: true) as IStorage;
 
-            this.storage.Store("f1", "ala ma kota");
-            this.storage.Store("f2", "kota alama");
-            this.storage.Store("f3", "dolan ma");
-            var filesToRead = this.storage.ListFiles();
-            TestHelpers.LoadToStorage(@"..\..\SampleMapper.cs", "SampleMapper.cs", this.storage);
-            TestHelpers.LoadToStorage(@"..\..\SampleReducer.cs", "SampleReducer.cs", this.storage);
-            var coordinator = new Coordinator<ThreadWorker>(this.storage);
+            storage.Store("f1", "ala ma kota");
+            storage.Store("f2", "kota alama");
+            storage.Store("f3", "dolan ma");
+            var filesToRead = storage.ListFiles();
+            TestHelpers.LoadToStorage(@"..\..\SampleMapper.cs", "SampleMapper.cs", storage);
+            TestHelpers.LoadToStorage(@"..\..\SampleReducer.cs", "SampleReducer.cs", storage);
+            var coordinator = new Coordinator<ThreadWorker>(storage);
 
             coordinator.Start(2, 2, "SampleMapper.cs", "SampleReducer.cs", filesToRead);
 
             string result = string.Empty;
-            foreach (var file in this.storage.ListFiles())
+            foreach (var file in storage.ListFiles())
             {
                 if (file.Contains("REDUCE") && file.Contains("kota"))
                 {
-                    result = this.storage.Read(file);
+                    result = storage.Read(file);
                 }
             }
 
