@@ -73,6 +73,8 @@
     <Compile Include="SampleReducer.cs" />
     <Compile Include="TestHelpers.cs" />
     <Compile Include="ThreadWorkerTests.cs" />
+    <Compile Include="InMemoryStorageTests.cs" />
+    <Compile Include="FileSystemStorageTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
