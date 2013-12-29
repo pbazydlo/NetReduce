@@ -28,11 +28,7 @@
 
             if (eraseContents)
             {
-                var files = Directory.GetFiles(baseDirectory);
-                foreach (var file in files)
-                {
-                    File.Delete(file);
-                }
+                this.Clean();
             }
         }
 
@@ -78,6 +74,15 @@
             if (fileName.Any(c => Path.GetInvalidFileNameChars().Contains(c)))
             {
                 throw new IllegalCharactersInFileNameException();
+            }
+        }
+
+        public void Clean()
+        {
+            var files = Directory.GetFiles(this.baseDirectory);
+            foreach (var file in files)
+            {
+                File.Delete(file);
             }
         }
     }

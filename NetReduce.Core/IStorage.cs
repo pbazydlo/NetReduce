@@ -8,5 +8,6 @@
         string Read(string fileName);
         string[] ReadLines(string fileName);
         void Store(string fileName, string value);
+        void Clean();
     }
 }

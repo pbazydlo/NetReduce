@@ -31,14 +31,6 @@
         {
             lock (this.storeLock)
             {
-                /*if (this.storage.ContainsKey(fileName))
-                {
-                    this.storage[fileName] += string.Format("\n{0}", value);
-                }
-                else
-                {
-                    this.storage[fileName] = value;
-                }*/
                 while (!this.storage.TryAdd(fileName, value)) 
                 {
                     if (this.storage.ContainsKey(fileName))
@@ -47,6 +39,11 @@
                     }
                 }
             }
+        }
+
+        public void Clean()
+        {
+            this.storage.Clear();
         }
     }
 }
