@@ -52,6 +52,8 @@
             {
                 this.workers[i].Join();
             }
+
+            Loader.CleanAssemblyCache();
         }
 
         public IEnumerable<string> GetKeys()

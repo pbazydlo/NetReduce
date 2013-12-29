@@ -14,7 +14,14 @@
         {
             if (!Directory.Exists(baseDirectory))
             {
-                throw new DirectoryNotFoundException();
+                try
+                {
+                    Directory.CreateDirectory(baseDirectory);
+                }
+                catch 
+                {
+                    throw new DirectoryNotFoundException();
+                }
             }
 
             this.baseDirectory = baseDirectory;

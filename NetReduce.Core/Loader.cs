@@ -24,5 +24,10 @@
 
             return null;
         }
+
+        public static void CleanAssemblyCache()
+        {
+            CSScript.Evaluator.Reset();
+        }
     }
 }
