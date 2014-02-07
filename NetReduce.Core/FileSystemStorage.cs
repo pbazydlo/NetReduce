@@ -98,7 +98,7 @@
                 File.Delete(file);
             }
 
-            if (this.baseDirectory.StartsWith(@"c:\temp"))
+            if (this.baseDirectory.StartsWith(@"c:\temp") && !this.baseDirectory.Contains(".."))
             {
                 var directories = Directory.GetDirectories(this.baseDirectory);
                 foreach (var directory in directories)
