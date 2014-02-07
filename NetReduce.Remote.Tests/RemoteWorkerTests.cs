@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Threading;
 using Shouldly;
+using NetReduce.Core;
 
 namespace NetReduce.Remote.Tests
 {
@@ -51,13 +52,16 @@ namespace NetReduce.Remote.Tests
         [TestMethod]
         public void RemoteWorkerIsAbleToPerformNonBlockingMap()
         {
-            var uri = new Uri("file:///ala");
-            var mapFunc = new Uri("file:///makota");
+            var uri = new Uri("file:///ala.txt");
+            var mapFunc = new Uri("file:///makota.cs");
             var mapLock = new object();
             var uriProviderMock = GetSimpleUriProvider();
+            var storageMock = new Mock<IStorage>(MockBehavior.Strict);
+            storageMock.Setup(s => s.GetFileName(It.IsAny<Uri>())).Returns(string.Empty);
+            storageMock.Setup(s => s.Read(It.IsAny<Uri>())).Returns(string.Empty);
             var remoteWorkerServiceMock = new Mock<IRemoteWorkerService>(MockBehavior.Strict);
             remoteWorkerServiceMock.Setup(s => s.Init(It.IsAny<int>()));
-            remoteWorkerServiceMock.Setup(s => s.Map(uri, mapFunc)).Callback(() =>
+            remoteWorkerServiceMock.Setup(s => s.Map(It.IsAny<Uri>(), It.IsAny<Uri>())).Callback(() =>
                 {
                     lock (mapLock)
                     {
@@ -65,10 +69,15 @@ namespace NetReduce.Remote.Tests
                     }
                 });
 
+            remoteWorkerServiceMock.Setup(s => s.PushFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new Uri("file:///a.txt"));
             MockerForRemoteWorkerService.Mock = remoteWorkerServiceMock.Object;
             RemoteWorker<MockerForRemoteWorkerService>.UriProvider = uriProviderMock.Object;
             RemoteWorker<MockerForRemoteWorkerService>.NonBlockingMapAndReduce = true;
-            var worker = new RemoteWorker<MockerForRemoteWorkerService>();
+            var worker = new RemoteWorker<MockerForRemoteWorkerService>()
+            {
+                Storage=storageMock.Object
+            };
 
             worker.Map(uri, mapFunc);
             Thread.Sleep(10);
