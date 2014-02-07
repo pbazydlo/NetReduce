@@ -28,7 +28,6 @@ namespace NetReduce.Remote.Tests
                 });
 
             MockerForRemoteWorkerService.Mock = remoteServiceMock.Object;
-            RemoteWorker<MockerForRemoteWorkerService>.UriProvider = uriProviderMock.Object;
             var worker = new RemoteWorker<MockerForRemoteWorkerService>();
 
             var joinThread = new Thread(() =>
@@ -72,7 +71,6 @@ namespace NetReduce.Remote.Tests
             remoteWorkerServiceMock.Setup(s => s.PushFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new Uri("file:///a.txt"));
             MockerForRemoteWorkerService.Mock = remoteWorkerServiceMock.Object;
-            RemoteWorker<MockerForRemoteWorkerService>.UriProvider = uriProviderMock.Object;
             RemoteWorker<MockerForRemoteWorkerService>.NonBlockingMapAndReduce = true;
             var worker = new RemoteWorker<MockerForRemoteWorkerService>()
             {

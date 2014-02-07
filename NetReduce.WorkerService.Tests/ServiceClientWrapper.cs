@@ -7,13 +7,21 @@ using System.Threading.Tasks;
 
 namespace NetReduce.WorkerService.Tests
 {
+    using System.ServiceModel;
+
     // TODO: how to handle disposing of real service client?
     public class ServiceClientWrapper : IRemoteWorkerService
     {
+        public static IUriProvider UriProvider { get; set; }
+
         public ServiceClientWrapper()
         {
-            this.client = new WSClient.RemoteWorkerServiceClient();
+            this.EndpointUri = UriProvider.GetNextUri();
+            var binding = new BasicHttpBinding("BasicHttpBinding_IRemoteWorkerService");
+            this.client = new WSClient.RemoteWorkerServiceClient(binding, new EndpointAddress(this.EndpointUri));
         }
+
+        public Uri EndpointUri { get; private set; }
 
         public virtual void Init(int workerId)
         {

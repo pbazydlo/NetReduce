@@ -9,5 +9,6 @@ namespace NetReduce.Remote
     public interface IUriProvider
     {
         Uri GetNextUri();
+        List<Uri> Uris { get; }
     }
 }

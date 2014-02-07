@@ -41,7 +41,12 @@ namespace NetReduce.WorkerService.Tests
             this.storage.Store(fileName, fileContent);
             TestHelpers.LoadToStorage(@"..\..\..\NetReduce.Core.Tests\SampleMapper.cs", mapperCodeFileName, this.storage);
 
+            IUriProvider uriProvider = new UriProvider();
+            uriProvider.Uris.Add(new Uri("http://localhost:28756/RemoteWorkerService.svc"));
+            ServiceClientWrapper.UriProvider = uriProvider;
+
             var worker = new RemoteWorker<ServiceClientWrapper>();
+            worker.Storage = this.storage;
 
             worker.Map(fileName, mapperCodeFileName);
             worker.Join();

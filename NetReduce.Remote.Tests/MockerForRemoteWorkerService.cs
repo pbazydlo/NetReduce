@@ -39,5 +39,7 @@ namespace NetReduce.Remote.Tests
         {
             return Mock.PushFile(workerId, fileName, content);
         }
+
+        public Uri EndpointUri { get; private set; }
     }
 }

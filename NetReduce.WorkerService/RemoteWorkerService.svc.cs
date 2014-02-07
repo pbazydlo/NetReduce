@@ -77,7 +77,12 @@ namespace NetReduce.WorkerService
 
         public Uri PushFile(int workerId, string fileName, string content)
         {
-            throw new NotImplementedException();
+            var worker = GetWorker(workerId);
+            worker.Storage.Store(fileName, content);
+            this.EndpointUri = WebOperationContext.Current.IncomingRequest.UriTemplateMatch.RequestUri;
+            return new Uri(string.Format("{0}?workerId={1}&fileName={2}", this.EndpointUri, workerId, fileName));
         }
+
+        public Uri EndpointUri { get; private set; }
     }
 }

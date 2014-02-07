@@ -44,6 +44,7 @@
     <Compile Include="IUriProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteWorker.cs" />
+    <Compile Include="UriProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetReduce.Core\NetReduce.Core.csproj">

@@ -9,12 +9,10 @@
     public class RemoteWorker<T> : IWorker where T : IRemoteWorkerService, new()
     {
         public static bool NonBlockingMapAndReduce { get; set; }
-        public static IUriProvider UriProvider { get; set; }
-
+        
         public RemoteWorker()
         {
             this.nonBlockingMapAndReduce = NonBlockingMapAndReduce;
-            this.EndpointUri = UriProvider.GetNextUri();
 
             // TODO: Uri will be probably required for creating remoteWorkerService
             // or we could move whole endpoint uri management to IRemoteWorkerService
@@ -47,7 +45,7 @@
 
             // TODO: Transfer intermediate results
 
-            var uri = new Uri(string.Format("{0}?workerId={1}&key={2}", this.EndpointUri, this.Id, key));
+            var uri = new Uri(string.Format("{0}?workerId={1}&key={2}", this.remoteWorkerService.EndpointUri, this.Id, key));
 
             if (this.nonBlockingMapAndReduce)
             {
@@ -97,8 +95,6 @@
         private bool nonBlockingMapAndReduce { get; set; }
 
         private Thread joinThread;
-
-        public Uri EndpointUri { get; private set; }
 
         private void IssueRemoteMap(Uri fileUri, Uri mapCodeFileUri)
         {

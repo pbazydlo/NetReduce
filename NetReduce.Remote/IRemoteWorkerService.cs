@@ -37,5 +37,7 @@
 
         [OperationContract]
         Uri PushFile(int workerId, string fileName, string content);
+
+        Uri EndpointUri { get; }
     }
 }
