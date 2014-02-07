@@ -30,7 +30,6 @@
         public void Map(string inputFileName, string mapCodeFileName)
         {
             this.taskQueue.Enqueue(new Tuple<string, string>(inputFileName, mapCodeFileName));
-
             if (this.workerThread.IsAlive)
             {
                 return;
@@ -38,24 +37,7 @@
 
             this.workerThread = new Thread(() =>
             {
-                while (this.taskQueue.Count > 0)
-                {
-                    Tuple<string, string> task;
-                    if (!this.taskQueue.TryDequeue(out task))
-                    {
-                        continue;
-                    }
-
-                    var mapProvider = Loader.Load<IMapProvider>(task.Item2, this.Storage);
-                    var mapper = new Mapper(task.Item1, mapProvider.Map, this.Storage);
-                    var mapResult = mapper.PerformMap();
-                    foreach (var res in mapResult)
-                    {
-                        this.Storage.Store(
-                            string.Format(Properties.Settings.Default.MapOutputFileName, res.Key, this.Id, Guid.NewGuid()),
-                            res.Value);
-                    }
-                }
+                PerformMap();
             });
 
             this.workerThread.Start();
@@ -64,7 +46,6 @@
         public void Reduce(string key, string reduceCodeFileName)
         {
             this.taskQueue.Enqueue(new Tuple<string, string>(key, reduceCodeFileName));
-
             if (this.workerThread.IsAlive) 
             {
                 return;
@@ -72,21 +53,7 @@
 
             this.workerThread = new Thread(() =>
             {
-                while (this.taskQueue.Count > 0)
-                {
-                    Tuple<string, string> task;
-                    if (!this.taskQueue.TryDequeue(out task))
-                    {
-                        continue;
-                    }
-
-                    var reduceProvider = Loader.Load<IReduceProvider>(task.Item2, this.Storage);
-                    var reducer = new Reducer(task.Item1, reduceProvider.Reduce, this.Storage);
-                    var reduceResult = reducer.PerformReduce();
-                    this.Storage.Store(
-                        string.Format(Properties.Settings.Default.ReduceOutputFileName, task.Item1, this.Id, Guid.NewGuid()),
-                        reduceResult);
-                }
+                PerformReduce();
             });
 
             this.workerThread.Start();
@@ -102,6 +69,47 @@
             if (this.workerThread.IsAlive)
             {
                 throw new WorkerBusyException();
+            }
+        }
+
+        private void PerformMap()
+        {
+            while (this.taskQueue.Count > 0)
+            {
+                Tuple<string, string> task;
+                if (!this.taskQueue.TryDequeue(out task))
+                {
+                    continue;
+                }
+
+                var mapProvider = Loader.Load<IMapProvider>(task.Item2, this.Storage);
+                var mapper = new Mapper(task.Item1, mapProvider.Map, this.Storage);
+                var mapResult = mapper.PerformMap();
+                foreach (var res in mapResult)
+                {
+                    this.Storage.Store(
+                        string.Format(Properties.Settings.Default.MapOutputFileName, res.Key, this.Id, Guid.NewGuid()),
+                        res.Value);
+                }
+            }
+        }
+
+        private void PerformReduce()
+        {
+            while (this.taskQueue.Count > 0)
+            {
+                Tuple<string, string> task;
+                if (!this.taskQueue.TryDequeue(out task))
+                {
+                    continue;
+                }
+
+                var reduceProvider = Loader.Load<IReduceProvider>(task.Item2, this.Storage);
+                var reducer = new Reducer(task.Item1, reduceProvider.Reduce, this.Storage);
+                var reduceResult = reducer.PerformReduce();
+                this.Storage.Store(
+                    string.Format(Properties.Settings.Default.ReduceOutputFileName, task.Item1, this.Id, Guid.NewGuid()),
+                    reduceResult);
             }
         }
     }

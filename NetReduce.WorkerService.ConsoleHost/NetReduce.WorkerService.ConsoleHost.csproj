@@ -1,18 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C1BDE385-A99F-4F4B-A029-30BFAF58E85C}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{C42B7D5F-8198-47D5-8636-3C87774DBCA9}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetReduce</RootNamespace>
-    <AssemblyName>NetReduce</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <RootNamespace>NetReduce.WorkerService.ConsoleHost</RootNamespace>
+    <AssemblyName>NetReduce.WorkerService.ConsoleHost</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -39,9 +42,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IMapProvider.cs" />
-    <Compile Include="IReduceProvider.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetReduce.Core.Tests\NetReduce.Core.Tests.csproj">
+      <Project>{98c28953-e984-480a-9342-dcf440f85573}</Project>
+      <Name>NetReduce.Core.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetReduce.Core\NetReduce.Core.csproj">
+      <Project>{d4a1828a-914b-4afc-b540-9a267927fee1}</Project>
+      <Name>NetReduce.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetReduce.Remote\NetReduce.Remote.csproj">
+      <Project>{e29e8c31-6ea1-4920-8ba1-9f954bffd64f}</Project>
+      <Name>NetReduce.Remote</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetReduce.WorkerService\NetReduce.WorkerService.csproj">
+      <Project>{1f03a337-7cfa-467e-aa2e-73bc8d92ab30}</Project>
+      <Name>NetReduce.WorkerService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetReduce\NetReduce.csproj">
+      <Project>{c1bde385-a99f-4f4b-a029-30bfaf58e85c}</Project>
+      <Name>NetReduce</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
