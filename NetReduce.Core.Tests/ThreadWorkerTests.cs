@@ -1,5 +1,6 @@
 ﻿namespace NetReduce.Core.Tests
 {
+    using System;
     using System.Linq;
     using System.Text.RegularExpressions;
 
@@ -23,11 +24,11 @@
         [TestMethod]
         public void ThreadWorkerStoresMapResults()
         {
-            var fileName = "file1.txt";
+            var fileName = new Uri("file:///file1.txt");
             var fileContent = "whatever am i i";
-            var mapperCodeFileName = "SampleMapper.cs";
+            var mapperCodeFileName = new Uri("file:///SampleMapper.cs");
 
-            storage.Store(fileName, fileContent);
+            storage.Store(storage.GetFileName(fileName), fileContent);
             TestHelpers.LoadToStorage(@"..\..\SampleMapper.cs", mapperCodeFileName, this.storage);
             var worker = new ThreadWorker(this.storage, 1);
 
@@ -42,7 +43,7 @@
         [TestMethod]
         public void ThreadWorkerStoresReduceResults()
         {
-            var reducerCodeFileName = "SampleReducer.cs";
+            var reducerCodeFileName = new Uri("file:///SampleReducer.cs");
 
             var keys = ReducerTests.CreateTwoKeyFileSet(this.storage);
             TestHelpers.LoadToStorage(@"..\..\SampleReducer.cs", reducerCodeFileName, this.storage);
@@ -51,11 +52,12 @@
             worker.Reduce("k1", reducerCodeFileName);
             worker.Join();
 
-            var result = default (string);
+            var result = default(string);
             var regex = new Regex(string.Format("^" + Core.Properties.Settings.Default.ReduceOutputFileName + "$", @"(?<Key>.+)", "[0-9]+", RegexExtensions.GuidRegexString));
-            var fileNames = this.storage.ListFiles();
-            foreach (var fileName in fileNames)
+            var uris = this.storage.ListFiles();
+            foreach (var uri in uris)
             {
+                var fileName = this.storage.GetFileName(uri);
                 if (regex.IsMatch(fileName))
                 {
                     var key = regex.Match(fileName).Groups["Key"].Value;

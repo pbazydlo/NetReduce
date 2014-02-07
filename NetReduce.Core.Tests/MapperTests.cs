@@ -1,5 +1,6 @@
 ﻿namespace NetReduce.Core.Tests
 {
+    using System;
     using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Shouldly;
@@ -55,7 +56,7 @@
             var fileContent = "whatever am i";
             storage.Store(filePath, fileContent);
 
-            TestHelpers.LoadToStorage(@"..\..\SampleMapper.cs", "SampleMapper.cs", this.storage);
+            TestHelpers.LoadToStorage(@"..\..\SampleMapper.cs", new Uri("file:///SampleMapper.cs"), this.storage);
             var mapProvider = Loader.Load<IMapProvider>("SampleMapper.cs",this.storage);
             var mapper = new Mapper(filePath, mapProvider.Map, this.storage);
 

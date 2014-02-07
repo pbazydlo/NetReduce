@@ -15,24 +15,34 @@ namespace NetReduce.WorkerService.Tests
             this.client = new WSClient.RemoteWorkerServiceClient();
         }
 
-        public void Init(int workerId)
+        public virtual void Init(int workerId)
         {
-            client.Init(workerId);
+            this.client.Init(workerId);
         }
 
-        public void Map(int workerId, string uri, string mapFuncUri)
+        public virtual void Map(Uri uri, Uri mapFuncUri)
         {
-            client.Map(workerId, uri, mapFuncUri);
+            this.client.Map(uri, mapFuncUri);
         }
 
-        public void Reduce(int workerId, string uri, string reduceFuncUri)
+        public virtual void Reduce(Uri uri, Uri reduceFuncUri)
         {
-            client.Reduce(workerId, uri, reduceFuncUri);
+            this.client.Reduce(uri, reduceFuncUri);
         }
 
-        public bool TryJoin(int workerId, string callbackUri)
+        public virtual string[] TryJoin(int workerId, Uri callbackUri)
         {
-            return client.TryJoin(workerId, callbackUri);
+            return this.client.TryJoin(workerId, callbackUri);
+        }
+
+        public virtual Uri[] TransferFiles(int workerId, Dictionary<string, Uri> keysAndUris)
+        {
+            return this.client.TransferFiles(workerId, keysAndUris);
+        }
+
+        public virtual Uri PushFile(int workerId, string fileName, string content)
+        {
+            return this.client.PushFile(workerId, fileName, content);
         }
 
         private WSClient.RemoteWorkerServiceClient client;

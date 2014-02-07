@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Concurrent;
     using System.Threading;
+    using System.Web;
 
     using NetReduce.Core.Exceptions;
 
@@ -10,6 +11,12 @@
     {
         private Thread workerThread;
         private ConcurrentQueue<Tuple<string, string>> taskQueue;
+
+        private static string GetFileName(Uri uri)
+        {
+            var parameters = HttpUtility.ParseQueryString(uri.Query);
+            return parameters["fileName"];
+        }
 
         public ThreadWorker()
         {
@@ -27,9 +34,9 @@
         public IStorage Storage { get; set; }
         public int Id { get; set; }
 
-        public void Map(string inputFileName, string mapCodeFileName)
+        public void Map(Uri inputFileName, Uri mapCodeFileName)
         {
-            this.taskQueue.Enqueue(new Tuple<string, string>(inputFileName, mapCodeFileName));
+            this.taskQueue.Enqueue(new Tuple<string, string>(GetFileName(inputFileName), GetFileName(mapCodeFileName)));
             if (this.workerThread.IsAlive)
             {
                 return;
@@ -43,10 +50,10 @@
             this.workerThread.Start();
         }
 
-        public void Reduce(string key, string reduceCodeFileName)
+        public void Reduce(string key, Uri reduceCodeFileName)
         {
-            this.taskQueue.Enqueue(new Tuple<string, string>(key, reduceCodeFileName));
-            if (this.workerThread.IsAlive) 
+            this.taskQueue.Enqueue(new Tuple<string, string>(key, GetFileName(reduceCodeFileName)));
+            if (this.workerThread.IsAlive)
             {
                 return;
             }

@@ -26,11 +26,14 @@
 
         public void Map(Uri inputFileName, Uri mapCodeFileName)
         {
+            var remoteInputFileName = this.PushFile(inputFileName);
+            var remoteMapCodeFileName = this.PushFile(mapCodeFileName);
+
             if (this.nonBlockingMapAndReduce)
             {
                 new Thread(() =>
                 {
-                    this.IssueRemoteMap(inputFileName, mapCodeFileName);
+                    this.IssueRemoteMap(remoteInputFileName, remoteMapCodeFileName);
                 }).Start();
                 return;
             }
@@ -40,13 +43,17 @@
 
         public void Reduce(string key, Uri reduceCodeFileName)
         {
+            var remoteReduceCodeFileName = this.PushFile(reduceCodeFileName);
+
+            // TODO: Transfer intermediate results
+
             var uri = new Uri(string.Format("{0}?workerId={1}&key={2}", this.EndpointUri, this.Id, key));
 
             if (this.nonBlockingMapAndReduce)
             {
                 new Thread(() =>
                     {
-                        this.IssueRemoteReduce(uri, reduceCodeFileName);
+                        this.IssueRemoteReduce(uri, remoteReduceCodeFileName);
                     }).Start();
                 return;
             }
@@ -101,6 +108,11 @@
         private void IssueRemoteReduce(Uri fileUri, Uri reduceCodeFileUri)
         {
             this.remoteWorkerService.Reduce(fileUri, reduceCodeFileUri);
+        }
+
+        private Uri PushFile(Uri uri)
+        {
+            return this.remoteWorkerService.PushFile(this.Id, this.Storage.GetFileName(uri), this.Storage.Read(uri));
         }
     }
 }

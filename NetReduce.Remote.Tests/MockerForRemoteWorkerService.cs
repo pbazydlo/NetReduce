@@ -15,19 +15,29 @@ namespace NetReduce.Remote.Tests
             Mock.Init(workerId);
         }
 
-        public virtual void Map(int workerId, string uri, string mapFuncUri)
+        public virtual void Map(Uri uri, Uri mapFuncUri)
         {
-            Mock.Map(workerId, uri, mapFuncUri);
+            Mock.Map(uri, mapFuncUri);
         }
 
-        public void Reduce(int workerId, string uri, string reduceFuncUri)
+        public virtual void Reduce(Uri uri, Uri reduceFuncUri)
         {
-            Mock.Reduce(workerId, uri, reduceFuncUri);
+            Mock.Reduce(uri, reduceFuncUri);
         }
 
-        public bool TryJoin(int workerId, string callbackUri)
+        public virtual string[] TryJoin(int workerId, Uri callbackUri)
         {
             return Mock.TryJoin(workerId, callbackUri);
+        }
+
+        public virtual Uri[] TransferFiles(int workerId, Dictionary<string, Uri> keysAndUris)
+        {
+            return Mock.TransferFiles(workerId, keysAndUris);
+        }
+
+        public virtual Uri PushFile(int workerId, string fileName, string content)
+        {
+            return Mock.PushFile(workerId, fileName, content);
         }
     }
 }

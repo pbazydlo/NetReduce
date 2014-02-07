@@ -1,5 +1,6 @@
 ﻿namespace NetReduce.Core
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -18,7 +19,7 @@
                 {
                     Directory.CreateDirectory(baseDirectory);
                 }
-                catch 
+                catch
                 {
                     throw new DirectoryNotFoundException();
                 }
@@ -32,15 +33,20 @@
             }
         }
 
-        public IEnumerable<string> ListFiles()
+        public IEnumerable<Uri> ListFiles()
         {
-            return Directory.GetFiles(this.baseDirectory).Select(Path.GetFileName);
+            return Directory.GetFiles(this.baseDirectory).Select(f => new Uri(string.Format("file:///{0}", Path.GetFileName(f))));
         }
 
         public string Read(string fileName)
         {
             var filePath = this.GetFilePathAndCheckIfExists(fileName);
             return File.ReadAllText(filePath);
+        }
+
+        public string Read(Uri uri)
+        {
+            return this.Read(this.GetFileName(uri));
         }
 
         public string[] ReadLines(string fileName)
@@ -54,6 +60,11 @@
             this.EnsureFileNameIsValid(fileName);
             var filePath = Path.Combine(this.baseDirectory, fileName);
             File.AppendAllText(filePath, value);
+        }
+
+        public void Store(Uri uri, string value)
+        {
+            this.Store(this.GetFileName(uri), value);
         }
 
         private string GetFilePathAndCheckIfExists(string fileName)
@@ -84,6 +95,11 @@
             {
                 File.Delete(file);
             }
+        }
+
+        public string GetFileName(Uri uri)
+        {
+            return uri.Segments.Last();
         }
     }
 }

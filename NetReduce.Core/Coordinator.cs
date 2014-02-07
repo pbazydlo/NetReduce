@@ -17,7 +17,7 @@
             this.storage = storage;
         }
 
-        public void Start(int maxMapperNo, int maxReducerNo, string mapFuncFileName, string reduceFuncFileName, IEnumerable<string> filesToProcess)
+        public void Start(int maxMapperNo, int maxReducerNo, Uri mapFuncFileName, Uri reduceFuncFileName, IEnumerable<Uri> filesToProcess)
         {
             var noOfWorkers = this.InitWorkers(maxMapperNo, maxReducerNo);
             var keys = this.PerformMap(maxMapperNo, mapFuncFileName, filesToProcess, noOfWorkers);
@@ -29,9 +29,10 @@
         {
             var result = new List<string>();
             var regex = new Regex(string.Format("^" + Core.Properties.Settings.Default.MapOutputFileName + "$", @"(?<Key>.+)", "[0-9]+", RegexExtensions.GuidRegexString));
-            var fileNames = this.storage.ListFiles();
-            foreach (var fileName in fileNames)
+            var uris = this.storage.ListFiles();
+            foreach (var uri in uris)
             {
+                var fileName = this.storage.GetFileName(uri);
                 if (regex.IsMatch(fileName))
                 {
                     var key = regex.Match(fileName).Groups["Key"].Value;
@@ -64,12 +65,13 @@
             Loader.CleanAssemblyCache();
         }
 
-        private void PerformReduce(int maxReducerNo, string reduceFuncFileName, int noOfWorkers, List<string> keys)
+        private void PerformReduce(int maxReducerNo, Uri reduceFuncFileName, int noOfWorkers, List<string> keys)
         {
             var index = 0;
             foreach (var key in keys)
             {
-                this.workers[(index++) % maxReducerNo].Reduce(key, reduceFuncFileName);
+                var worker = this.workers[(index++) % maxReducerNo];
+                worker.Reduce(key, reduceFuncFileName);
             }
 
             for (var i = 0; i < noOfWorkers; i++)
@@ -78,12 +80,13 @@
             }
         }
 
-        private List<string> PerformMap(int maxMapperNo, string mapFuncFileName, IEnumerable<string> filesToProcess, int noOfWorkers)
+        private List<string> PerformMap(int maxMapperNo, Uri mapFuncFileName, IEnumerable<Uri> filesToProcess, int noOfWorkers)
         {
             int index = 0;
             foreach (var file in filesToProcess)
             {
-                this.workers[(index++) % maxMapperNo].Map(file, mapFuncFileName);
+                var worker = this.workers[(index++) % maxMapperNo];
+                worker.Map(file, mapFuncFileName);
             }
 
             for (var i = 0; i < noOfWorkers; i++)

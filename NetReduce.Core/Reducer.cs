@@ -33,9 +33,10 @@
         private void Load()
         {
             this.values = new List<string>();
-            var fileNames = this.storage.ListFiles();
-            foreach (var fileName in fileNames)
+            var uris = this.storage.ListFiles();
+            foreach (var uri in uris)
             {
+                var fileName = this.storage.GetFileName(uri);
                 if (this.FileFilter.IsMatch(fileName))
                 {
                     (this.values as List<string>).AddRange(this.storage.ReadLines(fileName));
