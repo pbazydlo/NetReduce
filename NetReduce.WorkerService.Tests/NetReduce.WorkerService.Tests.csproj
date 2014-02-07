@@ -71,11 +71,15 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\System.Uri.datasource" />
     <None Include="Service References\WSClient\RemoteWorkerService.wsdl" />
     <None Include="Service References\WSClient\RemoteWorkerService.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\WSClient\RemoteWorkerService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WSClient\RemoteWorkerService2.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

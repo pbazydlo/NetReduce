@@ -27,23 +27,8 @@
 
         public IEnumerable<string> GetKeys()
         {
-            var result = new List<string>();
-            var regex = new Regex(string.Format("^" + Core.Properties.Settings.Default.MapOutputFileName + "$", @"(?<Key>.+)", "[0-9]+", RegexExtensions.GuidRegexString));
-            var uris = this.storage.ListFiles();
-            foreach (var uri in uris)
-            {
-                var fileName = this.storage.GetFileName(uri);
-                if (regex.IsMatch(fileName))
-                {
-                    var key = regex.Match(fileName).Groups["Key"].Value;
-                    if (!result.Contains(key))
-                    {
-                        result.Add(key);
-                    }
-                }
-            }
-
-            return result;
+            // TODO: it is wrong -> we get keys from join
+            return this.storage.GetKeys();
         }
 
         private int InitWorkers(int maxMapperNo, int maxReducerNo)

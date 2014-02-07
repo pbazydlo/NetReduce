@@ -6,6 +6,8 @@
     using System.Linq;
 
     using NetReduce.Core.Exceptions;
+    using System.Text.RegularExpressions;
+    using NetReduce.Core.Extensions;
 
     public class FileSystemStorage : IStorage
     {
@@ -100,6 +102,28 @@
         public string GetFileName(Uri uri)
         {
             return uri.Segments.Last();
+        }
+
+
+        public IEnumerable<string> GetKeys()
+        {
+            var result = new List<string>();
+            var regex = new Regex(string.Format("^" + Core.Properties.Settings.Default.MapOutputFileName + "$", @"(?<Key>.+)", "[0-9]+", RegexExtensions.GuidRegexString));
+            var uris = this.ListFiles();
+            foreach (var uri in uris)
+            {
+                var fileName = this.GetFileName(uri);
+                if (regex.IsMatch(fileName))
+                {
+                    var key = regex.Match(fileName).Groups["Key"].Value;
+                    if (!result.Contains(key))
+                    {
+                        result.Add(key);
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }

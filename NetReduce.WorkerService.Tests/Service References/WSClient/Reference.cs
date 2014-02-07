@@ -22,22 +22,34 @@ namespace NetReduce.WorkerService.Tests.WSClient {
         System.Threading.Tasks.Task InitAsync(int workerId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRemoteWorkerService/Map", ReplyAction="http://tempuri.org/IRemoteWorkerService/MapResponse")]
-        void Map(int workerId, string uri, string mapFuncUri);
+        void Map(System.Uri uri, System.Uri mapFuncUri);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRemoteWorkerService/Map", ReplyAction="http://tempuri.org/IRemoteWorkerService/MapResponse")]
-        System.Threading.Tasks.Task MapAsync(int workerId, string uri, string mapFuncUri);
+        System.Threading.Tasks.Task MapAsync(System.Uri uri, System.Uri mapFuncUri);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRemoteWorkerService/Reduce", ReplyAction="http://tempuri.org/IRemoteWorkerService/ReduceResponse")]
-        void Reduce(int workerId, string uri, string reduceFuncUri);
+        void Reduce(System.Uri uri, System.Uri reduceFuncUri);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRemoteWorkerService/Reduce", ReplyAction="http://tempuri.org/IRemoteWorkerService/ReduceResponse")]
-        System.Threading.Tasks.Task ReduceAsync(int workerId, string uri, string reduceFuncUri);
+        System.Threading.Tasks.Task ReduceAsync(System.Uri uri, System.Uri reduceFuncUri);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRemoteWorkerService/TryJoin", ReplyAction="http://tempuri.org/IRemoteWorkerService/TryJoinResponse")]
-        bool TryJoin(int workerId, string callbackUri);
+        string[] TryJoin(int workerId, System.Uri callbackUri);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRemoteWorkerService/TryJoin", ReplyAction="http://tempuri.org/IRemoteWorkerService/TryJoinResponse")]
-        System.Threading.Tasks.Task<bool> TryJoinAsync(int workerId, string callbackUri);
+        System.Threading.Tasks.Task<string[]> TryJoinAsync(int workerId, System.Uri callbackUri);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRemoteWorkerService/TransferFiles", ReplyAction="http://tempuri.org/IRemoteWorkerService/TransferFilesResponse")]
+        System.Uri[] TransferFiles(int workerId, System.Collections.Generic.Dictionary<string, System.Uri> keysAndUris);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRemoteWorkerService/TransferFiles", ReplyAction="http://tempuri.org/IRemoteWorkerService/TransferFilesResponse")]
+        System.Threading.Tasks.Task<System.Uri[]> TransferFilesAsync(int workerId, System.Collections.Generic.Dictionary<string, System.Uri> keysAndUris);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRemoteWorkerService/PushFile", ReplyAction="http://tempuri.org/IRemoteWorkerService/PushFileResponse")]
+        System.Uri PushFile(int workerId, string fileName, string content);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRemoteWorkerService/PushFile", ReplyAction="http://tempuri.org/IRemoteWorkerService/PushFileResponse")]
+        System.Threading.Tasks.Task<System.Uri> PushFileAsync(int workerId, string fileName, string content);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -75,28 +87,44 @@ namespace NetReduce.WorkerService.Tests.WSClient {
             return base.Channel.InitAsync(workerId);
         }
         
-        public void Map(int workerId, string uri, string mapFuncUri) {
-            base.Channel.Map(workerId, uri, mapFuncUri);
+        public void Map(System.Uri uri, System.Uri mapFuncUri) {
+            base.Channel.Map(uri, mapFuncUri);
         }
         
-        public System.Threading.Tasks.Task MapAsync(int workerId, string uri, string mapFuncUri) {
-            return base.Channel.MapAsync(workerId, uri, mapFuncUri);
+        public System.Threading.Tasks.Task MapAsync(System.Uri uri, System.Uri mapFuncUri) {
+            return base.Channel.MapAsync(uri, mapFuncUri);
         }
         
-        public void Reduce(int workerId, string uri, string reduceFuncUri) {
-            base.Channel.Reduce(workerId, uri, reduceFuncUri);
+        public void Reduce(System.Uri uri, System.Uri reduceFuncUri) {
+            base.Channel.Reduce(uri, reduceFuncUri);
         }
         
-        public System.Threading.Tasks.Task ReduceAsync(int workerId, string uri, string reduceFuncUri) {
-            return base.Channel.ReduceAsync(workerId, uri, reduceFuncUri);
+        public System.Threading.Tasks.Task ReduceAsync(System.Uri uri, System.Uri reduceFuncUri) {
+            return base.Channel.ReduceAsync(uri, reduceFuncUri);
         }
         
-        public bool TryJoin(int workerId, string callbackUri) {
+        public string[] TryJoin(int workerId, System.Uri callbackUri) {
             return base.Channel.TryJoin(workerId, callbackUri);
         }
         
-        public System.Threading.Tasks.Task<bool> TryJoinAsync(int workerId, string callbackUri) {
+        public System.Threading.Tasks.Task<string[]> TryJoinAsync(int workerId, System.Uri callbackUri) {
             return base.Channel.TryJoinAsync(workerId, callbackUri);
+        }
+        
+        public System.Uri[] TransferFiles(int workerId, System.Collections.Generic.Dictionary<string, System.Uri> keysAndUris) {
+            return base.Channel.TransferFiles(workerId, keysAndUris);
+        }
+        
+        public System.Threading.Tasks.Task<System.Uri[]> TransferFilesAsync(int workerId, System.Collections.Generic.Dictionary<string, System.Uri> keysAndUris) {
+            return base.Channel.TransferFilesAsync(workerId, keysAndUris);
+        }
+        
+        public System.Uri PushFile(int workerId, string fileName, string content) {
+            return base.Channel.PushFile(workerId, fileName, content);
+        }
+        
+        public System.Threading.Tasks.Task<System.Uri> PushFileAsync(int workerId, string fileName, string content) {
+            return base.Channel.PushFileAsync(workerId, fileName, content);
         }
     }
 }

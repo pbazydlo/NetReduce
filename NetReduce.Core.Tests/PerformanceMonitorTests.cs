@@ -8,6 +8,7 @@
     [TestClass]
     public class PerformanceMonitorTests
     {
+        [Ignore]
         [TestMethod]
         public void PerformanceCounterTest()
         {

@@ -1,9 +1,11 @@
 ﻿namespace NetReduce.Core.Tests
 {
+    using NetReduce.Core.Extensions;
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text.RegularExpressions;
 
     internal class InMemoryStorage : IStorage
     {
@@ -60,6 +62,27 @@
         public string GetFileName(Uri uri)
         {
             return uri.Segments.Last();
+        }
+
+        public IEnumerable<string> GetKeys()
+        {
+            var result = new List<string>();
+            var regex = new Regex(string.Format("^" + Core.Properties.Settings.Default.MapOutputFileName + "$", @"(?<Key>.+)", "[0-9]+", RegexExtensions.GuidRegexString));
+            var uris = this.ListFiles();
+            foreach (var uri in uris)
+            {
+                var fileName = this.GetFileName(uri);
+                if (regex.IsMatch(fileName))
+                {
+                    var key = regex.Match(fileName).Groups["Key"].Value;
+                    if (!result.Contains(key))
+                    {
+                        result.Add(key);
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }

@@ -15,14 +15,14 @@ namespace NetReduce.Remote.Tests
             var joinLock = new object();
             var remoteServiceMock = new Mock<IRemoteWorkerService>(MockBehavior.Strict);
             remoteServiceMock.Setup(s => s.Init(It.IsAny<int>()));
-            remoteServiceMock.Setup(s => s.TryJoin(It.IsAny<int>(), It.IsAny<string>())).Returns(() =>
+            remoteServiceMock.Setup(s => s.TryJoin(It.IsAny<int>(), It.IsAny<Uri>())).Returns(() =>
                 {
                     lock (joinLock)
                     {
                         Monitor.Wait(joinLock);
                     }
 
-                    return true;
+                    return new string[] { "a" };
                 });
 
             MockerForRemoteWorkerService.Mock = remoteServiceMock.Object;
@@ -49,12 +49,12 @@ namespace NetReduce.Remote.Tests
         [TestMethod]
         public void RemoteWorkerIsAbleToPerformNonBlockingMap()
         {
-            var uri = "ala";
-            var mapFunc = "makota";
+            var uri = new Uri("file:///ala");
+            var mapFunc = new Uri("file:///makota");
             var mapLock = new object();
             var remoteWorkerServiceMock = new Mock<IRemoteWorkerService>(MockBehavior.Strict);
             remoteWorkerServiceMock.Setup(s => s.Init(It.IsAny<int>()));
-            remoteWorkerServiceMock.Setup(s => s.Map(It.IsAny<int>(), uri, mapFunc)).Callback(() =>
+            remoteWorkerServiceMock.Setup(s => s.Map(uri, mapFunc)).Callback(() =>
                 {
                     lock (mapLock)
                     {

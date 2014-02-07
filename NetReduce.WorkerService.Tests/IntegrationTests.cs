@@ -34,9 +34,9 @@ namespace NetReduce.WorkerService.Tests
         [TestMethod]
         public void RemoteMapWorks()
         {
-            var fileName = "file1.txt";
+            var fileName = new Uri("file:///file1.txt");
             var fileContent = "whatever am i i";
-            var mapperCodeFileName = "SampleMapper.cs";
+            var mapperCodeFileName =  new Uri("file:///SampleMapper.cs");
 
             this.storage.Store(fileName, fileContent);
             TestHelpers.LoadToStorage(@"..\..\..\NetReduce.Core.Tests\SampleMapper.cs", mapperCodeFileName, this.storage);

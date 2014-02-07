@@ -62,7 +62,12 @@ namespace NetReduce.WorkerService
 
         public string[] TryJoin(int workerId, Uri callbackUri)
         {
-            throw new NotImplementedException();
+            // TODO: ignored callbackUri -> wanted to use so that worker would inform coordinator 
+            // about finishing the job
+            var worker = GetWorker(workerId);
+            worker.Join();
+
+            return worker.Storage.GetKeys().ToArray();
         }
 
         public Uri[] TransferFiles(int workerId, Dictionary<string, Uri> keysAndUris)
@@ -73,16 +78,6 @@ namespace NetReduce.WorkerService
         public Uri PushFile(int workerId, string fileName, string content)
         {
             throw new NotImplementedException();
-        }
-
-        public bool TryJoin(int workerId, string callbackUri)
-        {
-            // TODO: ignored callbackUri -> wanted to use so that worker would inform coordinator 
-            // about finishing the job
-            var worker = GetWorker(workerId);
-            worker.Join();
-
-            return true;
         }
     }
 }

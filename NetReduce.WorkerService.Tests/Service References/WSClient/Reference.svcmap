@@ -23,6 +23,7 @@
   </MetadataSources>
   <Metadata>
     <MetadataFile FileName="RemoteWorkerService.wsdl" MetadataType="Wsdl" ID="40c9593f-e692-43e8-a8bb-85195d1f94a3" SourceId="1" SourceUrl="http://localhost:28756/RemoteWorkerService.svc?wsdl" />
+    <MetadataFile FileName="RemoteWorkerService2.xsd" MetadataType="Schema" ID="c423c3a5-08ac-4703-addc-cb490049fa1d" SourceId="1" SourceUrl="http://localhost:28756/RemoteWorkerService.svc?xsd=xsd2" />
     <MetadataFile FileName="RemoteWorkerService.xsd" MetadataType="Schema" ID="37be25e0-c666-443c-a83d-e8d59b931145" SourceId="1" SourceUrl="http://localhost:28756/RemoteWorkerService.svc?xsd=xsd1" />
     <MetadataFile FileName="RemoteWorkerService.disco" MetadataType="Disco" ID="fa1ff107-0a5b-4a55-a853-bf8236c24375" SourceId="1" SourceUrl="http://localhost:28756/RemoteWorkerService.svc?disco" />
     <MetadataFile FileName="RemoteWorkerService1.xsd" MetadataType="Schema" ID="76db4950-f422-40db-8472-5b64c5fa528c" SourceId="1" SourceUrl="http://localhost:28756/RemoteWorkerService.svc?xsd=xsd0" />
