@@ -1,6 +1,7 @@
 ﻿namespace NetReduce.Remote
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading;
 
     using NetReduce.Core;
@@ -45,6 +46,8 @@
 
             // TODO: Transfer intermediate results
 
+
+
             var uri = new Uri(string.Format("{0}?workerId={1}&key={2}", this.remoteWorkerService.EndpointUri, this.Id, key));
 
             if (this.nonBlockingMapAndReduce)
@@ -59,14 +62,14 @@
             this.IssueRemoteReduce(uri, remoteReduceCodeFileName);
         }
 
-        public void Join()
+        public IEnumerable<string> Join()
         {
+            var resultKeys = default(string[]);
+
             if (this.joinThread == null)
             {
                 this.joinThread = new Thread(() =>
                 {
-                    var resultKeys = default(string[]);
-
                     // wait for remote join
                     do
                     {
@@ -84,6 +87,8 @@
             }
 
             this.joinThread.Join();
+
+            return resultKeys;
         }
 
         public IStorage Storage { get; set; }

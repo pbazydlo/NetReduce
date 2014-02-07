@@ -21,6 +21,8 @@
         {
             var noOfWorkers = this.InitWorkers(maxMapperNo, maxReducerNo);
             var keys = this.PerformMap(maxMapperNo, mapFuncFileName, filesToProcess, noOfWorkers);
+            keys = keys.Distinct().ToList();
+            var reducersAssignment = this.TransferIntermediateFiles(keys, noOfWorkers);
             this.PerformReduce(maxReducerNo, reduceFuncFileName, noOfWorkers, keys);
             this.CleanUp();
         }
@@ -67,7 +69,9 @@
 
         private List<string> PerformMap(int maxMapperNo, Uri mapFuncFileName, IEnumerable<Uri> filesToProcess, int noOfWorkers)
         {
-            int index = 0;
+            var keys = new List<string>();
+
+            var index = 0;
             foreach (var file in filesToProcess)
             {
                 var worker = this.workers[(index++) % maxMapperNo];
@@ -76,11 +80,33 @@
 
             for (var i = 0; i < noOfWorkers; i++)
             {
-                this.workers[i].Join();
+                keys.AddRange(this.workers[i].Join());
             }
 
-            var keys = this.GetKeys().ToList();
             return keys;
+        }
+
+        private Dictionary<string, int> TransferIntermediateFiles(IEnumerable<string> keys, int noOfWorkers)
+        {
+            var assignmentsInts = new Dictionary<string, int>();
+            var assignmentsUris = new Dictionary<string, Uri>();
+            var i = 0;
+            
+            foreach (var key in keys)
+            {
+                var workerId = (i++) % noOfWorkers;
+                var uri = new Uri(string.Format("{0}?workerId={1}", this.workers[workerId].EndpointUri, workerId));
+                assignmentsInts.Add(key, workerId);
+                assignmentsUris.Add(key, uri);
+            }
+
+            foreach (var worker in this.workers)
+            {
+                // TODO: maybe we want to return these uris?
+                worker.TransferFiles(worker.Id, assignmentsUris);
+            }
+
+            return assignmentsInts;
         }
     }
 }
