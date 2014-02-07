@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ServiceModel;
-using System.ServiceModel.Description;
-
-namespace NetReduce.WorkerService.ConsoleHost
+﻿namespace NetReduce.WorkerService.ConsoleHost
 {
+    using System;
+    using System.ServiceModel;
+    using System.ServiceModel.Description;
+
     class Program
     {
         static void Main(string[] args)

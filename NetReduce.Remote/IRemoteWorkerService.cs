@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel;
-using System.Text;
-
-namespace NetReduce.Remote
+﻿namespace NetReduce.Remote
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ServiceModel;
+
     [ServiceContract]
     public interface IRemoteWorkerService
     {
@@ -13,12 +11,31 @@ namespace NetReduce.Remote
         void Init(int workerId);
 
         [OperationContract]
-        void Map(int workerId, string uri, string mapFuncUri);
+        void Map(Uri uri, Uri mapFuncUri);
 
         [OperationContract]
-        void Reduce(int workerId, string uri, string reduceFuncUri);
+        void Reduce(Uri uri, Uri reduceFuncUri);
 
         [OperationContract]
-        bool TryJoin(int workerId, string callbackUri);
+        string[] TryJoin(int workerId, Uri callbackUri);
+
+        /// <summary>
+        /// The transfer files.
+        /// </summary>
+        /// <param name="workerId">
+        /// Worker id of worker that will send its results to reducer.
+        /// </param>
+        /// <param name="keysAndUris">
+        /// Mapping between keys and reducers.
+        /// Uri = endpoint + worker id
+        /// </param>
+        /// <returns>
+        /// The <see cref="Uri[]"/>.
+        /// </returns>
+        [OperationContract]
+        Uri[] TransferFiles(int workerId, Dictionary<string, Uri> keysAndUris);
+
+        [OperationContract]
+        Uri PushFile(int workerId, string fileName, string content);
     }
 }

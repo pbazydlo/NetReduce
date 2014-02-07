@@ -1,12 +1,10 @@
-﻿using NetReduce.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-
-namespace NetReduce.Remote
+﻿namespace NetReduce.Remote
 {
+    using System;
+    using System.Threading;
+
+    using NetReduce.Core;
+
     // TODO: this.Id should be initialized before calling remoteWorekerService.Init
     public class RemoteWorker<T> : IWorker where T : IRemoteWorkerService, new()
     {
@@ -19,7 +17,7 @@ namespace NetReduce.Remote
             this.remoteWorkerService.Init(this.Id);
         }
 
-        public void Map(string inputFileName, string mapCodeFileName)
+        public void Map(Uri inputFileName, Uri mapCodeFileName)
         {
             if (this.nonBlockingMapAndReduce)
             {
@@ -33,18 +31,20 @@ namespace NetReduce.Remote
             this.IssueRemoteMap(inputFileName, mapCodeFileName);
         }
 
-        public void Reduce(string key, string reduceCodeFileName)
+        public void Reduce(string key, Uri reduceCodeFileName)
         {
+            var uri = new Uri(string.Format("{0}?workerId={1}&key={2}", this.EndpointUri, this.Id, key));
+
             if (this.nonBlockingMapAndReduce)
             {
                 new Thread(() =>
-                {
-                    this.IssueRemoteReduce(key, reduceCodeFileName);
-                }).Start();
+                    {
+                        this.IssueRemoteReduce(uri, reduceCodeFileName);
+                    }).Start();
                 return;
             }
 
-            this.IssueRemoteReduce(key, reduceCodeFileName);
+            this.IssueRemoteReduce(uri, reduceCodeFileName);
         }
 
         public void Join()
@@ -53,17 +53,17 @@ namespace NetReduce.Remote
             {
                 this.joinThread = new Thread(() =>
                 {
-                    bool remoteJoinSucceded = false;
+                    var resultKeys = default(string[]);
 
                     // wait for remote join
                     do
                     {
                         try
                         {
-                            remoteJoinSucceded = this.remoteWorkerService.TryJoin(this.Id, callbackUri: null);
+                            resultKeys = this.remoteWorkerService.TryJoin(this.Id, callbackUri: null);
                         }
                         catch { }
-                    } while (!remoteJoinSucceded);
+                    } while (resultKeys == null);
 
                     this.joinThread = null;
                 });
@@ -84,14 +84,16 @@ namespace NetReduce.Remote
 
         private Thread joinThread;
 
-        private void IssueRemoteMap(string uri, string mapCodeFileUri)
+        public Uri EndpointUri { get; private set; }
+
+        private void IssueRemoteMap(Uri fileUri, Uri mapCodeFileUri)
         {
-            this.remoteWorkerService.Map(this.Id, uri, mapCodeFileUri);
+            this.remoteWorkerService.Map(fileUri, mapCodeFileUri);
         }
 
-        private void IssueRemoteReduce(string uri, string reduceCodeFileUri)
+        private void IssueRemoteReduce(Uri fileUri, Uri reduceCodeFileUri)
         {
-            this.remoteWorkerService.Reduce(this.Id, uri, reduceCodeFileUri);
+            this.remoteWorkerService.Reduce(fileUri, reduceCodeFileUri);
         }
     }
 }
