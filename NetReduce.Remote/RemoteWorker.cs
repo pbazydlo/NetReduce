@@ -9,10 +9,17 @@
     public class RemoteWorker<T> : IWorker where T : IRemoteWorkerService, new()
     {
         public static bool NonBlockingMapAndReduce { get; set; }
+        public static IUriProvider UriProvider { get; set; }
 
         public RemoteWorker()
         {
             this.nonBlockingMapAndReduce = NonBlockingMapAndReduce;
+            this.EndpointUri = UriProvider.GetNextUri();
+
+            // TODO: Uri will be probably required for creating remoteWorkerService
+            // or we could move whole endpoint uri management to IRemoteWorkerService
+            // (because RemoteWorker gets wrapper which uses actual wcf client - 
+            // as wcf client generated code does not implement actual IRemoteWorkerService)
             this.remoteWorkerService = new T();
             this.remoteWorkerService.Init(this.Id);
         }
