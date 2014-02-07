@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce", "NetReduce\NetReduce.csproj", "{C1BDE385-A99F-4F4B-A029-30BFAF58E85C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce.Core.Tests", "NetReduce.Core.Tests\NetReduce.Core.Tests.csproj", "{98C28953-E984-480A-9342-DCF440F85573}"
@@ -18,6 +16,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce.WorkerService.Tests", "NetReduce.WorkerService.Tests\NetReduce.WorkerService.Tests.csproj", "{11141AD2-AFBB-4628-89F1-F0C005722AF6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1F03A337-7CFA-467E-AA2E-73BC8D92AB30} = {1F03A337-7CFA-467E-AA2E-73BC8D92AB30}
+		{C42B7D5F-8198-47D5-8636-3C87774DBCA9} = {C42B7D5F-8198-47D5-8636-3C87774DBCA9}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce.WorkerService.ConsoleHost", "NetReduce.WorkerService.ConsoleHost\NetReduce.WorkerService.ConsoleHost.csproj", "{C42B7D5F-8198-47D5-8636-3C87774DBCA9}"

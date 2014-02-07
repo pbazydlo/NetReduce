@@ -43,9 +43,18 @@ namespace NetReduce.WorkerService
 
         public void Init(int workerId)
         {
-            Workers.GetOrAdd(workerId,
-                new ThreadWorker(storage: new FileSystemStorage(@"c:\temp\netreduce", false),
-                                 id:workerId));
+            Console.Write("Initializing worker {0}... ", workerId);
+            try
+            {
+                Workers.GetOrAdd(
+                    workerId,
+                    new ThreadWorker(storage: new FileSystemStorage(string.Format(@"c:\temp\netreduce\{0}", workerId), true), id: workerId));
+                Console.WriteLine("done");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
         }
 
         public void Map(Uri uri, Uri mapFuncUri)
@@ -77,10 +86,23 @@ namespace NetReduce.WorkerService
 
         public Uri PushFile(int workerId, string fileName, string content)
         {
+            Console.Write("PushFile {0}... ", fileName);
+
             var worker = GetWorker(workerId);
             worker.Storage.Store(fileName, content);
-            this.EndpointUri = System.Web.HttpContext.Current.Request.Url;
-            return new Uri(string.Format("{0}?workerId={1}&fileName={2}", this.EndpointUri, workerId, fileName));
+
+            if (OperationContext.Current != null)
+            {
+                this.EndpointUri = OperationContext.Current.IncomingMessageHeaders.To;
+            }
+            else
+            {
+                Console.WriteLine("OperationContext.Current is null");
+            }
+
+            var newUri = string.Format("{0}?workerId={1}&fileName={2}", this.EndpointUri != null ? this.EndpointUri.ToString() : string.Empty, workerId, fileName);
+            Console.WriteLine("stored under {0}", newUri);
+            return new Uri(newUri);
         }
 
         public Uri EndpointUri { get; private set; }

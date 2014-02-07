@@ -51,7 +51,8 @@ namespace NetReduce.WorkerService.Tests
             worker.Map(fileName, mapperCodeFileName);
             worker.Join();
 
-            var fileNo = this.storage.ListFiles().Count();
+            var workerStorage = new FileSystemStorage(@"c:\temp\netreduce\0", false);
+            var fileNo = workerStorage.ListFiles().Count();
 
             fileNo.ShouldBe(6);
         }
