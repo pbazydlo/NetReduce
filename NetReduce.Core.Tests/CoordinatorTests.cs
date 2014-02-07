@@ -19,21 +19,6 @@
         }
 
         [TestMethod]
-        public void CoordinatorReadsKeysFromFileNames()
-        {
-            var keys = ReducerTests.CreateTwoKeyFileSet(this.storage);
-
-            var coordinator = new Coordinator<ThreadWorker>(this.storage);
-            var result = coordinator.GetKeys();
-
-            result.Count().ShouldBe(keys.Length);
-            foreach (var key in keys)
-            {
-                result.ShouldContain(key);
-            }
-        }
-
-        [TestMethod]
         public void CoordinatorWorks()
         {
             this.storage.Store("f1", "ala ma kota");
