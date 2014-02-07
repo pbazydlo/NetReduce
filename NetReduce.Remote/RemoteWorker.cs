@@ -36,7 +36,7 @@
                 return;
             }
 
-            this.IssueRemoteMap(inputFileName, mapCodeFileName);
+            this.IssueRemoteMap(remoteInputFileName, remoteMapCodeFileName);
         }
 
         public void Reduce(string key, Uri reduceCodeFileName)
@@ -56,7 +56,7 @@
                 return;
             }
 
-            this.IssueRemoteReduce(uri, reduceCodeFileName);
+            this.IssueRemoteReduce(uri, remoteReduceCodeFileName);
         }
 
         public void Join()
