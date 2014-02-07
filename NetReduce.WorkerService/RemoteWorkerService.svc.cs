@@ -132,7 +132,7 @@
         private static List<Task<Uri>> PushFilesToReducers(Dictionary<string, Uri> keysAndUris, IStorage workerStorage)
         {
             var pushFileTasks = new List<Task<Uri>>();
-            var regex = new Regex(string.Format("^" + Core.Properties.Settings.Default.ReduceOutputFileName + "$", @"(?<Key>.+)", "[0-9]+", RegexExtensions.GuidRegexString));
+            var regex = new Regex(string.Format("^" + Core.Properties.Settings.Default.MapOutputFileName+ "$", @"(?<Key>.+)", "[0-9]+", RegexExtensions.GuidRegexString));
             var uris = workerStorage.ListFiles();
             foreach (var uri in uris)
             {
@@ -155,7 +155,8 @@
             var reducerUri = keysAndUris[key];
             var reducerWorkerId = GetWorkerId(reducerUri);
             var reducerEndpointUri = GetWorkerEndpointUri(reducerUri);
-            var binding = new BasicHttpBinding("BasicHttpBinding_IRemoteWorkerService");
+            var binding = new BasicHttpBinding();//new BasicHttpBinding("BasicHttpBinding_IRemoteWorkerService");
+            
             using (var client = new WSClient.RemoteWorkerServiceClient(binding, new EndpointAddress(reducerEndpointUri)))
             {
                 return client.PushFileAsync(reducerWorkerId, fileName, workerStorage.Read(fileName));
