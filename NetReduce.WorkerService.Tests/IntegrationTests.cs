@@ -92,6 +92,37 @@ namespace NetReduce.WorkerService.Tests
             result.ShouldBe("3");
         }
 
+        [TestMethod]
+        public void RemoteCoordinatorWorks()
+        {
+            this.storage.Store("f1", "ala ma kota");
+            this.storage.Store("f2", "kota alama");
+            this.storage.Store("f3", "dolan ma");
+            var filesToRead = this.storage.ListFiles();
+            var mapperCodeFile = new Uri("file:///SampleMapper.cs");
+            var reducerCodeFile = new Uri("file:///SampleReducer.cs");
+            TestHelpers.LoadToStorage(@"..\..\..\NetReduce.Core.Tests\SampleMapper.cs", mapperCodeFile, this.storage);
+            TestHelpers.LoadToStorage(@"..\..\..\NetReduce.Core.Tests\SampleReducer.cs", reducerCodeFile, this.storage);
+            IUriProvider uriProvider = new UriProvider();
+            uriProvider.Uris.Add(new Uri("http://localhost:28756/RemoteWorkerService.svc"));
+            ServiceClientWrapper.UriProvider = uriProvider;
+            var coordinator = new Coordinator<RemoteWorker<ServiceClientWrapper>>(this.storage);
+
+            coordinator.Start(2, 2, mapperCodeFile, reducerCodeFile, filesToRead);
+
+            string result = string.Empty;
+            foreach (var uri in this.storage.ListFiles())
+            {
+                var file = this.storage.GetFileName(uri);
+                if (file.Contains("REDUCE") && file.Contains("kota"))
+                {
+                    result = this.storage.Read(file);
+                }
+            }
+
+            result.ShouldBe("2");
+        }
+
         private string storagePath = @"c:\temp\netreduce";
         private IStorage storage;
         private Process serviceProcess;
