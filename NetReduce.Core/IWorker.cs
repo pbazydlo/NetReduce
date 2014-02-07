@@ -26,8 +26,6 @@
         /// </returns>
         Uri[] TransferFiles(int workerId, Dictionary<string, Uri> keysAndUris);
 
-        Uri PushFile(int workerId, string fileName, string content);
-
         Uri EndpointUri { get; }
     }
 }

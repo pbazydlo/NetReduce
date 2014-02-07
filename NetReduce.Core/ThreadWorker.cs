@@ -7,6 +7,7 @@
     using System.Web;
 
     using NetReduce.Core.Exceptions;
+    using System.Collections.Generic;
 
     public class ThreadWorker : IWorker
     {
@@ -72,11 +73,6 @@
             this.workerThread.Start();
         }
 
-        public void Join()
-        {
-            this.workerThread.Join();
-        }
-
         private void EnsureWorkerThreadIsFree()
         {
             if (this.workerThread.IsAlive)
@@ -124,6 +120,22 @@
                     string.Format(Properties.Settings.Default.ReduceOutputFileName, task.Item1, this.Id, Guid.NewGuid()),
                     reduceResult);
             }
+        }
+
+        public IEnumerable<string> Join()
+        {
+            this.workerThread.Join();
+            return this.Storage.GetKeys();
+        }
+
+        public Uri[] TransferFiles(int workerId, System.Collections.Generic.Dictionary<string, Uri> keysAndUris)
+        {
+            return null;
+        }
+
+        public Uri EndpointUri
+        {
+            get { return new Uri(string.Format("thread://{0}", this.Id)); }
         }
     }
 }
