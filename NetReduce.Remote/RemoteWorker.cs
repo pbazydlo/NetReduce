@@ -115,5 +115,15 @@
         {
             return this.remoteWorkerService.PushFile(this.Id, this.Storage.GetFileName(uri), this.Storage.Read(uri));
         }
+
+        public Uri[] TransferFiles(int workerId, Dictionary<string, Uri> keysAndUris)
+        {
+            return this.remoteWorkerService.TransferFiles(workerId, keysAndUris);
+        }
+
+        public Uri EndpointUri
+        {
+            get { return this.remoteWorkerService.EndpointUri; }
+        }
     }
 }
