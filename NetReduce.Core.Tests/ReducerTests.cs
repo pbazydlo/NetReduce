@@ -27,7 +27,7 @@
             loadedFileCount.ShouldBe(3);
         }
 
-        internal static string[] CreateTwoKeyFileSet(IStorage storage)
+        public static string[] CreateTwoKeyFileSet(IStorage storage)
         {
             var keys = new string[] { "k1", "k2" };
             foreach (var key in keys)

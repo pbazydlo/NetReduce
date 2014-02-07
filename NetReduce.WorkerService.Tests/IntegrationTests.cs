@@ -7,6 +7,8 @@ using NetReduce.Core.Tests;
 using NetReduce.Remote;
 using System.Diagnostics;
 using System.Threading;
+using System.Text.RegularExpressions;
+using NetReduce.Core.Extensions;
 
 namespace NetReduce.WorkerService.Tests
 {
@@ -37,14 +39,11 @@ namespace NetReduce.WorkerService.Tests
             var fileName = new Uri("file:///file1.txt");
             var fileContent = "whatever am i i";
             var mapperCodeFileName =  new Uri("file:///SampleMapper.cs");
-
             this.storage.Store(fileName, fileContent);
             TestHelpers.LoadToStorage(@"..\..\..\NetReduce.Core.Tests\SampleMapper.cs", mapperCodeFileName, this.storage);
-
             IUriProvider uriProvider = new UriProvider();
             uriProvider.Uris.Add(new Uri("http://localhost:28756/RemoteWorkerService.svc"));
             ServiceClientWrapper.UriProvider = uriProvider;
-
             var worker = new RemoteWorker<ServiceClientWrapper>();
             worker.Storage = this.storage;
 
@@ -53,8 +52,44 @@ namespace NetReduce.WorkerService.Tests
 
             var workerStorage = new FileSystemStorage(@"c:\temp\netreduce\0", false);
             var fileNo = workerStorage.ListFiles().Count();
-
             fileNo.ShouldBe(6);
+        }
+
+        [TestMethod]
+        public void RemoteReduceWorks()
+        {
+            var workerStorage = new FileSystemStorage(@"c:\temp\netreduce\0", false);
+            var reducerCodeFileName = new Uri("file:///SampleReducer.cs");
+            TestHelpers.LoadToStorage(@"..\..\..\NetReduce.Core.Tests\SampleReducer.cs", reducerCodeFileName, this.storage);
+            IUriProvider uriProvider = new UriProvider();
+            uriProvider.Uris.Add(new Uri("http://localhost:28756/RemoteWorkerService.svc"));
+            ServiceClientWrapper.UriProvider = uriProvider;
+            var worker = new RemoteWorker<ServiceClientWrapper>();
+            worker.Storage = this.storage;
+
+            // Init reducer storage after it is created (cleaning of directory upon worker creation in service)
+            var keys = ReducerTests.CreateTwoKeyFileSet(workerStorage);
+
+            worker.Reduce("k1", reducerCodeFileName);
+            worker.Join();
+
+            var result = default(string);
+            var regex = new Regex(string.Format("^" + Core.Properties.Settings.Default.ReduceOutputFileName + "$", @"(?<Key>.+)", "[0-9]+", RegexExtensions.GuidRegexString));
+            var uris = workerStorage.ListFiles();
+            foreach (var uri in uris)
+            {
+                var fileName = workerStorage.GetFileName(uri);
+                if (regex.IsMatch(fileName))
+                {
+                    var key = regex.Match(fileName).Groups["Key"].Value;
+                    if (key == "k1")
+                    {
+                        result = workerStorage.Read(fileName);
+                    }
+                }
+            }
+
+            result.ShouldBe("3");
         }
 
         private string storagePath = @"c:\temp\netreduce";
