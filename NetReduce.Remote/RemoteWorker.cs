@@ -7,6 +7,7 @@ using System.Threading;
 
 namespace NetReduce.Remote
 {
+    // TODO: this.Id should be initialized before calling remoteWorekerService.Init
     public class RemoteWorker<T> : IWorker where T : IRemoteWorkerService, new()
     {
         public static bool NonBlockingMapAndReduce { get; set; }

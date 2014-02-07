@@ -27,8 +27,8 @@ namespace NetReduce.WorkerService
 
         public void Init(int workerId)
         {
-            Workers.GetOrAdd(workerId, 
-                new ThreadWorker(storage: new FileSystemStorage(".", false),
+            Workers.GetOrAdd(workerId,
+                new ThreadWorker(storage: new FileSystemStorage(@"c:\temp\netreduce", false),
                                  id:workerId));
         }
 

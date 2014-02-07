@@ -15,6 +15,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce.Remote.Tests", "N
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce.WorkerService", "NetReduce.WorkerService\NetReduce.WorkerService.csproj", "{1F03A337-7CFA-467E-AA2E-73BC8D92AB30}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce.WorkerService.Tests", "NetReduce.WorkerService.Tests\NetReduce.WorkerService.Tests.csproj", "{11141AD2-AFBB-4628-89F1-F0C005722AF6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1F03A337-7CFA-467E-AA2E-73BC8D92AB30} = {1F03A337-7CFA-467E-AA2E-73BC8D92AB30}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce.WorkerService.ConsoleHost", "NetReduce.WorkerService.ConsoleHost\NetReduce.WorkerService.ConsoleHost.csproj", "{C42B7D5F-8198-47D5-8636-3C87774DBCA9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +52,14 @@ Global
 		{1F03A337-7CFA-467E-AA2E-73BC8D92AB30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F03A337-7CFA-467E-AA2E-73BC8D92AB30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F03A337-7CFA-467E-AA2E-73BC8D92AB30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11141AD2-AFBB-4628-89F1-F0C005722AF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11141AD2-AFBB-4628-89F1-F0C005722AF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11141AD2-AFBB-4628-89F1-F0C005722AF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11141AD2-AFBB-4628-89F1-F0C005722AF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C42B7D5F-8198-47D5-8636-3C87774DBCA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C42B7D5F-8198-47D5-8636-3C87774DBCA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C42B7D5F-8198-47D5-8636-3C87774DBCA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C42B7D5F-8198-47D5-8636-3C87774DBCA9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

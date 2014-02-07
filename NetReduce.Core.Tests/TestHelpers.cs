@@ -2,7 +2,7 @@
 {
     using System.IO;
 
-    internal static class TestHelpers
+    public static class TestHelpers
     {
         public static void LoadToStorage(string realPath, string storageFileName, IStorage storage)
         {
