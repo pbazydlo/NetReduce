@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="b59e2a63-d3a4-4b7e-8a93-1958d27b7406" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:28756/RemoteWorkerService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="RemoteWorkerService.wsdl" MetadataType="Wsdl" ID="4bcee3cd-a212-4b60-8d2d-30cd7077a996" SourceId="1" SourceUrl="http://localhost:28756/RemoteWorkerService.svc?wsdl" />
+    <MetadataFile FileName="RemoteWorkerService.xsd" MetadataType="Schema" ID="df6fc033-f83b-4c48-8ef0-1187a2a06f8a" SourceId="1" SourceUrl="http://localhost:28756/RemoteWorkerService.svc?xsd=xsd2" />
+    <MetadataFile FileName="RemoteWorkerService1.xsd" MetadataType="Schema" ID="bb7e4be0-94b1-478c-994c-3b5ed4b47baf" SourceId="1" SourceUrl="http://localhost:28756/RemoteWorkerService.svc?xsd=xsd1" />
+    <MetadataFile FileName="RemoteWorkerService.disco" MetadataType="Disco" ID="e1f555b0-5af3-4aae-a11f-ce43244e3bd5" SourceId="1" SourceUrl="http://localhost:28756/RemoteWorkerService.svc?disco" />
+    <MetadataFile FileName="RemoteWorkerService2.xsd" MetadataType="Schema" ID="bd265c08-a4bc-4211-8aee-dff0ecc1d0cd" SourceId="1" SourceUrl="http://localhost:28756/RemoteWorkerService.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:28756/RemoteWorkerService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:element name="Init">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="workerId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InitResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Map">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="uri" nillable="true" type="xs:anyURI" />
+        <xs:element minOccurs="0" name="mapFuncUri" nillable="true" type="xs:anyURI" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MapResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Reduce">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="uri" nillable="true" type="xs:anyURI" />
+        <xs:element minOccurs="0" name="reduceFuncUri" nillable="true" type="xs:anyURI" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReduceResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TryJoin">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="workerId" type="xs:int" />
+        <xs:element minOccurs="0" name="callbackUri" nillable="true" type="xs:anyURI" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TryJoinResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="TryJoinResult" nillable="true" type="q1:ArrayOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TransferFiles">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="workerId" type="xs:int" />
+        <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="keysAndUris" nillable="true" type="q2:ArrayOfKeyValueOfstringanyURI" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TransferFilesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="TransferFilesResult" nillable="true" type="q3:ArrayOfanyURI" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PushFile">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="workerId" type="xs:int" />
+        <xs:element minOccurs="0" name="fileName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="content" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PushFileResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="PushFileResult" nillable="true" type="xs:anyURI" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
