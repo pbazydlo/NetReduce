@@ -5,6 +5,7 @@
 
     public interface IWorker
     {
+        void Init();
         void Map(Uri inputFileName, Uri mapCodeFileName);
         void Reduce(string key, Uri reduceCodeFileName);
         IEnumerable<string> Join();

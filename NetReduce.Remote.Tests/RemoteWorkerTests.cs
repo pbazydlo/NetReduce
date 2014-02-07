@@ -29,6 +29,7 @@ namespace NetReduce.Remote.Tests
 
             MockerForRemoteWorkerService.Mock = remoteServiceMock.Object;
             var worker = new RemoteWorker<MockerForRemoteWorkerService>();
+            worker.Init();
 
             var joinThread = new Thread(() =>
             {
@@ -76,6 +77,7 @@ namespace NetReduce.Remote.Tests
             {
                 Storage=storageMock.Object
             };
+            worker.Init();
 
             worker.Map(uri, mapFunc);
             Thread.Sleep(10);

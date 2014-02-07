@@ -137,5 +137,10 @@
         {
             get { return new Uri(string.Format("thread://{0}", this.Id)); }
         }
+
+        public void Init()
+        {
+            
+        }
     }
 }

@@ -46,6 +46,7 @@ namespace NetReduce.WorkerService.Tests
             ServiceClientWrapper.UriProvider = uriProvider;
             var worker = new RemoteWorker<ServiceClientWrapper>();
             worker.Storage = this.storage;
+            worker.Init();
 
             worker.Map(fileName, mapperCodeFileName);
             worker.Join();
@@ -66,6 +67,7 @@ namespace NetReduce.WorkerService.Tests
             ServiceClientWrapper.UriProvider = uriProvider;
             var worker = new RemoteWorker<ServiceClientWrapper>();
             worker.Storage = this.storage;
+            worker.Init();
 
             // Init reducer storage after it is created (cleaning of directory upon worker creation in service)
             var keys = ReducerTests.CreateTwoKeyFileSet(workerStorage);

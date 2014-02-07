@@ -14,13 +14,6 @@
         public RemoteWorker()
         {
             this.nonBlockingMapAndReduce = NonBlockingMapAndReduce;
-
-            // TODO: Uri will be probably required for creating remoteWorkerService
-            // or we could move whole endpoint uri management to IRemoteWorkerService
-            // (because RemoteWorker gets wrapper which uses actual wcf client - 
-            // as wcf client generated code does not implement actual IRemoteWorkerService)
-            this.remoteWorkerService = new T();
-            this.remoteWorkerService.Init(this.Id);
         }
 
         public void Map(Uri inputFileName, Uri mapCodeFileName)
@@ -124,6 +117,12 @@
         public Uri EndpointUri
         {
             get { return this.remoteWorkerService.EndpointUri; }
+        }
+
+        public void Init()
+        {
+            this.remoteWorkerService = new T();
+            this.remoteWorkerService.Init(this.Id);
         }
     }
 }

@@ -43,6 +43,7 @@
                 var worker = new WorkerType();
                 worker.Storage = this.storage;
                 worker.Id = i;
+                worker.Init();
                 this.workers.Add(worker);
             }
             return noOfWorkers;
