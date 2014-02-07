@@ -112,13 +112,19 @@ namespace NetReduce.WorkerService.Tests
 
             coordinator.Start(2, 2, mapperCodeFile, reducerCodeFile, filesToRead);
 
+            var reduceStorage3 = new FileSystemStorage(@"c:\temp\netreduce\3", false);
+            var reduceStorage4 = new FileSystemStorage(@"c:\temp\netreduce\4", false);
+            var storages = new [] { reduceStorage3, reduceStorage4 };
             string result = string.Empty;
-            foreach (var uri in this.storage.ListFiles())
+            foreach (var reduceStorage in storages)
             {
-                var file = this.storage.GetFileName(uri);
-                if (file.Contains("REDUCE") && file.Contains("kota"))
+                foreach (var uri in reduceStorage.ListFiles())
                 {
-                    result = this.storage.Read(file);
+                    var file = reduceStorage.GetFileName(uri);
+                    if (file.Contains("REDUCE") && file.Contains("kota"))
+                    {
+                        result = reduceStorage.Read(file);
+                    }
                 }
             }
 

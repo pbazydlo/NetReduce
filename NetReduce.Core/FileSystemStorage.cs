@@ -61,7 +61,7 @@
         {
             this.EnsureFileNameIsValid(fileName);
             var filePath = Path.Combine(this.baseDirectory, fileName);
-            File.AppendAllText(filePath, value);
+            File.WriteAllText(filePath, value);
         }
 
         public void Store(Uri uri, string value)
@@ -96,6 +96,15 @@
             foreach (var file in files)
             {
                 File.Delete(file);
+            }
+
+            if (this.baseDirectory.StartsWith(@"c:\temp"))
+            {
+                var directories = Directory.GetDirectories(this.baseDirectory);
+                foreach (var directory in directories)
+                {
+                    Directory.Delete(directory, recursive: true);
+                }
             }
         }
 
