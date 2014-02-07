@@ -12,6 +12,8 @@
         private IStorage storage;
         private List<WorkerType> workers;
 
+        private List<string> keys;
+ 
         public Coordinator(IStorage storage)
         {
             this.storage = storage;
@@ -20,18 +22,17 @@
         public void Start(int maxMapperNo, int maxReducerNo, Uri mapFuncFileName, Uri reduceFuncFileName, IEnumerable<Uri> filesToProcess)
         {
             var noOfWorkers = this.InitWorkers(maxMapperNo, maxReducerNo);
-            var keys = this.PerformMap(maxMapperNo, mapFuncFileName, filesToProcess, noOfWorkers);
-            keys = keys.Distinct().ToList();
-            var reducersAssignment = this.TransferIntermediateFiles(keys, noOfWorkers);
-            this.PerformReduce(maxReducerNo, reduceFuncFileName, noOfWorkers, keys);
+            this.keys = this.PerformMap(maxMapperNo, mapFuncFileName, filesToProcess, noOfWorkers);
+            this.keys = this.keys.Distinct().ToList();
+            var reducersAssignment = this.TransferIntermediateFiles(this.keys, noOfWorkers);
+            this.PerformReduce(reduceFuncFileName, noOfWorkers, reducersAssignment);
             this.CleanUp();
         }
 
         public IEnumerable<string> GetKeys()
         {
-            // TODO: it is wrong -> we get keys from join
-            return this.storage.GetKeys();
-        }
+            return this.keys;
+        } 
 
         private int InitWorkers(int maxMapperNo, int maxReducerNo)
         {
@@ -52,13 +53,13 @@
             Loader.CleanAssemblyCache();
         }
 
-        private void PerformReduce(int maxReducerNo, Uri reduceFuncFileName, int noOfWorkers, List<string> keys)
+        private void PerformReduce(Uri reduceFuncFileName, int noOfWorkers, Dictionary<string, int> assignments)
         {
             var index = 0;
-            foreach (var key in keys)
+            foreach (var assignment in assignments)
             {
-                var worker = this.workers[(index++) % maxReducerNo];
-                worker.Reduce(key, reduceFuncFileName);
+                var worker = this.workers[assignment.Value];
+                worker.Reduce(assignment.Key, reduceFuncFileName);
             }
 
             for (var i = 0; i < noOfWorkers; i++)

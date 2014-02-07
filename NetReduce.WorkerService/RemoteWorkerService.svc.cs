@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Concurrent;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
-using NetReduce.Remote;
-using NetReduce.Core;
-
-namespace NetReduce.WorkerService
+﻿namespace NetReduce.WorkerService
 {
-    using System.Web;
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.ServiceModel;
     using System.Text.RegularExpressions;
-    using NetReduce.Core.Extensions;
     using System.Threading.Tasks;
+    using System.Web;
+
+    using NetReduce.Core;
+    using NetReduce.Core.Extensions;
+    using NetReduce.Remote;
 
     public class RemoteWorkerService : IRemoteWorkerService
     {
@@ -97,8 +94,8 @@ namespace NetReduce.WorkerService
         {
             var worker = GetWorker(workerId);
             var workerStorage = worker.Storage;
-            List<Uri> result = new List<Uri>();
-            List<Task<Uri>> pushFileTasks = PushFilesToReducers(keysAndUris, workerStorage);
+            var result = new List<Uri>();
+            var pushFileTasks = PushFilesToReducers(keysAndUris, workerStorage);
             foreach (var pushFileTask in pushFileTasks)
             {
                 var uri = pushFileTask.Result;
@@ -107,8 +104,6 @@ namespace NetReduce.WorkerService
 
             return result.ToArray();
         }
-
-        
 
         public Uri PushFile(int workerId, string fileName, string content)
         {
@@ -128,6 +123,7 @@ namespace NetReduce.WorkerService
 
             var newUri = string.Format("{0}?workerId={1}&fileName={2}", this.EndpointUri != null ? this.EndpointUri.ToString() : string.Empty, workerId, fileName);
             Console.WriteLine("stored under {0}", newUri);
+
             return new Uri(newUri);
         }
 
@@ -135,7 +131,7 @@ namespace NetReduce.WorkerService
 
         private static List<Task<Uri>> PushFilesToReducers(Dictionary<string, Uri> keysAndUris, IStorage workerStorage)
         {
-            List<Task<Uri>> pushFileTasks = new List<Task<Uri>>();
+            var pushFileTasks = new List<Task<Uri>>();
             var regex = new Regex(string.Format("^" + Core.Properties.Settings.Default.ReduceOutputFileName + "$", @"(?<Key>.+)", "[0-9]+", RegexExtensions.GuidRegexString));
             var uris = workerStorage.ListFiles();
             foreach (var uri in uris)
@@ -146,14 +142,15 @@ namespace NetReduce.WorkerService
                     var key = regex.Match(fileName).Groups["Key"].Value;
                     if (keysAndUris.ContainsKey(key))
                     {
-                        PushFileToReducer(keysAndUris, workerStorage, pushFileTasks, fileName, key);
+                        pushFileTasks.Add(PushFileToReducer(keysAndUris, workerStorage, fileName, key));
                     }
                 }
             }
+
             return pushFileTasks;
         }
 
-        private static void PushFileToReducer(Dictionary<string, Uri> keysAndUris, IStorage workerStorage, List<Task<Uri>> pushFileTasks, string fileName, string key)
+        private static Task<Uri> PushFileToReducer(Dictionary<string, Uri> keysAndUris, IStorage workerStorage, string fileName, string key)
         {
             var reducerUri = keysAndUris[key];
             var reducerWorkerId = GetWorkerId(reducerUri);
@@ -161,8 +158,7 @@ namespace NetReduce.WorkerService
             var binding = new BasicHttpBinding("BasicHttpBinding_IRemoteWorkerService");
             using (var client = new WSClient.RemoteWorkerServiceClient(binding, new EndpointAddress(reducerEndpointUri)))
             {
-                pushFileTasks.Add(
-                    client.PushFileAsync(reducerWorkerId, fileName, workerStorage.Read(fileName)));
+                return client.PushFileAsync(reducerWorkerId, fileName, workerStorage.Read(fileName));
             }
         }
     }
