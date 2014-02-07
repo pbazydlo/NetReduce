@@ -79,7 +79,7 @@ namespace NetReduce.WorkerService
         {
             var worker = GetWorker(workerId);
             worker.Storage.Store(fileName, content);
-            this.EndpointUri = WebOperationContext.Current.IncomingRequest.UriTemplateMatch.RequestUri;
+            this.EndpointUri = System.Web.HttpContext.Current.Request.Url;
             return new Uri(string.Format("{0}?workerId={1}&fileName={2}", this.EndpointUri, workerId, fileName));
         }
 

@@ -16,7 +16,10 @@
                 ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
                 smb.HttpGetEnabled = true;
                 smb.MetadataExporter.PolicyVersion = PolicyVersion.Policy15;
+                ServiceDebugBehavior dBeh = new ServiceDebugBehavior();
+                dBeh.IncludeExceptionDetailInFaults = true;
                 host.Description.Behaviors.Add(smb);
+                host.Description.Behaviors.Add(dBeh);
 
                 // Open the ServiceHost to start listening for messages. Since
                 // no endpoints are explicitly configured, the runtime will create
