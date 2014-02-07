@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce.Remote", "NetRedu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce.Remote.Tests", "NetReduce.Remote.Tests\NetReduce.Remote.Tests.csproj", "{0FC9F236-AF19-49C2-98D3-E3F6CFB027BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce.WorkerService", "NetReduce.WorkerService\NetReduce.WorkerService.csproj", "{1F03A337-7CFA-467E-AA2E-73BC8D92AB30}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{0FC9F236-AF19-49C2-98D3-E3F6CFB027BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FC9F236-AF19-49C2-98D3-E3F6CFB027BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FC9F236-AF19-49C2-98D3-E3F6CFB027BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F03A337-7CFA-467E-AA2E-73BC8D92AB30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F03A337-7CFA-467E-AA2E-73BC8D92AB30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F03A337-7CFA-467E-AA2E-73BC8D92AB30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F03A337-7CFA-467E-AA2E-73BC8D92AB30}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -12,11 +12,12 @@ namespace NetReduce.Remote.Tests
         [TestMethod]
         public void RemoteWorkerWaitsForJoinInRemoteNode()
         {
-            var remoteServiceMock = new Mock<IRemoteWorkerService>(MockBehavior.Strict);
             var joinLock = new object();
-            remoteServiceMock.Setup(s => s.TryJoin(It.IsAny<string>())).Returns(() =>
+            var remoteServiceMock = new Mock<IRemoteWorkerService>(MockBehavior.Strict);
+            remoteServiceMock.Setup(s => s.Init(It.IsAny<int>()));
+            remoteServiceMock.Setup(s => s.TryJoin(It.IsAny<int>(), It.IsAny<string>())).Returns(() =>
                 {
-                    lock(joinLock)
+                    lock (joinLock)
                     {
                         Monitor.Wait(joinLock);
                     }
@@ -24,10 +25,8 @@ namespace NetReduce.Remote.Tests
                     return true;
                 });
 
-            var worker = new RemoteWorker()
-            {
-                RemoteWorkerService = remoteServiceMock.Object
-            };
+            MockerForRemoteWorkerService.Mock = remoteServiceMock.Object;
+            var worker = new RemoteWorker<MockerForRemoteWorkerService>();
 
             var joinThread = new Thread(() =>
             {
@@ -38,7 +37,7 @@ namespace NetReduce.Remote.Tests
             Thread.Sleep(10);
 
             joinThread.ThreadState.ShouldBe(ThreadState.WaitSleepJoin);
-            lock(joinLock)
+            lock (joinLock)
             {
                 Monitor.Pulse(joinLock);
             }
@@ -54,23 +53,22 @@ namespace NetReduce.Remote.Tests
             var mapFunc = "makota";
             var mapLock = new object();
             var remoteWorkerServiceMock = new Mock<IRemoteWorkerService>(MockBehavior.Strict);
-            remoteWorkerServiceMock.Setup(s => s.Map(uri, mapFunc)).Callback(() =>
+            remoteWorkerServiceMock.Setup(s => s.Init(It.IsAny<int>()));
+            remoteWorkerServiceMock.Setup(s => s.Map(It.IsAny<int>(), uri, mapFunc)).Callback(() =>
                 {
-                    lock(mapLock)
+                    lock (mapLock)
                     {
                         Monitor.Wait(mapLock);
                     }
                 });
 
-            RemoteWorker.NonBlockingMapAndReduce = true;
-            var worker = new RemoteWorker()
-            {
-                RemoteWorkerService = remoteWorkerServiceMock.Object
-            };
+            MockerForRemoteWorkerService.Mock = remoteWorkerServiceMock.Object;
+            RemoteWorker<MockerForRemoteWorkerService>.NonBlockingMapAndReduce = true;
+            var worker = new RemoteWorker<MockerForRemoteWorkerService>();
 
             worker.Map(uri, mapFunc);
             Thread.Sleep(10);
-            lock(mapLock)
+            lock (mapLock)
             {
                 Monitor.Pulse(mapLock);
             }
