@@ -1,10 +1,12 @@
 ﻿namespace NetReduce.CoordinatorService.ConsoleHost
 {
     using System;
+    using System.Linq;
     using System.ServiceModel;
     using System.ServiceModel.Description;
 
     using NetReduce.CoordinatorService.ConsoleHost.Properties;
+    using NetReduce.Core;
     using NetReduce.Remote;
 
     class Program
@@ -12,8 +14,14 @@
         static void Main(string[] args)
         {
             var listenUri = Settings.Default.ListenUri;
+            var callbackUri = listenUri;
 
-            RemoteWorker<ServiceClientWrapper>.CoordinatorCallbackUri = new Uri(listenUri);
+            if (callbackUri.Contains("0.0.0.0"))
+            {
+                callbackUri = callbackUri.Replace("0.0.0.0", NetworkInfo.GetIpAddresses().First().Address.ToString());
+            }
+
+            RemoteWorker<ServiceClientWrapper>.CoordinatorCallbackUri = new Uri(callbackUri);
 
             var baseAddress = new Uri(listenUri);
             // Create the ServiceHost.
@@ -33,6 +41,7 @@
                 host.Open();
 
                 Console.WriteLine("Coordinator service is ready at {0}", baseAddress);
+                Console.WriteLine("Callback Uri is {0}", RemoteWorker<ServiceClientWrapper>.CoordinatorCallbackUri);
                 Console.WriteLine("Press <Enter> to stop the service.");
                 Console.ReadLine();
 
