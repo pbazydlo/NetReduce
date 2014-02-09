@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce", "NetReduce\NetReduce.csproj", "{C1BDE385-A99F-4F4B-A029-30BFAF58E85C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce.Core.Tests", "NetReduce.Core.Tests\NetReduce.Core.Tests.csproj", "{98C28953-E984-480A-9342-DCF440F85573}"
@@ -20,6 +22,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce.WorkerService.Tes
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce.WorkerService.ConsoleHost", "NetReduce.WorkerService.ConsoleHost\NetReduce.WorkerService.ConsoleHost.csproj", "{C42B7D5F-8198-47D5-8636-3C87774DBCA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce.CoordinatorWebConsole", "NetReduce.CoordinatorWebConsole\NetReduce.CoordinatorWebConsole.csproj", "{8DA806BB-167D-4F1E-9FCD-4412E0C5C540}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1F03A337-7CFA-467E-AA2E-73BC8D92AB30} = {1F03A337-7CFA-467E-AA2E-73BC8D92AB30}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +66,10 @@ Global
 		{C42B7D5F-8198-47D5-8636-3C87774DBCA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C42B7D5F-8198-47D5-8636-3C87774DBCA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C42B7D5F-8198-47D5-8636-3C87774DBCA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DA806BB-167D-4F1E-9FCD-4412E0C5C540}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DA806BB-167D-4F1E-9FCD-4412E0C5C540}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DA806BB-167D-4F1E-9FCD-4412E0C5C540}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DA806BB-167D-4F1E-9FCD-4412E0C5C540}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,156 @@
+﻿@{
+    ViewBag.Title = "Coordinator Management";
+}
+
+<h2>Coordinator management</h2>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="panel panel-default" data-bind="with: WorkersManagement">
+            <div class="panel-heading">
+                <h3>Workers</h3>
+            </div>
+            <div class="panel-body">
+                <div data-bind="visible: IsLoading">Loading...</div>
+                <div data-bind="foreach: Workers, visible: !IsLoading()">
+                    <div class="row">
+                        <div class="col-lg-6" data-bind="text: Uri"></div>
+                    </div>
+                </div>
+                <hr/>
+                <div>
+                    <form>
+                        <div class="form-group">
+                            <label for="newWorkerUri">New Worker URI</label>
+                            <input type="url" class="form-control" id="newWorkerUri" data-bind="value: NewWorkerUri, disable: IsNewWorkerAdding" />
+
+                        </div>
+                        <button type="submit" class="btn btn-success" data-bind="click: AddNewWorker, disable: IsNewWorkerAdding">
+                            Add<span data-bind="visible: IsNewWorkerAdding">...</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Task</h3>
+            </div>
+            <div class="panel-body">
+                <form>
+                    <div class="form-group">
+                        <label for="mapCode">Map Code</label>
+                        <textarea class="form-control" id="mapCode" data-bind="value: MapCode"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="reduceCode">Reduce Code</label>
+                        <textarea class="form-control" id="reduceCode" data-bind="value: ReduceCode"></textarea>
+                    </div>
+                    <button class="btn btn-primary" data-bind="click: SubmitTask, disable: IsTaskSubmitting">
+                        Submit Task<span data-bind="visible: IsTaskSubmitting">...</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        function WorkerViewModel(uri) {
+            var self = this;
+            self.Uri = ko.observable(uri);
+        }
+
+        function WorkersViewModel(getWorkersUrl, addWorkerUrl) {
+            var self = this;
+
+            function loadWorkersFromList(result) {
+                var workers = [];
+                for (var i in result) {
+                    var workerUri = result[i];
+                    workers.push(new WorkerViewModel(workerUri));
+                }
+
+                self.Workers(workers);
+            }
+
+            self.IsNewWorkerAdding = ko.observable(false);
+            self.NewWorkerUri = ko.observable("");
+            self.AddNewWorker = function () {
+                if (!self.IsNewWorkerAdding()) {
+                    self.IsNewWorkerAdding(true);
+                    $.ajax({
+                        url: addWorkerUrl,
+                        type: "POST",
+                        data: {
+                            uriString: self.NewWorkerUri()
+                        },
+                        success: function (result) {
+                            loadWorkersFromList(result.Uris);
+                            self.IsNewWorkerAdding(false);
+                        },
+                        error: function () {
+                            self.IsNewWorkerAdding(false);
+                        }
+                    })
+                }
+            }
+
+            self.IsLoading = ko.observable(false);
+            self.Workers = ko.observableArray([]);
+            self.ReloadWorkers = function () {
+                if (!self.IsLoading()) {
+                    self.IsLoading(true);
+                    $.ajax({
+                        url: getWorkersUrl,
+                        type: "GET",
+                        success: function (result) {
+                            loadWorkersFromList(result);
+                            self.IsLoading(false);
+                        },
+                        error: function () {
+                            self.IsLoading(false);
+                        }
+                    })
+                }
+            }
+
+            self.ReloadWorkers();
+        }
+
+        function CoordinatorManagementViewModel(getWorkersUrl, addWorkerUrl, submitTaskUrl) {
+            var self = this;
+
+            self.WorkersManagement = new WorkersViewModel(getWorkersUrl, addWorkerUrl);
+            self.IsTaskSubmitting = ko.observable(false);
+            self.MapCode = ko.observable("");
+            self.ReduceCode = ko.observable("");
+            self.SubmitTask = function () {
+                if (!self.IsTaskSubmitting()) {
+                    self.IsTaskSubmitting(true);
+                    alert("TODO");
+                    $.ajax({
+                        url: submitTaskUrl,
+                        type: "POST",
+                        data: {
+                            mapCode: self.MapCode(),
+                            reduceCode: self.ReduceCode()
+                        },
+                        success: function (result) {
+                            self.IsTaskSubmitting(false);
+                        },
+                        error: function () {
+                            self.IsTaskSubmitting(false);
+                        }
+                    })
+                }
+            }
+        }
+
+        ko.applyBindings(new CoordinatorManagementViewModel('@Url.Action("Uris","Coordinator")',
+            '@Url.Action("Uris","Coordinator")', '@Url.Action("Task", "Coordinator")'));
+    </script>
+}
