@@ -10,7 +10,9 @@
     public class RemoteWorker<T> : IWorker where T : IRemoteWorkerService, new()
     {
         public static bool NonBlockingMapAndReduce { get; set; }
-        
+
+        public static Uri CoordinatorCallbackUri { get; set; }
+
         public RemoteWorker()
         {
             this.nonBlockingMapAndReduce = NonBlockingMapAndReduce;
@@ -68,7 +70,7 @@
                     {
                         try
                         {
-                            resultKeys = this.remoteWorkerService.TryJoin(this.Id, callbackUri: null);
+                            resultKeys = this.remoteWorkerService.TryJoin(this.Id, callbackUri: CoordinatorCallbackUri);
                         }
                         catch { }
                     } while (resultKeys == null);

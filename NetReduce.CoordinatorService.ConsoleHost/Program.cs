@@ -4,11 +4,18 @@
     using System.ServiceModel;
     using System.ServiceModel.Description;
 
+    using NetReduce.CoordinatorService.ConsoleHost.Properties;
+    using NetReduce.Remote;
+
     class Program
     {
         static void Main(string[] args)
         {
-            var baseAddress = new Uri("http://0.0.0.0:7777/CoordinatorService.svc");
+            var listenUri = Settings.Default.ListenUri;
+
+            RemoteWorker<ServiceClientWrapper>.CoordinatorCallbackUri = new Uri(listenUri);
+
+            var baseAddress = new Uri(listenUri);
             // Create the ServiceHost.
             using (var host = new ServiceHost(typeof(CoordinatorService), baseAddress))
             {

@@ -175,7 +175,7 @@
 
             var t = new Thread(() =>
                 {
-                    var binding = new BasicHttpBinding("BasicHttpBinding_ICoordinatorService");
+                    var binding = new BasicHttpBinding();
 
                     using (var csclient = new CSClient.CoordinatorServiceClient(binding, new EndpointAddress(callbackUri)))
                     {

@@ -44,14 +44,31 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetReduce.CoordinatorService\NetReduce.CoordinatorService.csproj">
       <Project>{ec5bc5a3-5b94-43f9-9703-741dfe35c544}</Project>
       <Name>NetReduce.CoordinatorService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetReduce.Core\NetReduce.Core.csproj">
+      <Project>{D4A1828A-914B-4AFC-B540-9A267927FEE1}</Project>
+      <Name>NetReduce.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetReduce.Remote\NetReduce.Remote.csproj">
+      <Project>{E29E8C31-6EA1-4920-8BA1-9F954BFFD64F}</Project>
+      <Name>NetReduce.Remote</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
