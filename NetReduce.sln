@@ -34,6 +34,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce.CoordinatorServic
 		{1F03A337-7CFA-467E-AA2E-73BC8D92AB30} = {1F03A337-7CFA-467E-AA2E-73BC8D92AB30}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce.CoordinatorService.ConsoleHost", "NetReduce.CoordinatorService.ConsoleHost\NetReduce.CoordinatorService.ConsoleHost.csproj", "{DFBC3A11-C0C4-41FE-9514-C4D455551553}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,10 @@ Global
 		{45135014-B8AA-4CFF-A17F-741A0BDBA6A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45135014-B8AA-4CFF-A17F-741A0BDBA6A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45135014-B8AA-4CFF-A17F-741A0BDBA6A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFBC3A11-C0C4-41FE-9514-C4D455551553}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFBC3A11-C0C4-41FE-9514-C4D455551553}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFBC3A11-C0C4-41FE-9514-C4D455551553}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFBC3A11-C0C4-41FE-9514-C4D455551553}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

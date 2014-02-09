@@ -12,6 +12,7 @@
     public class ThreadWorker : IWorker
     {
         private Thread workerThread;
+        private object workerThreadLock = new object();
         private ConcurrentQueue<Tuple<string, string>> taskQueue;
 
         private static string GetFileName(Uri uri)
@@ -43,34 +44,40 @@
 
         public void Map(Uri inputFileName, Uri mapCodeFileName)
         {
-            this.taskQueue.Enqueue(new Tuple<string, string>(GetFileName(inputFileName), GetFileName(mapCodeFileName)));
-            if (this.workerThread.IsAlive)
+            lock (this.workerThreadLock)
             {
-                return;
+                this.taskQueue.Enqueue(new Tuple<string, string>(GetFileName(inputFileName), GetFileName(mapCodeFileName)));
+                if (this.workerThread.IsAlive)
+                {
+                    return;
+                }
+
+                this.workerThread = new Thread(() =>
+                {
+                    PerformMap();
+                });
+
+                this.workerThread.Start();
             }
-
-            this.workerThread = new Thread(() =>
-            {
-                PerformMap();
-            });
-
-            this.workerThread.Start();
         }
 
         public void Reduce(string key, Uri reduceCodeFileName)
         {
-            this.taskQueue.Enqueue(new Tuple<string, string>(key, GetFileName(reduceCodeFileName)));
-            if (this.workerThread.IsAlive)
+            lock (this.workerThreadLock)
             {
-                return;
+                this.taskQueue.Enqueue(new Tuple<string, string>(key, GetFileName(reduceCodeFileName)));
+                if (this.workerThread.IsAlive)
+                {
+                    return;
+                }
+
+                this.workerThread = new Thread(() =>
+                {
+                    PerformReduce();
+                });
+
+                this.workerThread.Start();
             }
-
-            this.workerThread = new Thread(() =>
-            {
-                PerformReduce();
-            });
-
-            this.workerThread.Start();
         }
 
         private void EnsureWorkerThreadIsFree()
@@ -124,8 +131,12 @@
 
         public IEnumerable<string> Join()
         {
-            this.workerThread.Join();
-            return this.Storage.GetKeys();
+            while (this.workerThread == null) Thread.Sleep(10);
+            lock (this.workerThreadLock)
+            {
+                this.workerThread.Join();
+                return this.Storage.GetKeys();
+            }
         }
 
         public Uri[] TransferFiles(int workerId, System.Collections.Generic.Dictionary<string, Uri> keysAndUris)
@@ -140,7 +151,7 @@
 
         public void Init()
         {
-            
+
         }
     }
 }

@@ -28,6 +28,7 @@
             this.storage = new FileSystemStorage(@"c:\temp\netreduce\coordinator", true);
             this.coordinator = new Coordinator<RemoteWorker<ServiceClientWrapper>>(this.storage);
             this.uriProvider = new UriProvider();
+            ServiceClientWrapper.UriProvider = this.uriProvider;
         }
 
         public static Uri EndpointUri { get; set; }
