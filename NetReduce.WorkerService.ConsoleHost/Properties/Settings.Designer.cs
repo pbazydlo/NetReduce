@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NetReduce.CoordinatorService.ConsoleHost.Properties {
+namespace NetReduce.WorkerService.ConsoleHost.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -23,12 +23,15 @@ namespace NetReduce.CoordinatorService.ConsoleHost.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://0.0.0.0:7777/CoordinatorService.svc")]
-        public string ListenUri {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:7777/CoordinatorService.svc")]
+        public string CoordinatorUri {
             get {
-                return ((string)(this["ListenUri"]));
+                return ((string)(this["CoordinatorUri"]));
+            }
+            set {
+                this["CoordinatorUri"] = value;
             }
         }
     }

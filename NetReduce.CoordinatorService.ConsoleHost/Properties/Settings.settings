@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="ListenUri" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://localhost:7777/CoordinatorService.svc</Value>
+      <Value Profile="(Default)">http://0.0.0.0:7777/CoordinatorService.svc</Value>
     </Setting>
   </Settings>
 </SettingsFile>

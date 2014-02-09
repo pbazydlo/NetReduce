@@ -36,6 +36,7 @@
         {
             if (!this.uriProvider.Uris.Contains(uri))
             {
+                Console.WriteLine("Worker {0} registered", uri);
                 this.uriProvider.Uris.Add(uri);
             }
         }
@@ -49,12 +50,18 @@
         {
             if (this.uriProvider.Uris.Contains(uri))
             {
+                Console.WriteLine("Worker {0} unregistered", uri);
                 this.uriProvider.Uris.Remove(uri);
             }
         }
 
         public bool RunJob(int numberOfMappers, int numberOfReducers, Uri mapCodeFile, Uri reduceCodeFile, Uri[] filesToProcess)
         {
+            if (!this.uriProvider.Uris.Any())
+            {
+                return false;
+            }
+            
             if (this.coordinatorThread != null && this.coordinatorThread.IsAlive)
             {
                 return false;
