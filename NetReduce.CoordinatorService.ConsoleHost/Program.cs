@@ -1,4 +1,4 @@
-﻿namespace NetReduce.CoordinatorService
+﻿namespace NetReduce.CoordinatorService.ConsoleHost
 {
     using System;
     using System.ServiceModel;

@@ -6,6 +6,7 @@
     using System.Linq;
     using System.ServiceModel;
     using System.Text.RegularExpressions;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Web;
 
@@ -87,6 +88,8 @@
             var worker = GetWorker(workerId);
             worker.Join();
 
+            RemoteWorkerService.PushReduceResultsToCoordinatorInSeparateThread(workerId, callbackUri);
+
             return worker.Storage.GetKeys().ToArray();
         }
 
@@ -132,7 +135,7 @@
         private static List<Task<Uri>> PushFilesToReducers(Dictionary<string, Uri> keysAndUris, IStorage workerStorage)
         {
             var pushFileTasks = new List<Task<Uri>>();
-            var regex = new Regex(string.Format("^" + Core.Properties.Settings.Default.MapOutputFileName+ "$", @"(?<Key>.+)", "[0-9]+", RegexExtensions.GuidRegexString));
+            var regex = new Regex(string.Format("^" + Core.Properties.Settings.Default.MapOutputFileName + "$", @"(?<Key>.+)", "[0-9]+", RegexExtensions.GuidRegexString));
             var uris = workerStorage.ListFiles();
             foreach (var uri in uris)
             {
@@ -156,11 +159,49 @@
             var reducerWorkerId = GetWorkerId(reducerUri);
             var reducerEndpointUri = GetWorkerEndpointUri(reducerUri);
             var binding = new BasicHttpBinding();//new BasicHttpBinding("BasicHttpBinding_IRemoteWorkerService");
-            
+
             using (var client = new WSClient.RemoteWorkerServiceClient(binding, new EndpointAddress(reducerEndpointUri)))
             {
                 return client.PushFileAsync(reducerWorkerId, fileName, workerStorage.Read(fileName));
             }
+        }
+
+        private static void PushReduceResultsToCoordinatorInSeparateThread(int workerId, Uri callbackUri)
+        {
+            if (callbackUri == null)
+            {
+                return;
+            }
+
+            var t = new Thread(() =>
+                {
+                    var binding = new BasicHttpBinding("BasicHttpBinding_ICoordinatorService");
+
+                    using (var csclient = new CSClient.CoordinatorServiceClient(binding, new EndpointAddress(callbackUri)))
+                    {
+                        var storage = RemoteWorkerService.GetWorker(workerId).Storage;
+
+                        var regex =
+                            new Regex(
+                                string.Format(
+                                    "^" + Core.Properties.Settings.Default.ReduceOutputFileName + "$",
+                                    @"(?<Key>.+)",
+                                    "[0-9]+",
+                                    RegexExtensions.GuidRegexString));
+                        var uris = storage.ListFiles();
+                        foreach (var uri in uris)
+                        {
+                            var fileName = storage.GetFileName(uri);
+                            if (regex.IsMatch(fileName))
+                            {
+                                var value = storage.Read(fileName);
+                                csclient.AddToStorage(fileName, value);
+                            }
+                        }
+                    }
+                });
+
+            t.Start();
         }
     }
 }
