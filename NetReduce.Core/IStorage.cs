@@ -14,5 +14,6 @@
         void Clean();
         string GetFileName(Uri uri);
         IEnumerable<string> GetKeys();
+        void Remove(Uri uri);
     }
 }

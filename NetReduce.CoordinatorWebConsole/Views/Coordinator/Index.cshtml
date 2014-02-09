@@ -17,7 +17,7 @@
                         <div class="col-lg-6" data-bind="text: Uri"></div>
                     </div>
                 </div>
-                <hr/>
+                <hr />
                 <div>
                     <form>
                         <div class="form-group">
@@ -39,7 +39,7 @@
                 <h3>Task</h3>
             </div>
             <div class="panel-body">
-                <form>
+                <form id="wh">
                     <div class="form-group">
                         <label for="mapCode">Map Code</label>
                         <textarea class="form-control" id="mapCode" data-bind="value: MapCode"></textarea>
@@ -52,6 +52,17 @@
                         Submit Task<span data-bind="visible: IsTaskSubmitting">...</span>
                     </button>
                 </form>
+                @using (Ajax.BeginForm("Files", "Coordinator", new AjaxOptions()
+                    {
+                        HttpMethod = "Post"
+                    }))
+                {
+                    <div class="form-group">
+                        <label for="newFile">New File</label>
+                        <input type="file" name="newFile" id="newFile" class="form-control" />
+                    </div>
+                    <button class="btn btn-primary">Submit File</button> 
+                }
             </div>
         </div>
     </div>
@@ -150,7 +161,7 @@
             }
         }
 
-        ko.applyBindings(new CoordinatorManagementViewModel('@Url.Action("Uris","Coordinator")',
-            '@Url.Action("Uris","Coordinator")', '@Url.Action("Task", "Coordinator")'));
+        ko.applyBindings(new CoordinatorManagementViewModel('@Url.Action("Uris", "Coordinator")',
+            '@Url.Action("Uris", "Coordinator")', '@Url.Action("Task", "Coordinator")'));
     </script>
 }

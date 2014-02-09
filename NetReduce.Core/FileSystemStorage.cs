@@ -134,5 +134,14 @@
 
             return result;
         }
+
+
+        public void Remove(Uri uri)
+        {
+            var fileName = this.GetFileName(uri);
+            var filePath = this.GetFilePathAndCheckIfExists(fileName);
+
+            File.Delete(filePath);
+        }
     }
 }

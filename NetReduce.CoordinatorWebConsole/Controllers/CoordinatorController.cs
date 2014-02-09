@@ -60,6 +60,13 @@ namespace NetReduce.CoordinatorWebConsole.Controllers
             throw new NotImplementedException();
         }
 
+        [HttpPost]
+        [ActionName("Files")]
+        public ActionResult SubmitFile()
+        {
+            return null;
+        }
+
         private ICollection<string> GetRegisteredUris()
         {
             return UriProvider.Uris.Select(u => u.OriginalString).ToList();

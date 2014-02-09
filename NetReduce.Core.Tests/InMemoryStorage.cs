@@ -84,5 +84,16 @@
 
             return result;
         }
+
+
+        public void Remove(Uri uri)
+        {
+            var fileName = this.GetFileName(uri);
+            string tmp;
+            while(!this.storage.TryRemove(fileName, out tmp))
+            {
+
+            }
+        }
     }
 }
