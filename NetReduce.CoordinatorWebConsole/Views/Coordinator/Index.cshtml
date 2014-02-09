@@ -6,63 +6,119 @@
 
 <div class="row">
     <div class="col-lg-6">
-        <div class="panel panel-default" data-bind="with: WorkersManagement">
-            <div class="panel-heading">
-                <h3>Workers</h3>
-            </div>
-            <div class="panel-body">
-                <div data-bind="visible: IsLoading">Loading...</div>
-                <div data-bind="foreach: Workers, visible: !IsLoading()">
-                    <div class="row">
-                        <div class="col-lg-6" data-bind="text: Uri"></div>
+        <div class="row">
+            <div class="panel panel-default" data-bind="with: WorkersManagement">
+                <div class="panel-heading">
+                    <h3>Workers</h3>
+                </div>
+                <div class="panel-body">
+                    <div data-bind="visible: IsLoading">Loading...</div>
+                    <div data-bind="visible: !IsLoading()">
+                        <table class="table table-bordered table-condensed table-responsive table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Endpoint URI</th>
+                                    <th>CPU</th>
+                                    <th>Memmory</th>
+                                </tr>
+                            </thead>
+                            <tbody data-bind="foreach: Workers">
+                                <tr>
+                                    <td data-bind="text: Uri"></td>
+                                    <td data-bind="text: Cpu"></td>
+                                    <td data-bind="text: Memmory"></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <hr />
-                <div>
-                    <form>
-                        <div class="form-group">
-                            <label for="newWorkerUri">New Worker URI</label>
-                            <input type="url" class="form-control" id="newWorkerUri" data-bind="value: NewWorkerUri, disable: IsNewWorkerAdding" />
-
-                        </div>
-                        <button type="submit" class="btn btn-success" data-bind="click: AddNewWorker, disable: IsNewWorkerAdding">
-                            Add<span data-bind="visible: IsNewWorkerAdding">...</span>
-                        </button>
-                    </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3>Files</h3>
+                </div>
+                <div class="panel-body">
+                    <div>
+                        <table class="table table-bordered table-condensed table-responsive table-striped">
+                            <thead>
+                                <tr>
+                                    <th>P</th>
+                                    <th>MC</th>
+                                    <th>RC</th>
+                                    <th>File URI</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody data-bind="foreach: Files">
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" class="form-control" style="height: auto;width:auto" data-bind="checked: ToProcess" />
+                                    </td>
+                                    <td>
+                                        <input type="radio" name="MC" class="form-control" style="height: auto;width:auto" data-bind="checked: IsMapCode" />
+                                    </td>
+                                    <td>
+                                        <input type="radio" name="RC" class="form-control" style="height: auto;width:auto" data-bind="checked: IsReduceCode" />
+                                    </td>
+                                    <td data-bind="text: Uri"></td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button class="btn btn-danger">Remove <i class="glyphicon glyphicon-remove"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        @using (Ajax.BeginForm("Files", "Coordinator", new AjaxOptions()
+                    {
+                        HttpMethod = "Post"
+                    }, new { enctype = "multipart/form-data" }))
+                        {
+                            <div class="form-group">
+                                <label for="newFile">New File</label>
+                                <input type="file" name="files" class="form-control" />
+                            </div>
+                            <div class="progress" id="fileUploadProgressBar">
+                                <div class="bar" id="fileUploadBar"></div>
+                            </div>
+                            <button class="btn btn-success">Submit File</button>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-lg-6">
-        <div class="panel panel-default">
+        <div class="panel panel-default" data-bind="with: MRResults">
             <div class="panel-heading">
                 <h3>Task</h3>
             </div>
             <div class="panel-body">
-                <form id="wh">
-                    <div class="form-group">
-                        <label for="mapCode">Map Code</label>
-                        <textarea class="form-control" id="mapCode" data-bind="value: MapCode"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="reduceCode">Reduce Code</label>
-                        <textarea class="form-control" id="reduceCode" data-bind="value: ReduceCode"></textarea>
-                    </div>
-                    <button class="btn btn-primary" data-bind="click: SubmitTask, disable: IsTaskSubmitting">
-                        Submit Task<span data-bind="visible: IsTaskSubmitting">...</span>
-                    </button>
-                </form>
-                @using (Ajax.BeginForm("Files", "Coordinator", new AjaxOptions()
-                    {
-                        HttpMethod = "Post"
-                    }))
-                {
-                    <div class="form-group">
-                        <label for="newFile">New File</label>
-                        <input type="file" name="newFile" id="newFile" class="form-control" />
-                    </div>
-                    <button class="btn btn-primary">Submit File</button> 
-                }
+                <div>
+                    <strong>Status</strong>
+                    <span>Not running</span>
+                </div>
+                <div>
+                    <strong>Results</strong>
+                </div>
+                <table class="table table-bordered table-condensed table-responsive table-striped">
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: Results">
+                        <tr>
+                            <td><em data-bind="text: Key"></em></td>
+                            <td><p data-bind="text: Value"></p></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -70,9 +126,31 @@
 
 @section scripts {
     <script type="text/javascript">
-        function WorkerViewModel(uri) {
+        function KeyResultViewModel(key, value) {
+            var self = this;
+            self.Key = ko.observable(key);
+            self.Value = ko.observable(value);
+        }
+
+        function MapReduceResultsViewModel() {
+            var self = this;
+            self.Status = ko.observable("Not running");
+            self.Results = ko.observableArray([]);
+        }
+
+        function FileViewModel(uri) {
             var self = this;
             self.Uri = ko.observable(uri);
+            self.ToProcess = ko.observable(false);
+            self.IsMapCode = ko.observable(false);
+            self.IsReduceCode = ko.observable(false);
+        }
+
+        function WorkerViewModel(uri, cpu, memmory) {
+            var self = this;
+            self.Uri = ko.observable(uri);
+            self.Cpu = ko.observable(cpu);
+            self.Memmory = ko.observable(memmory);
         }
 
         function WorkersViewModel(getWorkersUrl, addWorkerUrl) {
@@ -132,7 +210,7 @@
             self.ReloadWorkers();
         }
 
-        function CoordinatorManagementViewModel(getWorkersUrl, addWorkerUrl, submitTaskUrl) {
+        function CoordinatorManagementViewModel(getWorkersUrl, addWorkerUrl, submitTaskUrl, getFilesUrl) {
             var self = this;
 
             self.WorkersManagement = new WorkersViewModel(getWorkersUrl, addWorkerUrl);
@@ -159,9 +237,62 @@
                     })
                 }
             }
-        }
+            self.Files = ko.observableArray([new FileViewModel("test")]);
+            self.MRResults = ko.observable(new MapReduceResultsViewModel());
+            self.IsReloadingFiles = ko.observable(false);
+            self.ReloadFiles = function () {
+                if (!self.IsReloadingFiles()) {
+                    self.IsReloadingFiles(true);
+                    $.ajax({
+                        url: getFilesUrl,
+                        type: "GET",
+                        success: function (result) {
+                            var files = [];
+                            for (var i in result) {
+                                var file = result[i];
+                                files.push(new FileViewModel(file.Uri));
+                            }
 
-        ko.applyBindings(new CoordinatorManagementViewModel('@Url.Action("Uris", "Coordinator")',
-            '@Url.Action("Uris", "Coordinator")', '@Url.Action("Task", "Coordinator")'));
+                            self.Files(files);
+                            self.IsReloadingFiles(false);
+                        },
+                        error: function () {
+                            self.IsReloadingFiles(false);
+                        }
+                    })
+                }
+            }
+
+            self.ReloadFiles();
+        }
+        var viewModel = new CoordinatorManagementViewModel('@Url.Action("Uris", "Coordinator")',
+            '@Url.Action("Uris", "Coordinator")', '@Url.Action("Task", "Coordinator")', '@Url.Action("Files", "Coordinator")');
+        ko.applyBindings(viewModel);
+
+        $(document).ready(function () {
+            var bar = $('#fileUploadBar');
+            $('#fileUploadProgressBar').toggle();
+
+            $('form').ajaxForm({
+                beforeSend: function () {
+                    var percentVal = '0%';
+                    bar.width(percentVal);
+                    $('#fileUploadProgressBar').toggle();
+                },
+                uploadProgress: function (event, position, total, percentComplete) {
+                    var percentVal = percentComplete + '%';
+                    bar.width(percentVal);
+                },
+                success: function () {
+                    var percentVal = '100%';
+                    bar.width(percentVal);
+                },
+                complete: function (xhr) {
+                    $('#fileUploadProgressBar').toggle();
+                    viewModel.ReloadFiles();
+                    // status.html(xhr.responseText);
+                }
+            });
+        })
     </script>
 }
