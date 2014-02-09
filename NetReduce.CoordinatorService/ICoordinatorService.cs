@@ -18,7 +18,7 @@
         void RemoveWorker(Uri uri);
 
         [OperationContract]
-        void RunJob(Uri[] filesToProcess, Uri mapCodeFile, Uri reduceCodeFile);
+        bool RunJob(int numberOfMappers, int numberOfReducers, Uri mapCodeFile, Uri reduceCodeFile, Uri[] filesToProcess);
 
         [OperationContract]
         Uri AddToStorage(string fileName, string content);
@@ -40,9 +40,9 @@
     public class MapReduceResult
     {
         [DataMember]
-        Tuple<string, string>[] KeysAndValues { get; set; }
+        public Tuple<string, string>[] KeysAndValues { get; set; }
 
         [DataMember]
-        bool IsFinished { get; set; }
+        public bool IsRunning { get; set; }
     }
 }

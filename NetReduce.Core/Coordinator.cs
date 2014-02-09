@@ -20,8 +20,12 @@
             this.storage = storage;
         }
 
+        public bool IsRunning { get; set; }
+
         public void Start(int maxMapperNo, int maxReducerNo, Uri mapFuncFileName, Uri reduceFuncFileName, IEnumerable<Uri> filesToProcess)
         {
+            this.IsRunning = true;
+
             this.mapWorkers = this.InitWorkers(1, maxMapperNo);
             this.keys = this.PerformMap(mapFuncFileName, filesToProcess);
             this.keys = this.keys.Distinct().ToList();
@@ -29,6 +33,8 @@
             var reducersAssignment = this.TransferIntermediateFiles(this.keys);
             this.PerformReduce(reduceFuncFileName, reducersAssignment);
             this.CleanUp();
+
+            this.IsRunning = false;
         }
 
         public IEnumerable<string> GetKeys()
