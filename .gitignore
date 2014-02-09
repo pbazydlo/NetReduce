@@ -108,3 +108,4 @@ Backup*/
 UpgradeLog*.XML
 *.mdf
 *.ldf
+/NetReduce.CoordinatorService.Old

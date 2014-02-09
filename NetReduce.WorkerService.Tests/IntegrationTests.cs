@@ -38,7 +38,7 @@ namespace NetReduce.WorkerService.Tests
         {
             var fileName = new Uri("file:///file1.txt");
             var fileContent = "whatever am i i";
-            var mapperCodeFileName =  new Uri("file:///SampleMapper.cs");
+            var mapperCodeFileName = new Uri("file:///SampleMapper.cs");
             this.storage.Store(fileName, fileContent);
             TestHelpers.LoadToStorage(@"..\..\..\NetReduce.Core.Tests\SampleMapper.cs", mapperCodeFileName, this.storage);
             IUriProvider uriProvider = new UriProvider();
@@ -114,7 +114,7 @@ namespace NetReduce.WorkerService.Tests
 
             var reduceStorage3 = new FileSystemStorage(@"c:\temp\netreduce\3", false);
             var reduceStorage4 = new FileSystemStorage(@"c:\temp\netreduce\4", false);
-            var storages = new [] { reduceStorage3, reduceStorage4 };
+            var storages = new[] { reduceStorage3, reduceStorage4 };
             string result = string.Empty;
             foreach (var reduceStorage in storages)
             {
@@ -134,5 +134,39 @@ namespace NetReduce.WorkerService.Tests
         private string storagePath = @"c:\temp\netreduce";
         private IStorage storage;
         private Process serviceProcess;
+
+        [TestMethod]
+        public void ReducersPushResultsBackToCoordinator()
+        {
+            var coordinatorStorage = new FileSystemStorage(@"c:\temp\netreduce\coordinator", true);
+
+            var coordinatorProcess = Process.Start(new ProcessStartInfo(@"..\..\..\NetReduce.CoordinatorService.ConsoleHost\bin\Debug\NetReduce.CoordinatorService.ConsoleHost.exe"));
+            Thread.Sleep(100);
+
+            RemoteWorker<ServiceClientWrapper>.CoordinatorCallbackUri = new Uri("http://localhost:7777/CoordinatorService.svc");
+            this.RemoteReduceWorks();
+
+            Thread.Sleep(1000);
+
+            var result = default(string);
+            var regex = new Regex(string.Format("^" + Core.Properties.Settings.Default.ReduceOutputFileName + "$", @"(?<Key>.+)", "[0-9]+", RegexExtensions.GuidRegexString));
+            var uris = coordinatorStorage.ListFiles();
+            foreach (var uri in uris)
+            {
+                var fileName = coordinatorStorage.GetFileName(uri);
+                if (regex.IsMatch(fileName))
+                {
+                    var key = regex.Match(fileName).Groups["Key"].Value;
+                    if (key == "k1")
+                    {
+                        result = coordinatorStorage.Read(fileName);
+                    }
+                }
+            }
+
+            result.ShouldBe("3");
+
+            coordinatorProcess.Kill();
+        }
     }
 }

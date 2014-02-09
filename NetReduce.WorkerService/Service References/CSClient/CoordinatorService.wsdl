@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="CoordinatorService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:15969/CoordinatorService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:15969/CoordinatorService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:15969/CoordinatorService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:15969/CoordinatorService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/NetReduce.CoordinatorService" />
+      <xsd:import schemaLocation="http://localhost:15969/CoordinatorService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/System" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ICoordinatorService_AddWorker_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddWorker" />
+  </wsdl:message>
+  <wsdl:message name="ICoordinatorService_AddWorker_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddWorkerResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICoordinatorService_GetWorkers_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetWorkers" />
+  </wsdl:message>
+  <wsdl:message name="ICoordinatorService_GetWorkers_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetWorkersResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICoordinatorService_RemoveWorker_InputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveWorker" />
+  </wsdl:message>
+  <wsdl:message name="ICoordinatorService_RemoveWorker_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveWorkerResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICoordinatorService_RunJob_InputMessage">
+    <wsdl:part name="parameters" element="tns:RunJob" />
+  </wsdl:message>
+  <wsdl:message name="ICoordinatorService_RunJob_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RunJobResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICoordinatorService_AddToStorage_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddToStorage" />
+  </wsdl:message>
+  <wsdl:message name="ICoordinatorService_AddToStorage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddToStorageResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICoordinatorService_ListStorageFiles_InputMessage">
+    <wsdl:part name="parameters" element="tns:ListStorageFiles" />
+  </wsdl:message>
+  <wsdl:message name="ICoordinatorService_ListStorageFiles_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ListStorageFilesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICoordinatorService_RemoveFromStorage_InputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveFromStorage" />
+  </wsdl:message>
+  <wsdl:message name="ICoordinatorService_RemoveFromStorage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveFromStorageResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICoordinatorService_CleanStorage_InputMessage">
+    <wsdl:part name="parameters" element="tns:CleanStorage" />
+  </wsdl:message>
+  <wsdl:message name="ICoordinatorService_CleanStorage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CleanStorageResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICoordinatorService_GetResults_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetResults" />
+  </wsdl:message>
+  <wsdl:message name="ICoordinatorService_GetResults_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetResultsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ICoordinatorService">
+    <wsdl:operation name="AddWorker">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICoordinatorService/AddWorker" message="tns:ICoordinatorService_AddWorker_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICoordinatorService/AddWorkerResponse" message="tns:ICoordinatorService_AddWorker_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkers">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICoordinatorService/GetWorkers" message="tns:ICoordinatorService_GetWorkers_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICoordinatorService/GetWorkersResponse" message="tns:ICoordinatorService_GetWorkers_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveWorker">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICoordinatorService/RemoveWorker" message="tns:ICoordinatorService_RemoveWorker_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICoordinatorService/RemoveWorkerResponse" message="tns:ICoordinatorService_RemoveWorker_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RunJob">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICoordinatorService/RunJob" message="tns:ICoordinatorService_RunJob_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICoordinatorService/RunJobResponse" message="tns:ICoordinatorService_RunJob_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddToStorage">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICoordinatorService/AddToStorage" message="tns:ICoordinatorService_AddToStorage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICoordinatorService/AddToStorageResponse" message="tns:ICoordinatorService_AddToStorage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ListStorageFiles">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICoordinatorService/ListStorageFiles" message="tns:ICoordinatorService_ListStorageFiles_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICoordinatorService/ListStorageFilesResponse" message="tns:ICoordinatorService_ListStorageFiles_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveFromStorage">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICoordinatorService/RemoveFromStorage" message="tns:ICoordinatorService_RemoveFromStorage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICoordinatorService/RemoveFromStorageResponse" message="tns:ICoordinatorService_RemoveFromStorage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CleanStorage">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICoordinatorService/CleanStorage" message="tns:ICoordinatorService_CleanStorage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICoordinatorService/CleanStorageResponse" message="tns:ICoordinatorService_CleanStorage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetResults">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICoordinatorService/GetResults" message="tns:ICoordinatorService_GetResults_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICoordinatorService/GetResultsResponse" message="tns:ICoordinatorService_GetResults_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_ICoordinatorService" type="tns:ICoordinatorService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddWorker">
+      <soap:operation soapAction="http://tempuri.org/ICoordinatorService/AddWorker" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkers">
+      <soap:operation soapAction="http://tempuri.org/ICoordinatorService/GetWorkers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveWorker">
+      <soap:operation soapAction="http://tempuri.org/ICoordinatorService/RemoveWorker" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RunJob">
+      <soap:operation soapAction="http://tempuri.org/ICoordinatorService/RunJob" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddToStorage">
+      <soap:operation soapAction="http://tempuri.org/ICoordinatorService/AddToStorage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListStorageFiles">
+      <soap:operation soapAction="http://tempuri.org/ICoordinatorService/ListStorageFiles" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveFromStorage">
+      <soap:operation soapAction="http://tempuri.org/ICoordinatorService/RemoveFromStorage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CleanStorage">
+      <soap:operation soapAction="http://tempuri.org/ICoordinatorService/CleanStorage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetResults">
+      <soap:operation soapAction="http://tempuri.org/ICoordinatorService/GetResults" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CoordinatorService">
+    <wsdl:port name="BasicHttpBinding_ICoordinatorService" binding="tns:BasicHttpBinding_ICoordinatorService">
+      <soap:address location="http://localhost:15969/CoordinatorService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
