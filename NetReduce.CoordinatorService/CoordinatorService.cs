@@ -13,12 +13,12 @@
     {
         private IStorage storage;
 
-        private Coordinator<RemoteWorker<>> coordinator;
+        private Coordinator<RemoteWorker<ServiceClientWrapper>> coordinator;
 
         public CoordinatorService()
         {
             this.storage = new FileSystemStorage(@"c:\temp\netreduce\coordinator", true);
-            this.coordinator = new Coordinator<RemoteWorker<>>(this.storage);
+            this.coordinator = new Coordinator<RemoteWorker<ServiceClientWrapper>>(this.storage);
         }
 
         public static Uri EndpointUri { get; set; }
@@ -63,7 +63,7 @@
 
         public void RemoveFromStorage(Uri uri)
         {
-            throw new NotImplementedException();
+            this.storage.Remove(uri);
         }
 
         public void CleanStorage()
