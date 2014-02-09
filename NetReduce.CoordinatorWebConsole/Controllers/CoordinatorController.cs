@@ -28,9 +28,9 @@ namespace NetReduce.CoordinatorWebConsole.Controllers
         {
             var uri = new Uri(uriString);
             var errors = new List<string>();
-            lock(UriProviderLock)
+            lock (UriProviderLock)
             {
-                if(!UriProvider.Uris.Contains(uri))
+                if (!UriProvider.Uris.Contains(uri))
                 {
                     UriProvider.Uris.Add(uri);
                 }
@@ -62,9 +62,14 @@ namespace NetReduce.CoordinatorWebConsole.Controllers
 
         [HttpPost]
         [ActionName("Files")]
-        public ActionResult SubmitFile()
+        public ActionResult SubmitFile(IEnumerable<HttpPostedFileBase> files)
         {
-            return null;
+            return this.Json("");
+        }
+
+        public ActionResult Files()
+        {
+            return this.Json(new[] { new { Uri = "http://alamakota:18765/asdf" } }, JsonRequestBehavior.AllowGet);
         }
 
         private ICollection<string> GetRegisteredUris()
