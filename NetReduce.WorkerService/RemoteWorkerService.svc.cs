@@ -189,28 +189,34 @@
             var t = new Thread(() =>
                 {
                     var binding = new BasicHttpBinding();
-
-                    using (var csclient = new CSClient.CoordinatorServiceClient(binding, new EndpointAddress(callbackUri)))
+                    try
                     {
-                        var storage = RemoteWorkerService.GetWorker(workerId).Storage;
-
-                        var regex =
-                            new Regex(
-                                string.Format(
-                                    "^" + Core.Properties.Settings.Default.ReduceOutputFileName + "$",
-                                    @"(?<Key>.+)",
-                                    "[0-9]+",
-                                    RegexExtensions.GuidRegexString));
-                        var uris = storage.ListFiles();
-                        foreach (var uri in uris)
+                        using (var csclient = new CSClient.CoordinatorServiceClient(binding, new EndpointAddress(callbackUri)))
                         {
-                            var fileName = storage.GetFileName(uri);
-                            if (regex.IsMatch(fileName))
+                            var storage = RemoteWorkerService.GetWorker(workerId).Storage;
+
+                            var regex =
+                                new Regex(
+                                    string.Format(
+                                        "^" + Core.Properties.Settings.Default.ReduceOutputFileName + "$",
+                                        @"(?<Key>.+)",
+                                        "[0-9]+",
+                                        RegexExtensions.GuidRegexString));
+                            var uris = storage.ListFiles();
+                            foreach (var uri in uris)
                             {
-                                var value = storage.Read(fileName);
-                                csclient.AddToStorage(fileName, value);
+                                var fileName = storage.GetFileName(uri);
+                                if (regex.IsMatch(fileName))
+                                {
+                                    var value = storage.Read(fileName);
+                                    csclient.AddToStorage(fileName, value);
+                                }
                             }
                         }
+                    }
+                    catch(EndpointNotFoundException)
+                    {
+                        Console.WriteLine("Coordinator not found!");
                     }
                 });
 
