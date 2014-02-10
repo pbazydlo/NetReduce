@@ -264,7 +264,7 @@
                     var reduceFiles = self.searchInFiles(function (f) { return f.IsReduceCode(); });
                     var reduceFile = null;
                     if (reduceFiles.length > 0) {
-                        reduceFile = mapFiles[0];
+                        reduceFile = reduceFiles[0];
                     }
 
                     if (mapFile != null && reduceFile != null) {
@@ -329,7 +329,7 @@
                             self.MRResults(res);
 
                             self.IsResultsReloading(false);
-                            setTimeout(self.ReloadResults, 3000);
+                            setTimeout(self.ReloadResults, 1000);
                         },
                         error: function () {
                             self.IsResultsReloading(false);

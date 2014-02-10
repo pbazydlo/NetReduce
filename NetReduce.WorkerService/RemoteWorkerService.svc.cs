@@ -71,18 +71,21 @@
 
         public void Map(Uri uri, Uri mapFuncUri)
         {
+            Console.WriteLine("Got map");
             var worker = GetWorker(uri);
             worker.Map(uri, mapFuncUri);
         }
 
         public void Reduce(Uri uri, Uri reduceFuncUri)
         {
+            Console.WriteLine("Reduce map");
             var worker = GetWorker(uri);
             worker.Reduce(GetKey(uri), reduceFuncUri);
         }
 
         public string[] TryJoin(int workerId, Uri callbackUri)
         {
+            Console.WriteLine("Got join for {0}", workerId);
             // TODO: ignored callbackUri -> wanted to use so that worker would inform coordinator 
             // about finishing the job
             var worker = GetWorker(workerId);

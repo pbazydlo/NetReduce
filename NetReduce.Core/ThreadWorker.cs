@@ -13,6 +13,7 @@
     {
         private Thread workerThread;
         private object workerThreadLock = new object();
+        private bool wasJobEverStarted = false;
         private ConcurrentQueue<Tuple<string, string>> taskQueue;
 
         private static string GetFileName(Uri uri)
@@ -29,6 +30,7 @@
         public ThreadWorker()
         {
             this.workerThread = new Thread(() => { });
+            this.workerThread.Start();
             this.taskQueue = new ConcurrentQueue<Tuple<string, string>>();
         }
 
@@ -58,6 +60,7 @@
                 });
 
                 this.workerThread.Start();
+                this.wasJobEverStarted = true;
             }
         }
 
@@ -77,6 +80,7 @@
                 });
 
                 this.workerThread.Start();
+                this.wasJobEverStarted = true;
             }
         }
 
@@ -131,7 +135,7 @@
 
         public IEnumerable<string> Join()
         {
-            while (this.workerThread == null) Thread.Sleep(10);
+            // while (this.workerThread == null || this.wasJobEverStarted == false) Thread.Sleep(10);
             lock (this.workerThreadLock)
             {
                 this.workerThread.Join();
