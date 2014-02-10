@@ -5,6 +5,8 @@ using System.Text;
 
 namespace NetReduce.Core
 {
+    using System.Text.RegularExpressions;
+
     public static class Base64
     {
         public static string Encode(string plainText)
@@ -17,6 +19,11 @@ namespace NetReduce.Core
         {
             var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+        }
+
+        public static string EscapeForRegex(string input)
+        {
+            return Regex.Escape(input);
         }
     }
 }

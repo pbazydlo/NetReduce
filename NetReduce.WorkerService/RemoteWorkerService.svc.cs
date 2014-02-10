@@ -50,7 +50,7 @@
         {
             var parameters = HttpUtility.ParseQueryString(uri.Query);
             var key = parameters["key"];
-            return key;
+            return key.Replace(' ', '+'); // replace spaces back with '+'
         }
 
         public void Init(int workerId)

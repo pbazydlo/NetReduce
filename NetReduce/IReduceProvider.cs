@@ -4,6 +4,6 @@
 
     public interface IReduceProvider
     {
-        string Reduce(string key, IEnumerable<string> values);
+        KeyValuePair<string, string> Reduce(string key, IEnumerable<string> values);
     }
 }
