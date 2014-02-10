@@ -46,7 +46,7 @@
             TestHelpers.LoadToStorage(@"..\..\SampleReducer.cs", reducerCodeFileName, this.storage);
             var worker = new ThreadWorker(this.storage, 1);
 
-            worker.Reduce("k1", reducerCodeFileName);
+            worker.Reduce(Base64.Encode("k1"), reducerCodeFileName);
             worker.Join();
 
             var result = default(string);
@@ -58,7 +58,7 @@
                 if (regex.IsMatch(fileName))
                 {
                     var key = regex.Match(fileName).Groups["Key"].Value;
-                    if (key == "k1")
+                    if (Base64.Decode(key) == "k1")
                     {
                         result = this.storage.Read(fileName);
                     }

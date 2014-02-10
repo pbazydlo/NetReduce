@@ -108,7 +108,7 @@
                 foreach (var res in mapResult)
                 {
                     this.Storage.Store(
-                        string.Format(Properties.Settings.Default.MapOutputFileName, res.Key, this.Id, Guid.NewGuid()),
+                        string.Format(Properties.Settings.Default.MapOutputFileName, Base64.Encode(res.Key), this.Id, Guid.NewGuid()),
                         res.Value);
                 }
             }
@@ -132,6 +132,8 @@
                     reduceResult);
             }
         }
+
+        
 
         public IEnumerable<string> Join()
         {

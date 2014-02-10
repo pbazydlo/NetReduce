@@ -27,7 +27,7 @@
 
         public string PerformReduce()
         {
-            return this.reduce.Invoke(key, values);
+            return this.reduce.Invoke(Base64.Decode(key), values);
         }
 
         private void Load()

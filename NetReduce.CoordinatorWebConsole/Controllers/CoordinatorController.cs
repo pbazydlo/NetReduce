@@ -1,4 +1,5 @@
 ﻿using NetReduce.CoordinatorWebConsole.Models;
+using NetReduce.Core;
 using NetReduce.Remote;
 using System;
 using System.Collections.Generic;
@@ -53,7 +54,7 @@ namespace NetReduce.CoordinatorWebConsole.Controllers
             return this.Json(new
                 {
                     Status = results.IsRunning ? "Job running" : "Idle",
-                    Results = results.KeysAndValues.Select(kv => new { Key = kv.Item1, Value = kv.Item2 }).ToArray()
+                    Results = results.KeysAndValues.Select(kv => new { Key = Base64.Decode(kv.Item1), Value = kv.Item2 }).ToArray()
                 }, JsonRequestBehavior.AllowGet);
         }
 
