@@ -13,8 +13,22 @@
     {
         static void Main(string[] args)
         {
-            var listenUri = new Uri("http://0.0.0.0:28756/RemoteWorkerService.svc");
-            var callbackUri = listenUri.ToString();
+            var random = new Random();
+            var ip = "0.0.0.0";
+            var port = random.Next(49152, 65535);
+
+            if (args.Length == 1)
+            {
+                port = int.Parse(args[0]);
+            } 
+            else if (args.Length == 2)
+            {
+                ip = args[0];
+                port = int.Parse(args[1]);
+            }
+
+            var listenUri = string.Format("http://{0}:{1}/RemoteWorkerService.svc", ip, port);
+            var callbackUri = listenUri;
 
             if (callbackUri.Contains("0.0.0.0"))
             {
@@ -22,7 +36,7 @@
             }
 
             // Create the ServiceHost.
-            using (ServiceHost host = new ServiceHost(typeof(RemoteWorkerService), listenUri))
+            using (ServiceHost host = new ServiceHost(typeof(RemoteWorkerService), new Uri(listenUri)))
             {
                 Console.WriteLine("Worker URI is {0}", callbackUri);
 

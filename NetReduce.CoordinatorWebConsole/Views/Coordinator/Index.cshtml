@@ -153,8 +153,8 @@
 
         function FileViewModel(uri, removeUrl, parent) {
             var self = this;
-            self.Uri = ko.observable(uri);
-            self.ToProcess = ko.observable(false);
+            self.Uri = ko.observable(uri.Uri);
+            self.ToProcess = ko.observable(uri.ToProcess);
             self.IsMapCode = ko.observable(false);
             self.IsReduceCode = ko.observable(false);
             self.IsRemoving = ko.observable(false);
