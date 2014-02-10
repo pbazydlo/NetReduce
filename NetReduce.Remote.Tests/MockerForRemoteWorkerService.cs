@@ -41,5 +41,11 @@ namespace NetReduce.Remote.Tests
         }
 
         public Uri EndpointUri { get; private set; }
+
+
+        public Core.PerformanceMonitor.PerformanceStatistics GetPerformanceStatistics()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
