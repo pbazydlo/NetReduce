@@ -4,12 +4,13 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
+    using System.Runtime.Serialization;
 
     public class PerformanceMonitor
     {
-        public static PerformanceStatistics GetPerformanceStatistics()
+        public static LoadStatistics GetLoadStatistics()
         {
-            var result = new PerformanceStatistics();
+            var result = new LoadStatistics();
             
             var totalProcessorTimeCounterPercent = new PerformanceCounter("Processor", "% Processor Time", "_Total");
             var freeRamCounterMB = new PerformanceCounter("Memory", "Available MBytes");
@@ -51,18 +52,40 @@
             return result;
         }
 
-        public class PerformanceStatistics
+        [DataContract]
+        public class LoadStatistics
         {
+            [DataMember]
             public float TotalProcessorTimeCounterPercent { get; set; }
+
+            [DataMember]
             public float FreeRamCounterMB { get; set; }
+
+            [DataMember]
             public float UsedRamCounterPercent { get; set; }
         }
 
+        [DataContract]
         public class DriveStatistics
         {
+            [DataMember]
             public string Name { get; set; }
+
+            [DataMember]
             public long TotalSize { get; set; }
+
+            [DataMember]
             public long FreeSpace { get; set; }
+        }
+
+        [DataContract]
+        public class PerformanceStatistics
+        {
+            [DataMember]
+            public LoadStatistics LoadStatistics { get; set; }
+
+            [DataMember]
+            public DriveStatistics[] DriveStatistics { get; set; }
         }
     }
 }

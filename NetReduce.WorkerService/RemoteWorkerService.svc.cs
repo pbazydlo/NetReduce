@@ -133,6 +133,16 @@
             return new Uri(newUri);
         }
 
+        public PerformanceMonitor.PerformanceStatistics GetPerformanceStatistics()
+        {
+            var result = new PerformanceMonitor.PerformanceStatistics();
+
+            result.LoadStatistics = PerformanceMonitor.GetLoadStatistics();
+            result.DriveStatistics = PerformanceMonitor.GetHddStatistics("c").ToArray();
+
+            return result;
+        }
+
         public Uri EndpointUri { get; private set; }
 
         private static List<Task<Uri>> PushFilesToReducers(Dictionary<string, Uri> keysAndUris, IStorage workerStorage)

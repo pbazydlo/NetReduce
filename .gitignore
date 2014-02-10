@@ -109,3 +109,4 @@ UpgradeLog*.XML
 *.mdf
 *.ldf
 /NetReduce.CoordinatorService.Old
+/NetReduce.Core.Tests/SampleInput.txt

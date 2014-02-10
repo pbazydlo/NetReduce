@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.ServiceModel;
 
+    using NetReduce.Core;
+
     [ServiceContract]
     public interface IRemoteWorkerService
     {
@@ -37,6 +39,9 @@
 
         [OperationContract]
         Uri PushFile(int workerId, string fileName, string content);
+
+        [OperationContract]
+        PerformanceMonitor.PerformanceStatistics GetPerformanceStatistics();
 
         Uri EndpointUri { get; }
     }
