@@ -128,12 +128,10 @@
                 var reducer = new Reducer(task.Item1, reduceProvider.Reduce, this.Storage);
                 var reduceResult = reducer.PerformReduce();
                 this.Storage.Store(
-                    string.Format(Properties.Settings.Default.ReduceOutputFileName, task.Item1, this.Id, Guid.NewGuid()),
-                    reduceResult);
+                    string.Format(Properties.Settings.Default.ReduceOutputFileName, Base64.Encode(reduceResult.Key), this.Id, Guid.NewGuid()),
+                    reduceResult.Value);
             }
         }
-
-        
 
         public IEnumerable<string> Join()
         {

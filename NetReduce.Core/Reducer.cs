@@ -10,22 +10,22 @@
     {
         private string key;
         private IEnumerable<string> values;
-        private Func<string, IEnumerable<string>, string> reduce;
+        private Func<string, IEnumerable<string>, KeyValuePair<string, string>> reduce;
         private IStorage storage;
 
         public int LoadedFileCount { get; set; }
         public Regex FileFilter { get; private set; }
 
-        public Reducer(string key, Func<string, IEnumerable<string>, string> reduce, IStorage storage)
+        public Reducer(string key, Func<string, IEnumerable<string>, KeyValuePair<string, string>> reduce, IStorage storage)
         {
             this.key = key;
             this.reduce = reduce;
-            this.FileFilter = new Regex(string.Format("^" + Core.Properties.Settings.Default.MapOutputFileName + "$", this.key, "[0-9]+", RegexExtensions.GuidRegexString));
+            this.FileFilter = new Regex(string.Format("^" + Core.Properties.Settings.Default.MapOutputFileName + "$", Base64.EscapeForRegex(this.key), "[0-9]+", RegexExtensions.GuidRegexString));
             this.storage = storage;
             this.Load();
         }
 
-        public string PerformReduce()
+        public KeyValuePair<string, string> PerformReduce()
         {
             return this.reduce.Invoke(Base64.Decode(key), values);
         }

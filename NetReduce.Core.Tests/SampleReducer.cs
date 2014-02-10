@@ -4,7 +4,7 @@
 
     internal class SampleReducer : IReduceProvider
     {
-        public string Reduce(string key, IEnumerable<string> values)
+        public KeyValuePair<string, string> Reduce(string key, IEnumerable<string> values)
         {
             try
             {
@@ -14,11 +14,11 @@
                     result += int.Parse(value);
                 }
 
-                return result.ToString();
+                return new KeyValuePair<string, string>(key, result.ToString());
             }
             catch (System.Exception ex)
             {
-                return ex.Message;
+                return new KeyValuePair<string, string>(string.Format("{0}_error", key), ex.Message);
             }
         }
     }

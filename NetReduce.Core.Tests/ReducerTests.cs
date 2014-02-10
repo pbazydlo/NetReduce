@@ -1,5 +1,7 @@
 ﻿namespace NetReduce.Core.Tests
 {
+    using System.Collections.Generic;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using Shouldly;
@@ -54,12 +56,12 @@
                     result += int.Parse(value);
                 }
 
-                return result.ToString();
+                return new KeyValuePair<string, string>(key, result.ToString());
             }, this.storage);
 
             var res = reducer.PerformReduce();
 
-            res.ShouldBe("3");
+            res.Value.ShouldBe("3");
         }
 
         [TestMethod]
@@ -73,7 +75,7 @@
 
             var res = reducer.PerformReduce();
 
-            res.ShouldBe("3");
+            res.Value.ShouldBe("3");
         }
     }
 }
