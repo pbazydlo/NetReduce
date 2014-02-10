@@ -27,39 +27,73 @@ namespace NetReduce.CoordinatorWebConsole.Controllers
 
         public ActionResult PerformanceStatistics(Uri uri)
         {
-            if(uri==null)
+            try
             {
-                return this.Json("incorrect uri");
-            }
-
-            var binding = new BasicHttpBinding();
-            using(var client = new WSClient.RemoteWorkerServiceClient(binding, new EndpointAddress(uri)))
-            {
-                var statistics = client.GetPerformanceStatistics();
-                var driveStatistics = statistics.DriveStatistics.First();
-                
-                return this.Json(new 
+                if (uri == null)
                 {
-                    CPU = statistics.LoadStatistics.TotalProcessorTimeCounterPercent.ToString("f2"),
-                    Memory = statistics.LoadStatistics.UsedRamCounterPercent.ToString("f2"),
-                    Disk = (Convert.ToDouble(driveStatistics.FreeSpace) / Convert.ToDouble(driveStatistics.TotalSize)).ToString("f2")
-                }, JsonRequestBehavior.AllowGet);
+                    return this.Json("incorrect uri");
+                }
+
+                var binding = new BasicHttpBinding();
+                using (var client = new WSClient.RemoteWorkerServiceClient(binding, new EndpointAddress(uri)))
+                {
+                    var statistics = client.GetPerformanceStatistics();
+                    var driveStatistics = statistics.DriveStatistics.First();
+
+                    return
+                        this.Json(
+                            new
+                                {
+                                    CPU = statistics.LoadStatistics.TotalProcessorTimeCounterPercent.ToString("f2"),
+                                    Memory = statistics.LoadStatistics.UsedRamCounterPercent.ToString("f2"),
+                                    Disk =
+                                        (100 * Convert.ToDouble(driveStatistics.FreeSpace)
+                                         / Convert.ToDouble(driveStatistics.TotalSize)).ToString("f2")
+                                },
+                            JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (EndpointNotFoundException)
+            {
+                return this.Json(new { CPU = string.Empty, Memory = string.Empty, Disk = string.Empty }, JsonRequestBehavior.AllowGet);
+            }
+            catch (CommunicationException)
+            {
+                return this.Json(new { CPU = string.Empty, Memory = string.Empty, Disk = string.Empty }, JsonRequestBehavior.AllowGet);
             }
         }
 
         public ActionResult Results()
         {
-            var results = this.coordinator.GetResults();
-            return this.Json(new
-                {
-                    Status = results.IsRunning ? "Job running" : "Idle",
-                    Results = results.KeysAndValues.Select(kv => new { Key = kv.Item1, Value = kv.Item2 }).ToArray()
-                }, JsonRequestBehavior.AllowGet);
+            try
+            {
+                var results = this.coordinator.GetResults();
+                return
+                    this.Json(
+                        new
+                            {
+                                Status = results.IsRunning ? "Job running" : "Idle",
+                                Results =
+                                    results.KeysAndValues.Select(kv => new { Key = kv.Item1, Value = kv.Item2 }).ToArray()
+                            },
+                        JsonRequestBehavior.AllowGet);
+            }
+            catch (EndpointNotFoundException)
+            {
+                return this.Json(new { Status = "Coordinator is not running", Results = new object[] { } }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public ActionResult Uris()
         {
-            return this.Json(this.coordinator.GetWorkers(), JsonRequestBehavior.AllowGet);
+            try
+            {
+                return this.Json(this.coordinator.GetWorkers(), JsonRequestBehavior.AllowGet);
+            }
+            catch (EndpointNotFoundException)
+            {
+                return this.Json(new object[] { }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpPost]
@@ -106,7 +140,18 @@ namespace NetReduce.CoordinatorWebConsole.Controllers
 
         public ActionResult Files()
         {
-            return this.Json(this.coordinator.ListStorageFiles(), JsonRequestBehavior.AllowGet);
+            try
+            {
+                return this.Json(this.coordinator.ListStorageFiles().Select(f => new
+                                                                                {
+                                                                                    Uri = f.ToString(),
+                                                                                    ToProcess = !f.ToString().Contains("Mapper") && !f.ToString().Contains("Reducer")
+                                                                                }).ToArray(), JsonRequestBehavior.AllowGet);
+            }
+            catch (EndpointNotFoundException)
+            {
+                return this.Json(new object[]{}, JsonRequestBehavior.AllowGet);
+            }
         }
 
         protected override void Dispose(bool disposing)
