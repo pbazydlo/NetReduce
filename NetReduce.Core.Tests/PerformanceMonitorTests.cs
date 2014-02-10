@@ -28,7 +28,7 @@
                     stop = !stop;
                 }
 
-                var value = PerformanceMonitor.GetProcessorTimeCounterValue();
+                var value = 0;// PerformanceMonitor.GetProcessorTimeCounterValue();
                 Debug.WriteLine(value);
             }
 

@@ -4,6 +4,7 @@
     using System.Linq;
     using System.ServiceModel;
     using System.ServiceModel.Description;
+    using System.Threading;
 
     using NetReduce.CoordinatorService.ConsoleHost.Properties;
     using NetReduce.Core;
@@ -43,8 +44,31 @@
                 Console.WriteLine("Coordinator service is ready at {0}", baseAddress);
                 Console.WriteLine("Callback Uri is {0}", RemoteWorker<ServiceClientWrapper>.CoordinatorCallbackUri);
                 Console.WriteLine("Press <Enter> to stop the service.");
-                Console.ReadLine();
 
+                /*var terminate = false;
+
+                var t = new Thread(
+                    () =>
+                    {
+                        while (!terminate)
+                        {
+                            var perf = PerformanceMonitor.GetPerformanceStatistics();
+                            Console.Clear();
+                            Console.WriteLine(perf.TotalProcessorTimeCounterPercent);
+                            Console.WriteLine(perf.FreeRamCounterMB);
+                            Console.WriteLine(perf.UsedRamCounterPercent);
+                            var drvs = PerformanceMonitor.GetHddStatistics("c");
+                            foreach (var drv in drvs)
+                            {
+                                Console.WriteLine("{0} {1} {2}", drv.Name, drv.FreeSpace, drv.TotalSize);
+                            }
+                        }
+                    });
+                t.Start();*/
+                
+                Console.ReadLine();
+                /*terminate = true;
+                t.Join();*/
                 // Close the ServiceHost.
                 host.Close();
             }
