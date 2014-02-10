@@ -75,7 +75,7 @@ namespace NetReduce.CoordinatorWebConsole.Controllers
                 {
                     Status = results.IsRunning ? "Job running" : "Idle",
                                 Results =
-                                    results.KeysAndValues.Select(kv => new { Key = kv.Item1, Value = kv.Item2 }).ToArray()
+                                    results.KeysAndValues.Select(kv => new { Key = Base64.Decode(kv.Item1), Value = kv.Item2 }).ToArray()
                             },
                         JsonRequestBehavior.AllowGet);
             }
