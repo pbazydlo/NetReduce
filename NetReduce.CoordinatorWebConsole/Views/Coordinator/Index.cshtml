@@ -17,16 +17,18 @@
                         <table class="table table-bordered table-condensed table-responsive table-striped">
                             <thead>
                                 <tr>
-                                    <th>Endpoint URI</th>
+                                    <th>Endpoint URI <i class="glyphicon glyphicon-refresh pull-right" data-bind="click: ReloadWorkers"></i></th>
                                     <th>CPU</th>
-                                    <th>Memmory</th>
+                                    <th>Memory</th>
+                                    <th>Disk</th>
                                 </tr>
                             </thead>
                             <tbody data-bind="foreach: Workers">
                                 <tr>
                                     <td data-bind="text: Uri"></td>
                                     <td data-bind="text: Cpu"></td>
-                                    <td data-bind="text: Memmory"></td>
+                                    <td data-bind="text: Memory"></td>
+                                    <td data-bind="text: Disk"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -177,21 +179,42 @@
             }
         }
 
-        function WorkerViewModel(uri, cpu, memmory) {
+        function WorkerViewModel(uri, cpu, memory, getPerformanceUrl) {
             var self = this;
             self.Uri = ko.observable(uri);
             self.Cpu = ko.observable(cpu);
-            self.Memmory = ko.observable(memmory);
+            self.Memory = ko.observable(memory);
+            self.Disk = ko.observable("");
+            self.RefreshPerformance = function () {
+                $.ajax({
+                    url: getPerformanceUrl,
+                    type: "GET",
+                    data: {
+                        uri: self.Uri()
+                    },
+                    success: function (result) {
+                        self.Cpu(result.CPU);
+                        self.Memory(result.Memory);
+                        self.Disk(result.Disk);
+
+                        setTimeout(self.RefreshPerformance, 2500);
+                    },
+                    error: function () {
+                    }
+                })
+            }
+
+            self.RefreshPerformance();
         }
 
-        function WorkersViewModel(getWorkersUrl, addWorkerUrl) {
+        function WorkersViewModel(getWorkersUrl, addWorkerUrl, getPerformanceUrl) {
             var self = this;
 
             function loadWorkersFromList(result) {
                 var workers = [];
                 for (var i in result) {
                     var workerUri = result[i];
-                    workers.push(new WorkerViewModel(workerUri));
+                    workers.push(new WorkerViewModel(workerUri, "", "", getPerformanceUrl));
                 }
 
                 self.Workers(workers);
@@ -230,11 +253,9 @@
                         success: function (result) {
                             loadWorkersFromList(result);
                             self.IsLoading(false);
-                            setTimeout(self.ReloadWorkers, 3000);
                         },
                         error: function () {
                             self.IsLoading(false);
-                            setTimeout(self.ReloadWorkers, 4000);
                         }
                     })
                 }
@@ -244,10 +265,10 @@
         }
 
         function CoordinatorManagementViewModel(getWorkersUrl, addWorkerUrl, submitTaskUrl, getFilesUrl,
-            removeFileUrl, getResultsUrl) {
+            removeFileUrl, getResultsUrl, getPerformanceUrl) {
             var self = this;
 
-            self.WorkersManagement = new WorkersViewModel(getWorkersUrl, addWorkerUrl);
+            self.WorkersManagement = new WorkersViewModel(getWorkersUrl, addWorkerUrl, getPerformanceUrl);
             self.IsTaskSubmitting = ko.observable(false);
             self.MapCode = ko.observable("");
             self.ReduceCode = ko.observable("");
@@ -362,7 +383,7 @@
         }
         var viewModel = new CoordinatorManagementViewModel('@Url.Action("Uris", "Coordinator")',
             '@Url.Action("Uris", "Coordinator")', '@Url.Action("Task", "Coordinator")', '@Url.Action("Files", "Coordinator")',
-            '@Url.Action("RemoveFile", "Coordinator")', '@Url.Action("Results","Coordinator")');
+            '@Url.Action("RemoveFile", "Coordinator")', '@Url.Action("Results","Coordinator")', '@Url.Action("PerformanceStatistics", "Coordinator")');
         ko.applyBindings(viewModel);
 
         $(document).ready(function () {

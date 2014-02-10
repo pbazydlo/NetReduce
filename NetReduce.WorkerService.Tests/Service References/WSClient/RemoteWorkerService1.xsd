@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:28756/RemoteWorkerService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://localhost:28756/RemoteWorkerService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/NetReduce.Core" />
   <xs:element name="Init">
     <xs:complexType>
       <xs:sequence>
@@ -82,6 +83,18 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="PushFileResult" nillable="true" type="xs:anyURI" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPerformanceStatistics">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPerformanceStatisticsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/NetReduce.Core" minOccurs="0" name="GetPerformanceStatisticsResult" nillable="true" type="q4:PerformanceMonitor.PerformanceStatistics" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

@@ -73,6 +73,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\NetReduce.Core.PerformanceMonitor.datasource" />
     <None Include="Properties\DataSources\System.Uri.datasource" />
     <None Include="Service References\WSClient\RemoteWorkerService.wsdl" />
     <None Include="Service References\WSClient\RemoteWorkerService.xsd">
@@ -82,6 +83,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\WSClient\RemoteWorkerService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WSClient\RemoteWorkerService3.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

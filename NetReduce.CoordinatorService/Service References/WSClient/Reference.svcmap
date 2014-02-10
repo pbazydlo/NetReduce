@@ -22,11 +22,12 @@
     <MetadataSource Address="http://localhost:28756/RemoteWorkerService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="RemoteWorkerService.wsdl" MetadataType="Wsdl" ID="cd7d24e4-7e20-497f-adbd-b47d6caf6e1e" SourceId="1" SourceUrl="http://localhost:28756/RemoteWorkerService.svc?wsdl" />
-    <MetadataFile FileName="RemoteWorkerService.xsd" MetadataType="Schema" ID="2ddfec67-e891-448d-8516-41dc76f772f0" SourceId="1" SourceUrl="http://localhost:28756/RemoteWorkerService.svc?xsd=xsd2" />
-    <MetadataFile FileName="RemoteWorkerService1.xsd" MetadataType="Schema" ID="0964b28d-e326-4a44-aac4-155a039d3d97" SourceId="1" SourceUrl="http://localhost:28756/RemoteWorkerService.svc?xsd=xsd1" />
-    <MetadataFile FileName="RemoteWorkerService.disco" MetadataType="Disco" ID="73fd4c21-83f0-415f-99bb-46abc1df461c" SourceId="1" SourceUrl="http://localhost:28756/RemoteWorkerService.svc?disco" />
     <MetadataFile FileName="RemoteWorkerService2.xsd" MetadataType="Schema" ID="a49fdf1f-7f7b-424f-855b-ea92d134beff" SourceId="1" SourceUrl="http://localhost:28756/RemoteWorkerService.svc?xsd=xsd0" />
+    <MetadataFile FileName="RemoteWorkerService.wsdl" MetadataType="Wsdl" ID="cd7d24e4-7e20-497f-adbd-b47d6caf6e1e" SourceId="1" SourceUrl="http://localhost:28756/RemoteWorkerService.svc?wsdl" />
+    <MetadataFile FileName="RemoteWorkerService1.xsd" MetadataType="Schema" ID="0964b28d-e326-4a44-aac4-155a039d3d97" SourceId="1" SourceUrl="http://localhost:28756/RemoteWorkerService.svc?xsd=xsd1" />
+    <MetadataFile FileName="RemoteWorkerService.xsd" MetadataType="Schema" ID="2ddfec67-e891-448d-8516-41dc76f772f0" SourceId="1" SourceUrl="http://localhost:28756/RemoteWorkerService.svc?xsd=xsd2" />
+    <MetadataFile FileName="RemoteWorkerService.disco" MetadataType="Disco" ID="73fd4c21-83f0-415f-99bb-46abc1df461c" SourceId="1" SourceUrl="http://localhost:28756/RemoteWorkerService.svc?disco" />
+    <MetadataFile FileName="RemoteWorkerService3.xsd" MetadataType="Schema" ID="0d08610e-66a8-41e9-a55f-f0fc13485e87" SourceId="1" SourceUrl="http://localhost:28756/RemoteWorkerService.svc?xsd=xsd3" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

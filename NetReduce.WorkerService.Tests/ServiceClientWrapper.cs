@@ -54,5 +54,11 @@ namespace NetReduce.WorkerService.Tests
         }
 
         private WSClient.RemoteWorkerServiceClient client;
+
+
+        public Core.PerformanceMonitor.PerformanceStatistics GetPerformanceStatistics()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

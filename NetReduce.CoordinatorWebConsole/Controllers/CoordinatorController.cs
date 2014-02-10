@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.ServiceModel;
 using System.Web;
 using System.Web.Mvc;
 
@@ -22,6 +23,28 @@ namespace NetReduce.CoordinatorWebConsole.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+        public ActionResult PerformanceStatistics(Uri uri)
+        {
+            if(uri==null)
+            {
+                return this.Json("incorrect uri");
+            }
+
+            var binding = new BasicHttpBinding();
+            using(var client = new WSClient.RemoteWorkerServiceClient(binding, new EndpointAddress(uri)))
+            {
+                var statistics = client.GetPerformanceStatistics();
+                var driveStatistics = statistics.DriveStatistics.First();
+                
+                return this.Json(new 
+                {
+                    CPU = statistics.LoadStatistics.TotalProcessorTimeCounterPercent.ToString("f2"),
+                    Memory = statistics.LoadStatistics.UsedRamCounterPercent.ToString("f2"),
+                    Disk = (Convert.ToDouble(driveStatistics.FreeSpace) / Convert.ToDouble(driveStatistics.TotalSize)).ToString("f2")
+                }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public ActionResult Results()

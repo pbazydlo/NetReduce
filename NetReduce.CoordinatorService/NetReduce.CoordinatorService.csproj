@@ -61,13 +61,14 @@
   <ItemGroup>
     <Content Include="CoordinatorService.svc" />
     <Content Include="Properties\DataSources\System.Uri.datasource" />
-    <Content Include="Service References\WSClient\RemoteWorkerService.disco" />
-    <Content Include="Service References\WSClient\configuration91.svcinfo" />
-    <Content Include="Service References\WSClient\configuration.svcinfo" />
-    <Content Include="Service References\WSClient\Reference.svcmap">
+    <Content Include="Properties\DataSources\NetReduce.Core.PerformanceMonitor.datasource" />
+    <None Include="Service References\WSClient\RemoteWorkerService.disco" />
+    <None Include="Service References\WSClient\configuration91.svcinfo" />
+    <None Include="Service References\WSClient\configuration.svcinfo" />
+    <None Include="Service References\WSClient\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
+    </None>
     <Content Include="Web.config" />
     <None Include="Service References\WSClient\RemoteWorkerService2.xsd">
       <SubType>Designer</SubType>
@@ -90,11 +91,14 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Service References\WSClient\RemoteWorkerService.wsdl" />
+    <None Include="Service References\WSClient\RemoteWorkerService.wsdl" />
     <None Include="Service References\WSClient\RemoteWorkerService.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\WSClient\RemoteWorkerService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WSClient\RemoteWorkerService3.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Web.Debug.config">

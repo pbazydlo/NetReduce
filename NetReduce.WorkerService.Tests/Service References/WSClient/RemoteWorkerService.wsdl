@@ -5,6 +5,7 @@
       <xsd:import schemaLocation="http://localhost:28756/RemoteWorkerService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:28756/RemoteWorkerService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:28756/RemoteWorkerService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:28756/RemoteWorkerService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/NetReduce.Core" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IRemoteWorkerService_Init_InputMessage">
@@ -43,6 +44,12 @@
   <wsdl:message name="IRemoteWorkerService_PushFile_OutputMessage">
     <wsdl:part name="parameters" element="tns:PushFileResponse" />
   </wsdl:message>
+  <wsdl:message name="IRemoteWorkerService_GetPerformanceStatistics_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPerformanceStatistics" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteWorkerService_GetPerformanceStatistics_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPerformanceStatisticsResponse" />
+  </wsdl:message>
   <wsdl:portType name="IRemoteWorkerService">
     <wsdl:operation name="Init">
       <wsdl:input wsaw:Action="http://tempuri.org/IRemoteWorkerService/Init" message="tns:IRemoteWorkerService_Init_InputMessage" />
@@ -67,6 +74,10 @@
     <wsdl:operation name="PushFile">
       <wsdl:input wsaw:Action="http://tempuri.org/IRemoteWorkerService/PushFile" message="tns:IRemoteWorkerService_PushFile_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IRemoteWorkerService/PushFileResponse" message="tns:IRemoteWorkerService_PushFile_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPerformanceStatistics">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRemoteWorkerService/GetPerformanceStatistics" message="tns:IRemoteWorkerService_GetPerformanceStatistics_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRemoteWorkerService/GetPerformanceStatisticsResponse" message="tns:IRemoteWorkerService_GetPerformanceStatistics_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IRemoteWorkerService" type="tns:IRemoteWorkerService">
@@ -118,6 +129,15 @@
     </wsdl:operation>
     <wsdl:operation name="PushFile">
       <soap:operation soapAction="http://tempuri.org/IRemoteWorkerService/PushFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPerformanceStatistics">
+      <soap:operation soapAction="http://tempuri.org/IRemoteWorkerService/GetPerformanceStatistics" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

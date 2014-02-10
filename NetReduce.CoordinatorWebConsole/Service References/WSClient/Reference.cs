@@ -50,6 +50,12 @@ namespace NetReduce.CoordinatorWebConsole.WSClient {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRemoteWorkerService/PushFile", ReplyAction="http://tempuri.org/IRemoteWorkerService/PushFileResponse")]
         System.Threading.Tasks.Task<System.Uri> PushFileAsync(int workerId, string fileName, string content);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRemoteWorkerService/GetPerformanceStatistics", ReplyAction="http://tempuri.org/IRemoteWorkerService/GetPerformanceStatisticsResponse")]
+        NetReduce.Core.PerformanceMonitor.PerformanceStatistics GetPerformanceStatistics();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRemoteWorkerService/GetPerformanceStatistics", ReplyAction="http://tempuri.org/IRemoteWorkerService/GetPerformanceStatisticsResponse")]
+        System.Threading.Tasks.Task<NetReduce.Core.PerformanceMonitor.PerformanceStatistics> GetPerformanceStatisticsAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -125,6 +131,14 @@ namespace NetReduce.CoordinatorWebConsole.WSClient {
         
         public System.Threading.Tasks.Task<System.Uri> PushFileAsync(int workerId, string fileName, string content) {
             return base.Channel.PushFileAsync(workerId, fileName, content);
+        }
+        
+        public NetReduce.Core.PerformanceMonitor.PerformanceStatistics GetPerformanceStatistics() {
+            return base.Channel.GetPerformanceStatistics();
+        }
+        
+        public System.Threading.Tasks.Task<NetReduce.Core.PerformanceMonitor.PerformanceStatistics> GetPerformanceStatisticsAsync() {
+            return base.Channel.GetPerformanceStatisticsAsync();
         }
     }
 }
