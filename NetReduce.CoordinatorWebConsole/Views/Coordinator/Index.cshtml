@@ -166,8 +166,8 @@
                             uri: self.Uri()
                         },
                         success: function (result) {
-                            parent.ReloadFiles();
                             self.IsRemoving(false);
+                            parent.ReloadFiles();
                         },
                         error: function () {
                             self.IsRemoving(false);
@@ -230,9 +230,11 @@
                         success: function (result) {
                             loadWorkersFromList(result);
                             self.IsLoading(false);
+                            setTimeout(self.ReloadWorkers, 3000);
                         },
                         error: function () {
                             self.IsLoading(false);
+                            setTimeout(self.ReloadWorkers, 4000);
                         }
                     })
                 }
@@ -326,6 +328,10 @@
                         type: "GET",
                         success: function (result) {
                             var res = new MapReduceResultsViewModel(result.Status, result.Results);
+                            if (res.Status() != self.MRResults().Status()) {
+                                self.ReloadFiles();
+                            }
+
                             self.MRResults(res);
 
                             self.IsResultsReloading(false);
@@ -333,6 +339,7 @@
                         },
                         error: function () {
                             self.IsResultsReloading(false);
+                            setTimeout(self.ReloadResults, 4000);
                         }
                     })
                 }
