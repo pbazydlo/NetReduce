@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce", "NetReduce\NetReduce.csproj", "{C1BDE385-A99F-4F4B-A029-30BFAF58E85C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce.Core.Tests", "NetReduce.Core.Tests\NetReduce.Core.Tests.csproj", "{98C28953-E984-480A-9342-DCF440F85573}"
@@ -23,10 +25,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce.WorkerService.Con
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce.CoordinatorWebConsole", "NetReduce.CoordinatorWebConsole\NetReduce.CoordinatorWebConsole.csproj", "{8DA806BB-167D-4F1E-9FCD-4412E0C5C540}"
 	ProjectSection(ProjectDependencies) = postProject
+		{45135014-B8AA-4CFF-A17F-741A0BDBA6A9} = {45135014-B8AA-4CFF-A17F-741A0BDBA6A9}
 		{1F03A337-7CFA-467E-AA2E-73BC8D92AB30} = {1F03A337-7CFA-467E-AA2E-73BC8D92AB30}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce.CoordinatorService", "NetReduce.CoordinatorService\NetReduce.CoordinatorService.csproj", "{EC5BC5A3-5B94-43F9-9703-741DFE35C544}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetReduce.CoordinatorService", "NetReduce.CoordinatorService\NetReduce.CoordinatorService.csproj", "{45135014-B8AA-4CFF-A17F-741A0BDBA6A9}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1F03A337-7CFA-467E-AA2E-73BC8D92AB30} = {1F03A337-7CFA-467E-AA2E-73BC8D92AB30}
 	EndProjectSection
@@ -75,10 +78,10 @@ Global
 		{8DA806BB-167D-4F1E-9FCD-4412E0C5C540}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DA806BB-167D-4F1E-9FCD-4412E0C5C540}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DA806BB-167D-4F1E-9FCD-4412E0C5C540}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC5BC5A3-5B94-43F9-9703-741DFE35C544}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC5BC5A3-5B94-43F9-9703-741DFE35C544}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC5BC5A3-5B94-43F9-9703-741DFE35C544}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC5BC5A3-5B94-43F9-9703-741DFE35C544}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45135014-B8AA-4CFF-A17F-741A0BDBA6A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45135014-B8AA-4CFF-A17F-741A0BDBA6A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45135014-B8AA-4CFF-A17F-741A0BDBA6A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45135014-B8AA-4CFF-A17F-741A0BDBA6A9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DFBC3A11-C0C4-41FE-9514-C4D455551553}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DFBC3A11-C0C4-41FE-9514-C4D455551553}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFBC3A11-C0C4-41FE-9514-C4D455551553}.Release|Any CPU.ActiveCfg = Release|Any CPU

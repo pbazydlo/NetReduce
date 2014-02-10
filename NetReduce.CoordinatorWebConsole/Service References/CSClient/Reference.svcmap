@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="276d486c-6e01-40d3-b0be-ee046339e310" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:15969/CoordinatorService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="CoordinatorService.xsd" MetadataType="Schema" ID="35e8dc5b-0d0c-41de-a81d-4ae3123c93e5" SourceId="1" SourceUrl="http://localhost:15969/CoordinatorService.svc?xsd=xsd1" />
+    <MetadataFile FileName="CoordinatorService1.xsd" MetadataType="Schema" ID="e0f96591-82fa-482b-bc14-702315b8bc3e" SourceId="1" SourceUrl="http://localhost:15969/CoordinatorService.svc?xsd=xsd4" />
+    <MetadataFile FileName="CoordinatorService.disco" MetadataType="Disco" ID="fd7d4c4f-05e3-4c1c-b653-7692004ed2b3" SourceId="1" SourceUrl="http://localhost:15969/CoordinatorService.svc?disco" />
+    <MetadataFile FileName="CoordinatorService.wsdl" MetadataType="Wsdl" ID="283f7811-04d5-4258-b701-ce1a83ebd138" SourceId="1" SourceUrl="http://localhost:15969/CoordinatorService.svc?wsdl" />
+    <MetadataFile FileName="CoordinatorService2.xsd" MetadataType="Schema" ID="a58bc99f-2ae5-4e14-9b12-4d6853d60d3a" SourceId="1" SourceUrl="http://localhost:15969/CoordinatorService.svc?xsd=xsd2" />
+    <MetadataFile FileName="CoordinatorService3.xsd" MetadataType="Schema" ID="c2c5f2a9-ea37-4f2b-8b41-7d546a7391c1" SourceId="1" SourceUrl="http://localhost:15969/CoordinatorService.svc?xsd=xsd3" />
+    <MetadataFile FileName="CoordinatorService4.xsd" MetadataType="Schema" ID="03819c15-3084-400a-9807-e398b5b90403" SourceId="1" SourceUrl="http://localhost:15969/CoordinatorService.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

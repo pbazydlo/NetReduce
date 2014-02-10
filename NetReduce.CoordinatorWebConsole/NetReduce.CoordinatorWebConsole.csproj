@@ -170,6 +170,11 @@
     <Compile Include="Models\AddUriViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\CSClient\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\WSClient\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -204,10 +209,36 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <None Include="Service References\CSClient\CoordinatorService.wsdl" />
+    <None Include="Service References\CSClient\CoordinatorService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CSClient\CoordinatorService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CSClient\CoordinatorService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CSClient\CoordinatorService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CSClient\CoordinatorService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Service References\CSClient\NetReduce.CoordinatorWebConsole.CSClient.MapReduceResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <None Include="Service References\WSClient\RemoteWorkerService.disco" />
     <None Include="Service References\WSClient\configuration91.svcinfo" />
     <None Include="Service References\WSClient\configuration.svcinfo" />
     <None Include="Service References\WSClient\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\CSClient\CoordinatorService.disco" />
+    <None Include="Service References\CSClient\configuration91.svcinfo" />
+    <None Include="Service References\CSClient\configuration.svcinfo" />
+    <None Include="Service References\CSClient\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
@@ -262,6 +293,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Service References\CSClient\" />
     <WCFMetadataStorage Include="Service References\WSClient\" />
   </ItemGroup>
   <ItemGroup>

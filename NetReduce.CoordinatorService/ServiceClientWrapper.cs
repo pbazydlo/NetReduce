@@ -15,7 +15,8 @@ namespace NetReduce.CoordinatorService
         public ServiceClientWrapper()
         {
             this.EndpointUri = UriProvider.GetNextUri();
-            var binding = new BasicHttpBinding("BasicHttpBinding_IRemoteWorkerService");
+            // var binding = new BasicHttpBinding("BasicHttpBinding_IRemoteWorkerService");
+            var binding = new BasicHttpBinding();
             this.client = new WSClient.RemoteWorkerServiceClient(binding, new EndpointAddress(this.EndpointUri));
         }
 
