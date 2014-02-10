@@ -89,13 +89,16 @@
                             </div>
                             <button class="btn btn-success">Submit File</button>
                         }
+                        <button class="btn btn-danger" data-bind="click: CleanStorage, disable: IsStorageBeingCleaned">
+                            Clean Storage<span data-bind="visible: IsStorageBeingCleaned">...</span>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-lg-6">
-        <div class="panel panel-default" >
+        <div class="panel panel-default">
             <div class="panel-heading">
                 <h3>Task</h3>
             </div>
@@ -124,13 +127,13 @@
                 <div>
                     <div class="input-group">
                         <label for="noMap">Number of mappers </label>
-                        <input name="noMap" type="number" data-bind="value: NoOfMappers" placeholder="Number of mappers"/>
+                        <input name="noMap" type="number" data-bind="value: NoOfMappers" placeholder="Number of mappers" />
                     </div>
                     <div class="input-group">
                         <label for="noRed">Number of reducers </label>
                         <input name="noRed" type="number" data-bind="value: NoOfReducers" placeholder="Number of reducers" />
                     </div>
-                    <button class="btn btn-primary" data-bind="click: SubmitTask">Submit Job<span data-bind="visible: IsTaskSubmitting">...</span></button>
+                    <button class="btn btn-primary" data-bind="click: SubmitTask, disable: MRResults().Status()!='Idle'">Submit Job<span data-bind="visible: IsTaskSubmitting">...</span></button>
                 </div>
             </div>
         </div>
@@ -265,7 +268,7 @@
         }
 
         function CoordinatorManagementViewModel(getWorkersUrl, addWorkerUrl, submitTaskUrl, getFilesUrl,
-            removeFileUrl, getResultsUrl, getPerformanceUrl) {
+            removeFileUrl, getResultsUrl, getPerformanceUrl, cleanStorageUrl) {
             var self = this;
 
             self.WorkersManagement = new WorkersViewModel(getWorkersUrl, addWorkerUrl, getPerformanceUrl);
@@ -377,13 +380,31 @@
 
                 return result;
             }
+            self.IsStorageBeingCleaned = ko.observable(false);
+            self.CleanStorage = function () {
+                if (!self.IsStorageBeingCleaned()) {
+                    self.IsStorageBeingCleaned(true);
+                    $.ajax({
+                        url: cleanStorageUrl,
+                        type: "GET",
+                        success: function (result) {
+                            self.ReloadFiles();
+                            self.IsStorageBeingCleaned(false);
+                        },
+                        error: function () {
+                            self.IsStorageBeingCleaned(false);
+                        }
+                    })
+                }
+            }
 
             self.ReloadFiles();
             self.ReloadResults();
         }
         var viewModel = new CoordinatorManagementViewModel('@Url.Action("Uris", "Coordinator")',
             '@Url.Action("Uris", "Coordinator")', '@Url.Action("Task", "Coordinator")', '@Url.Action("Files", "Coordinator")',
-            '@Url.Action("RemoveFile", "Coordinator")', '@Url.Action("Results","Coordinator")', '@Url.Action("PerformanceStatistics", "Coordinator")');
+            '@Url.Action("RemoveFile", "Coordinator")', '@Url.Action("Results","Coordinator")',
+            '@Url.Action("PerformanceStatistics", "Coordinator")', '@Url.Action("CleanStorage","Coordinator")');
         ko.applyBindings(viewModel);
 
         $(document).ready(function () {

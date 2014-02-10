@@ -155,6 +155,12 @@ namespace NetReduce.CoordinatorWebConsole.Controllers
             }
         }
 
+        public ActionResult CleanStorage()
+        {
+            this.coordinator.CleanStorage();
+            return this.Json("ok");
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
